@@ -13,9 +13,9 @@ include("pp/server/antispam.lua")
 include("pp/server/defaultblockedmodels.lua")
 include("pp/server/ownability.lua")
 
-/*---------------------------------------------------------------------------
+--[[---------------------------------------------------------------------------
 DarkRP blocked entities
----------------------------------------------------------------------------*/
+---------------------------------------------------------------------------]]
 local blockTypes = {"Physgun1", "Spawning1", "Toolgun1"}
 
 FPP.AddDefaultBlocked(blockTypes, "chatindicator")

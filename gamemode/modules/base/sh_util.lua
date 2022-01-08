@@ -81,8 +81,8 @@ end
 
 --[[---------------------------------------------------------------------------
 Find multiple players based on a string criterium
-Taken from FAdmin]]
----------------------------------------------------------------------------*/
+Taken from FAdmin
+---------------------------------------------------------------------------]]
 function DarkRP.findPlayers(info)
     if not info then return nil end
     local pls = player.GetAll()
