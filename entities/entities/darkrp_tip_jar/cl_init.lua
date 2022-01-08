@@ -25,7 +25,7 @@ function ENT:InitCsModel()
     self.csModel:SetParent(self)
     self.csModel:SetModelScale(1.5, 0)
     self.csModel:SetNoDraw(true)
-    self:CallOnRemove("csModel", fp{SafeRemoveEntity, self.csModel})
+    self:CallOnRemove("csModel", function() SaferemoveEntity(self.csModel) end)
 end
 
 function ENT:Draw()
