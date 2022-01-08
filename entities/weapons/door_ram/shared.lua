@@ -183,15 +183,20 @@ local function getRamFunction(ply, trace)
     if not IsValid(ent) then return fp{fn.Id, false} end
 
     local override = hook.Call("canDoorRam", nil, ply, trace, ent)
-
-    return
-        override ~= nil     and fp{fn.Id, override}                                 or
-        ent:isDoor()        and fp{ramDoor, ply, trace, ent}                        or
-        ent:IsVehicle()     and fp{ramVehicle, ply, trace, ent}                     or
-        ent.fadeActivate    and fp{ramFadingDoor, ply, trace, ent}                  or
-        ent:GetPhysicsObject():IsValid() and not ent:GetPhysicsObject():IsMoveable()
-                                         and fp{ramProp, ply, trace, ent}           or
-        fp{fn.Id, false} -- no ramming was performed
+    
+    if override ~= nil then
+        return override
+    elseif ent:isDoor() then
+        return ramDoor(ply,trace,ent)
+    elseif ent:IsVehicle() then
+        return ramVehicle(ply,trace,ent)
+    elseif ent.fadeActivate then
+        return ramFadingDoor(ply,trace,ent)
+    elseif ent:GetPhysicsObject():IsValid() and not ent:GetPhysicsObject():IsMoveable() then
+        return ramProp(ply,trace,ent)
+    else
+      return false
+    end
 end
 
 --[[---------------------------------------------------------

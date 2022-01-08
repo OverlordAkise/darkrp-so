@@ -168,7 +168,7 @@ DarkRP.createCategory{
     categorises = "entities",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 255,
 }
 
@@ -177,7 +177,7 @@ DarkRP.createCategory{
     categorises = "shipments",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 255,
 }
 
@@ -186,7 +186,7 @@ DarkRP.createCategory{
     categorises = "shipments",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 100,
 }
 
@@ -195,7 +195,7 @@ DarkRP.createCategory{
     categorises = "shipments",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 101,
 }
 
@@ -204,7 +204,7 @@ DarkRP.createCategory{
     categorises = "shipments",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 102,
 }
 
@@ -213,7 +213,7 @@ DarkRP.createCategory{
     categorises = "weapons",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 100,
 }
 
@@ -222,7 +222,7 @@ DarkRP.createCategory{
     categorises = "weapons",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 255,
 }
 
@@ -231,6 +231,6 @@ DarkRP.createCategory{
     categorises = "vehicles",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 255,
 }

@@ -9,7 +9,7 @@ DEFINE_BASECLASS("gamemode_sandbox")
 
 GM.Sandbox = BaseClass
 
-
+AddCSLuaFile("shared.lua")
 AddCSLuaFile("libraries/sh_cami.lua")
 AddCSLuaFile("libraries/simplerr.lua")
 AddCSLuaFile("libraries/interfaceloader.lua")
@@ -27,6 +27,7 @@ AddCSLuaFile("cl_init.lua")
 GM.Config = GM.Config or {}
 GM.NoLicense = GM.NoLicense or {}
 
+include("shared.lua")
 include("libraries/interfaceloader.lua")
 
 include("config/_MySQL.lua")

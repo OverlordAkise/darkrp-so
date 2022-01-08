@@ -24,6 +24,6 @@ DarkRP.createCategory{
     categorises = "ammo",
     startExpanded = true,
     color = Color(0, 107, 0, 255),
-    canSee = fp{fn.Id, true},
+    canSee = returnTrue,
     sortOrder = 255,
 }

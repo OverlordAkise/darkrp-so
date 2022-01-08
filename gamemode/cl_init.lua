@@ -31,6 +31,7 @@ end
 GM.Config = {} -- config table
 GM.NoLicense = GM.NoLicense or {}
 
+include("shared.lua")
 include("config/config.lua")
 include("libraries/sh_cami.lua")
 include("libraries/simplerr.lua")
