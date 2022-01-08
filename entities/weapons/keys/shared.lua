@@ -3,6 +3,7 @@ AddCSLuaFile()
 if SERVER then
     AddCSLuaFile("cl_menu.lua")
     util.AddNetworkString("anim_keys")
+    util.AddNetworkString("KeysMenu")
 end
 
 if CLIENT then
@@ -151,7 +152,7 @@ function SWEP:Reload()
         return
     end
     if SERVER then
-        umsg.Start("KeysMenu", self:GetOwner())
-        umsg.End()
+        net.Start("KeysMenu")
+        net.Send(self:GetOwner())
     end
 end
