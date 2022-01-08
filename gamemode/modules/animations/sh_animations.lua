@@ -57,14 +57,13 @@ if SERVER then
     return
 end
 
-local function KeysAnims(um)
-    local ply = um:ReadEntity()
-    local act = um:ReadString()
-
+net.Receive("anim_keys",function()
+    local ply = net.ReadEntity()
+    local act = net.ReadString()
+    
     if not IsValid(ply) then return end
     ply:AnimRestartGesture(GESTURE_SLOT_CUSTOM, act == "usekeys" and ACT_GMOD_GESTURE_ITEM_PLACE or ACT_HL2MP_GESTURE_RANGE_ATTACK_FIST, true)
-end
-usermessage.Hook("anim_keys", KeysAnims)
+end)
 
 local function CustomAnimation(um)
     local ply = um:ReadEntity()
