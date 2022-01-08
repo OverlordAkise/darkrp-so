@@ -1,3 +1,6 @@
+
+util.AddNetworkString("DarkRP_Credits")
+
 --[[---------------------------------------------------------
 Talking
  ---------------------------------------------------------]]
@@ -233,8 +236,8 @@ local function GetDarkRPAuthors(ply, args)
         rf:AddPlayer(ply)
     end
 
-    umsg.Start("DarkRP_Credits", rf)
-    umsg.End()
+    net.Start("DarkRP_Credits")
+    net.Send(rf)
 
     return ""
 end
