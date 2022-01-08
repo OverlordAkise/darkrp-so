@@ -2,6 +2,8 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
+util.AddNetworkString("AteFoodIcon")
+
 function ENT:Initialize()
     DarkRP.ValidatedPhysicsInit(self, SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
@@ -36,8 +38,8 @@ function ENT:Use(activator, caller)
     hook.Call("playerAteFood", nil, activator, self.foodItem, self)
 
     activator:setSelfDarkRPVar("Energy", math.Clamp((activator:getDarkRPVar("Energy") or 100) + (self.FoodEnergy or 1), 0, 100))
-    umsg.Start("AteFoodIcon", activator)
-    umsg.End()
+    net.Start("AteFoodIcon")
+    net.Send(activator)
 
     self:Remove()
     activator:EmitSound(self.EatSound, 100, 100)

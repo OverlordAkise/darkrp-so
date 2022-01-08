@@ -94,8 +94,7 @@ local function HMHUD()
 end
 hook.Add("HUDDrawTargetID", "HMHUD", HMHUD) --HUDDrawTargetID is called after DarkRP HUD is drawn in HUDPaint
 
-local function AteFoodIcon(msg)
+net.Receive("AteFoodIcon",function()
     FoodAteAlpha = 1
     FoodAteY = ScrH() - 8
-end
-usermessage.Hook("AteFoodIcon", AteFoodIcon)
+end)
