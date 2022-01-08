@@ -1,5 +1,9 @@
 local Anims = {}
 
+if SERVER then
+  util.AddNetworkString("_DarkRP_CustomAnim")
+end
+
 -- Load animations after the languages for translation purposes
 hook.Add("loadCustomDarkRPItems", "loadAnimations", function()
     Anims[ACT_GMOD_GESTURE_BOW] = DarkRP.getPhrase("bow")
@@ -48,10 +52,10 @@ if SERVER then
         local RP = RecipientFilter()
         RP:AddAllPlayers()
 
-        umsg.Start("_DarkRP_CustomAnim", RP)
-        umsg.Entity(ply)
-        umsg.Short(Gesture)
-        umsg.End()
+        net.Start("_DarkRP_CustomAnim", RP)
+          net.WriteEntity(ply)
+          net.WriteInt(Gesture,32)
+        net.Send(RP)
     end
     concommand.Add("_DarkRP_DoAnimation", CustomAnim)
     return
@@ -65,14 +69,13 @@ net.Receive("anim_keys",function()
     ply:AnimRestartGesture(GESTURE_SLOT_CUSTOM, act == "usekeys" and ACT_GMOD_GESTURE_ITEM_PLACE or ACT_HL2MP_GESTURE_RANGE_ATTACK_FIST, true)
 end)
 
-local function CustomAnimation(um)
-    local ply = um:ReadEntity()
-    local act = um:ReadShort()
+net.Receive("_DarkRP_CustomAnim", function()
+    local ply = net.ReadEntity()
+    local act = net.ReadInt(32)
 
     if not IsValid(ply) then return end
     ply:AnimRestartGesture(GESTURE_SLOT_CUSTOM, act, true)
-end
-usermessage.Hook("_DarkRP_CustomAnim", CustomAnimation)
+end)
 
 local AnimFrame
 local function AnimationMenu()
