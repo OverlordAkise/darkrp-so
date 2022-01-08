@@ -180,7 +180,7 @@ end
 local function getRamFunction(ply, trace)
     local ent = trace.Entity
 
-    if not IsValid(ent) then return fp{fn.Id, false} end
+    if not IsValid(ent) then return false end
 
     local override = hook.Call("canDoorRam", nil, ply, trace, ent)
     
@@ -216,7 +216,7 @@ function SWEP:PrimaryAttack()
     local trace = Owner:GetEyeTrace()
     Owner:LagCompensation(false)
 
-    local hasRammed = getRamFunction(Owner, trace)()
+    local hasRammed = getRamFunction(Owner, trace)
 
     if SERVER then
         hook.Call("onDoorRamUsed", GAMEMODE, hasRammed, Owner, trace)
