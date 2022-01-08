@@ -42,3 +42,12 @@ hook.Add("CalcView", "rp_deathPOV", function(ply, origin, angles, fov)
 
     return view
 end)
+
+hook.Add("postLoadCustomDarkRPItems","yao_rm_deathpov_if_not",function()
+  if GAMEMODE and GAMEMODE.Config and not GAMEMODE.Config.deathpov then
+    hook.Remove("CalcView", "rp_deathPOV")
+  end
+  if GM and GM.Config and not GM.Config.deathpov then
+    hook.Remove("CalcView", "rp_deathPOV")
+  end
+end)
