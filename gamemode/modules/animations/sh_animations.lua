@@ -26,46 +26,14 @@ function DarkRP.removePlayerGesture(anim)
     Anims[anim] = nil
 end
 
-local function physGunCheck(ply)
-    local hookName = "darkrp_anim_physgun_" .. ply:EntIndex()
-    hook.Add("Think", hookName, function()
-        if IsValid(ply) and
-           ply:Alive() and
-           ply:GetActiveWeapon():IsValid() and
-           ply:GetActiveWeapon():GetClass() == "weapon_physgun" and
-           ply:KeyDown(IN_ATTACK) and
-           (ply:GetAllowWeaponsInVehicle() or not ply:InVehicle()) then
-            local ent = ply:GetEyeTrace().Entity
-            if IsValid(ent) and ent:IsPlayer() and not ply.SaidHi then
-                ply.SaidHi = true
-                ply:DoAnimationEvent(ACT_SIGNAL_GROUP)
-            end
-        else
-            if IsValid(ply) then
-                ply.SaidHi = nil
-            end
-            hook.Remove("Think", hookName)
-        end
-    end)
-end
-
 hook.Add("KeyPress", "darkrp_animations", function(ply, key)
     if key == IN_ATTACK then
         local weapon = ply:GetActiveWeapon()
-
-        if weapon:IsValid() then
-            local class = weapon:GetClass()
-
-            -- Saying hi/hello to a player
-            if class == "weapon_physgun" then
-                physGunCheck(ply)
-
-            -- Hobo throwing poop!
-            elseif class == "weapon_bugbait" then
-                local Team = ply:Team()
-                if RPExtraTeams[Team] and RPExtraTeams[Team].hobo then
-                    ply:DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_THROW)
-                end
+        -- Hobo throwing poop!
+        if weapon:IsValid() and weapon:GetClass() == "weapon_bugbait" then
+            local Team = ply:Team()
+            if RPExtraTeams[Team] and RPExtraTeams[Team].hobo then
+                ply:DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_THROW)
             end
         end
     end
