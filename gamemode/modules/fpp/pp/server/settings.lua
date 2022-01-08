@@ -1,3 +1,6 @@
+
+util.AddNetworkString("FPP_Notify")
+
 FPP = FPP or {}
 
 util.AddNetworkString("FPP_Groups")
@@ -26,18 +29,18 @@ function FPP.Notify(ply, text, bool)
         ServerLog(text)
         return
     end
-    umsg.Start("FPP_Notify", ply)
-        umsg.String(text)
-        umsg.Bool(bool)
-    umsg.End()
+    net.Start("FPP_Notify")
+        net.WriteString(text)
+        net.WriteBool(bool)
+    net.Send(ply)
     ply:PrintMessage(HUD_PRINTCONSOLE, text)
 end
 
 function FPP.NotifyAll(text, bool)
-    umsg.Start("FPP_Notify")
-        umsg.String(text)
-        umsg.Bool(bool)
-    umsg.End()
+    net.Start("FPP_Notify")
+        net.WriteString(text)
+        net.WriteBool(bool)
+    net.Broadcast()
     for _, ply in ipairs(player.GetAll()) do
         ply:PrintMessage(HUD_PRINTCONSOLE, text)
     end
