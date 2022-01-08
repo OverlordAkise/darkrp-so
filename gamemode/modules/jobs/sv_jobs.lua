@@ -213,7 +213,7 @@ function meta:teamBan(t, time)
     local group = DarkRP.getDemoteGroup(t)
     self.bannedfrom[group] = true
 
-    local timerid = "teamban" .. self:UserID() .. "," .. group.value
+    local timerid = "teamban" .. self:UserID() .. "," .. group
 
     timer.Remove(timerid)
 
@@ -227,7 +227,10 @@ end
 
 function meta:teamBanTimeLeft(t)
     local group = DarkRP.getDemoteGroup(t or self:Team())
-    return timer.TimeLeft("teamban" .. self:UserID() .. "," .. (group and group.value or ""))
+    if not group then
+      group = ""
+    end
+    return timer.TimeLeft("teamban" .. self:UserID() .. "," .. group)
 end
 
 function meta:changeAllowed(t)

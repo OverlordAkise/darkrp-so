@@ -752,42 +752,27 @@ local demoteGroups = {}
 function DarkRP.createDemoteGroup(name, tbl)
     if DarkRP.DARKRP_LOADING and DarkRP.disabledDefaults["demotegroups"][name] then return end
     if not tbl or not tbl[1] then error("No members in the demote group!") end
-
-    local set = demoteGroups[tbl[1]] or disjoint.MakeSet(tbl[1])
-    set.name = name
-    for i = 2, #tbl do
-        set = (demoteGroups[tbl[i]] or disjoint.MakeSet(tbl[i])) + set
-        set.name = name
-    end
-
-    for _, teamNr in pairs(tbl) do
-        if demoteGroups[teamNr] then
-            -- Unify the sets if there was already one there
-            demoteGroups[teamNr] = demoteGroups[teamNr] + set
-        else
-            demoteGroups[teamNr] = set
-        end
+    demoteGroups[name] = {}
+    for k,v in pairs(tbl) do
+      demoteGroups[name][v] = true
     end
 end
 
 function DarkRP.removeDemoteGroup(name)
-    local foundSet
-    for k, v in pairs(demoteGroups) do
-        local set = disjoint.FindSet(v)
-        if set.name == name then
-            foundSet = set
-            demoteGroups[k] = nil
-        end
-    end
-    hook.Run("onDemoteGroupRemoved", name, foundSet)
+    demoteGroups[name] = nil
+    hook.Run("onDemoteGroupRemoved", name, name)
 end
 
 function DarkRP.getDemoteGroup(teamNr)
-    demoteGroups[teamNr] = demoteGroups[teamNr] or disjoint.MakeSet(teamNr)
-    return disjoint.FindSet(demoteGroups[teamNr])
+    for k,v in pairs(demoteGroups) do
+      if v[teamNr] then return k end
+    end
+    return nil
 end
 
-DarkRP.getDemoteGroups = fp{fn.Id, demoteGroups}
+function DarkRP.getDemoteGroups()
+  return demoteGroups
+end
 
 local categories = {
     jobs = {},

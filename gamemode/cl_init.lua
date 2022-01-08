@@ -37,7 +37,6 @@ include("libraries/simplerr.lua")
 include("libraries/fn.lua")
 include("libraries/tablecheck.lua")
 include("libraries/interfaceloader.lua")
-include("libraries/disjointset.lua")
 
 include("libraries/modificationloader.lua")
 
