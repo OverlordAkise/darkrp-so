@@ -138,7 +138,6 @@ local function endSpectate(ply, cmd, args)
 end
 concommand.Add("FSpectate_StopSpectating", endSpectate)
 
-local vrad = DarkRP and GM.Config.voiceradius
 local voiceDistance = DarkRP and GM.Config.voiceDistance * GM.Config.voiceDistance or 302500 -- Default 550 units
 local function playerVoice(listener, talker)
     if not FSpectating[listener] then return end
@@ -153,7 +152,7 @@ local function playerVoice(listener, talker)
     local FSpectatingEnt = listener.FSpectatingEnt
     if not IsValid(FSpectatingEnt) or not FSpectatingEnt:IsPlayer() then
         local spectatePos = IsValid(FSpectatingEnt) and FSpectatingEnt:GetPos() or listener.FSpectatePos
-        if not vrad or not spectatePos then return end
+        if not spectatePos then return end
 
         -- Return whether the listener is a in distance smaller than 550
         return spectatePos:DistToSqr(talker:GetPos()) < voiceDistance, surround

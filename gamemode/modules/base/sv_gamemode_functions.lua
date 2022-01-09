@@ -303,7 +303,6 @@ local function IsInRoom(listenerShootPos, talkerShootPos, talker)
 end
 
 local threed = GM.Config.voice3D
-local vrad = GM.Config.voiceradius
 local dynv = GM.Config.dynamicvoice
 local deadv = GM.Config.deadvoice
 local voiceDistance = GM.Config.voiceDistance * GM.Config.voiceDistance
@@ -331,10 +330,6 @@ local plyToGrid = {
 -- between player voice radius checks.
 DarkRP.voiceCheckTimeDelay = DarkRP.voiceCheckTimeDelay or 0.3
 timer.Create("DarkRPCanHearPlayersVoice", DarkRP.voiceCheckTimeDelay, 0, function()
-    -- Voiceradius is off, everyone can hear everyone
-    if not vrad then
-        return
-    end
 
     local players = player.GetHumans()
 
@@ -426,7 +421,7 @@ end)
 function GM:PlayerCanHearPlayersVoice(listener, talker)
     if not deadv and not talker:Alive() then return false end
 
-    return not vrad or DrpCanHear[listener][talker] == true, threed
+    return DrpCanHear[listener][talker] == true, threed
 end
 
 function GM:CanTool(ply, trace, mode)
@@ -1043,13 +1038,6 @@ function GM:GetFallDamage( ply, flFallSpeed )
     end
 end
 
-local function fuckQAC()
-    local netRecs = {"Debug1", "Debug2", "checksaum", "gcontrol_vars", "control_vars", "QUACK_QUACK_MOTHER_FUCKER"}
-    for _, v in pairs(netRecs) do
-        net.Receivers[v] = fn.Id
-    end
-end
-
 function GM:InitPostEntity()
     self.InitPostEntityCalled = true
 
@@ -1059,11 +1047,6 @@ function GM:InitPostEntity()
 
     physenv.SetPerformanceSettings(physData)
 
-    -- Scriptenforcer enabled by default? Fuck you, not gonna happen.
-    if not GAMEMODE.Config.disallowClientsideScripts then
-        game.ConsoleCommand("sv_allowcslua 1\n")
-        timer.Simple(1, fuckQAC) -- Also, fuck QAC which bans innocent people when allowcslua = 1
-    end
     game.ConsoleCommand("physgun_DampingFactor 0.9\n")
     game.ConsoleCommand("sv_sticktoground 0\n")
     game.ConsoleCommand("sv_airaccelerate 1000\n")

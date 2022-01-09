@@ -336,10 +336,7 @@ local function DrawEntityDisplay()
         local hisPos = ply:GetShootPos()
         if ply:getDarkRPVar("wanted") then ply:drawWantedInfo() end
 
-        if GAMEMODE.Config.globalshow then
-            ply:drawPlayerInfo()
-        -- Draw when you're (almost) looking at him
-        elseif hisPos:DistToSqr(shootPos) < 160000 then
+        if hisPos:DistToSqr(shootPos) < 160000 then
             local pos = hisPos - shootPos
             local unitPos = pos:GetNormalized()
             if unitPos:Dot(aimVec) > 0.95 then

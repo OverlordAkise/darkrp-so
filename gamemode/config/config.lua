@@ -73,8 +73,6 @@ GM.Config.deadvoice                     = true
 GM.Config.deathpov                      = false
 -- decalcleaner - Enable/Disable clearing every player's decals.
 GM.Config.decalcleaner                  = false
--- disallowClientsideScripts - Clientside scripts can be very useful for customizing the HUD or to aid in building. This option bans those scripts.
-GM.Config.disallowClientsideScripts     = false
 -- doorwarrants - Enable/disable Warrant requirement to enter property.
 GM.Config.doorwarrants                  = true
 -- dropmoneyondeath - Enable/disable whether people drop money on death.
@@ -93,8 +91,6 @@ GM.Config.dynamicvoice                  = true
 GM.Config.enablebuypistol               = true
 -- enforceplayermodel - Whether or not to force players to use their role-defined character models.
 GM.Config.enforceplayermodel            = true
--- globalshow - Whether or not to display player info above players' heads in-game.
-GM.Config.globalshow                    = false
 -- ironshoot - Enable/disable whether people need iron sights to shoot.
 GM.Config.ironshoot                     = true
 -- showjob - Whether or not to display a player's job above their head in-game.
@@ -157,8 +153,6 @@ GM.Config.telefromjail                  = true
 GM.Config.teletojail                    = true
 -- unlockdoorsonstart - Enable/Disable unlocking all doors on map start.
 GM.Config.unlockdoorsonstart            = false
--- voiceradius - Enable/disable local voice chat.
-GM.Config.voiceradius                   = true
 -- tax - Whether players pay taxes on their wallets.
 GM.Config.wallettax                     = false
 -- wantedrespawn - Whether players remain wanted on respawn.
@@ -178,11 +172,11 @@ GM.Config.weaponCheckerHideNoLicense    = false
 Value settings
 ]]
 -- adminnpcs - Whether or not NPCs should be admin only. 0 = everyone, 1 = admin or higher, 2 = superadmin or higher, 3 = rcon only
-GM.Config.adminnpcs                     = 3
+GM.Config.adminnpcs                     = 2
 -- adminsents - Whether or not SENTs should be admin only. 0 = everyone, 1 = admin or higher, 2 = superadmin or higher, 3 = rcon only
-GM.Config.adminsents                    = 1
+GM.Config.adminsents                    = 2
 -- adminvehicles - Whether or not vehicles should be admin only. 0 = everyone, 1 = admin or higher, 2 = superadmin or higher, 3 = rcon only
-GM.Config.adminvehicles                 = 3
+GM.Config.adminvehicles                 = 2
 -- adminweapons - Who can spawn weapons: 0: admins only, 1: supadmins only, 2: no one, 3: everyone
 GM.Config.adminweapons                  = 1
 -- arrestspeed - Sets the max arrest speed.
@@ -474,7 +468,7 @@ GM.Config.allowedProperties = {
     extinguish = true,
     keepupright = true,
     gravity = true,
-    collision = true,
+    collision = false,
     skin = true,
     bodygroups = true,
 }
@@ -527,5 +521,8 @@ GM.Config.starverate = 3
 
 
 --Unused, these don't work but are kept for compatibility
-GM.Config.earthquakes = false
-GM.Config.quakechance = 4000
+GM.Config.earthquakes = false --removed earthquakes
+GM.Config.quakechance = 4000 --removed earthquakes
+GM.Config.globalshow = false --never used, only a mess
+GM.Config.voiceradius = true --always on, no one uses global voice chat in a roleplay gamemode
+GM.Config.disallowClientsideScripts = true --no one wants cheaters
