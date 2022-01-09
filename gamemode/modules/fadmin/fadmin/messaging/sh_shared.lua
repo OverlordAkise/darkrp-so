@@ -73,8 +73,10 @@ function isValidNotification(tbl)
     if tbl.hasTarget and not isbool(tbl.hasTarget) then
         return false, "hasTarget must either be true, false or nil!"
     end
-    if not tbl.receivers or not (isfunction(tbl.receivers) or notifList[tbl.receivers]) then
-        return false, "receivers must either be a function returning a table of players or one of 'admins', 'superadmins', 'everyone', 'self', 'targets', 'involved', 'involved+admins', 'involved+superadmins'"
+    if SERVER then
+      if not tbl.receivers or not (isfunction(tbl.receivers) or notifList[tbl.receivers]) then
+          return false, "receivers must either be a function returning a table of players or one of 'admins', 'superadmins', 'everyone', 'self', 'targets', 'involved', 'involved+admins', 'involved+superadmins'"
+      end
     end
     if not tbl.message or not istable(tbl.message) then
         return false, "The message field must be a table of strings! with special strings 'targets', 'you', 'instigator', 'extraInfo.#', with # a number."
@@ -91,7 +93,7 @@ function isValidNotification(tbl)
     if tbl.readExtraInfo and not isfunction(tbl.readExtraInfo) then
         return false, "readExtraInfo must be a function"
     end
-    if tbl.extraInfoColors and not IsColor(tbl.extraInfoColors) then
+    if tbl.extraInfoColors and not istable(tbl.extraInfoColors) then
         return false, "extraInfoColors must be a table of colours!"
     end
     if not tbl.logging then tbl.logging = true end
