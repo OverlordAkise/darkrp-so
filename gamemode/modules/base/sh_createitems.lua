@@ -423,7 +423,7 @@ function DarkRP.createJob(Name, colorOrTable, model, Description, Weapons, comma
     -- Disabled job
     if DarkRP.DARKRP_LOADING and DarkRP.disabledDefaults["jobs"][CustomTeam.command] then return end
 
-    local valid, err, hints = DarkRP.validateJob(CustomTeam)
+    local valid, err, hints = DarkRP.isValidJob(CustomTeam)
     if not valid then DarkRP.error(string.format("Corrupt team: %s!\n%s", CustomTeam.name or "", err), 2, hints) end
 
     if not (GM or GAMEMODE):CustomObjFitsMap(CustomTeam) then return end
@@ -541,7 +541,7 @@ function DarkRP.createShipment(name, model, entity, price, Amount_of_guns_in_one
 
     if DarkRP.DARKRP_LOADING and DarkRP.disabledDefaults["shipments"][customShipment.name] then return end
 
-    local valid, err, hints = DarkRP.validateShipment(customShipment)
+    local valid, err, hints = DarkRP.isValidShipment(customShipment)
     if not valid then DarkRP.error(string.format("Corrupt shipment: %s!\n%s", name or "", err), 2, hints) end
 
     customShipment.spawn = customShipment.spawn and fp{DarkRP.simplerrRun, customShipment.spawn}
@@ -576,7 +576,7 @@ function DarkRP.createVehicle(Name_of_vehicle, model, price, Jobs_that_can_buy_i
         if string.lower(k) == string.lower(vehicle.name) then found = true break end
     end
 
-    local valid, err, hints = DarkRP.validateVehicle(vehicle)
+    local valid, err, hints = DarkRP.isValidVehicle(vehicle)
     if not valid then DarkRP.error(string.format("Corrupt vehicle: %s!\n%s", vehicle.name or "", err), 2, hints) end
 
     if not found then DarkRP.error("Vehicle invalid: " .. vehicle.name .. ". Unknown vehicle name.", 2) end
@@ -620,7 +620,7 @@ function DarkRP.createEntity(name, entity, model, price, max, command, classes, 
         tblEnt.allowed = {tblEnt.allowed}
     end
 
-    local valid, err, hints = DarkRP.validateEntity(tblEnt)
+    local valid, err, hints = DarkRP.isValidEntity(tblEnt)
     if not valid then DarkRP.error(string.format("Corrupt entity: %s!\n%s", name or "", err), 2, hints) end
 
     tblEnt.customCheck = tblEnt.customCheck and fp{DarkRP.simplerrRun, tblEnt.customCheck}
@@ -661,7 +661,7 @@ function DarkRP.createAgenda(Title, Manager, Listeners)
     local agenda = {Manager = Manager, Title = Title, Listeners = Listeners, ManagersByKey = {}}
     agenda.default = DarkRP.DARKRP_LOADING
 
-    local valid, err, hints = DarkRP.validateAgenda(agenda)
+    local valid, err, hints = DarkRP.isValidAgenda(agenda)
     if not valid then DarkRP.error(string.format("Corrupt agenda: %s!\n%s", agenda.Title or "", err), 2, hints) end
 
     for _, v in pairs(agenda.Listeners) do
@@ -813,7 +813,7 @@ local function insertCategory(destination, tbl)
 end
 
 function DarkRP.createCategory(tbl)
-    local valid, err, hints = DarkRP.validateCategory(tbl)
+    local valid, err, hints = DarkRP.isValidCategory(tbl)
     if not valid then DarkRP.error(string.format("Corrupt category: %s!\n%s", tbl.name or "", err), 2, hints) end
     tbl.members = {}
 

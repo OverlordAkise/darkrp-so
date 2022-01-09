@@ -36,7 +36,6 @@ include("config/config.lua")
 include("libraries/sh_cami.lua")
 include("libraries/simplerr.lua")
 include("libraries/fn.lua")
-include("libraries/tablecheck.lua")
 include("libraries/interfaceloader.lua")
 
 include("libraries/modificationloader.lua")

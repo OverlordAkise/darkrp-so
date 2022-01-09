@@ -47,80 +47,65 @@ end
 
 FAdmin.Notifications = {}
 
-local validNotification = tc.checkTable{
-    -- A name to identify the notification by
-    name =
-        tc.addHint(
-            isstring,
-            "The name must be a string!"
-        ),
-
-    -- Whether the notification applies to some kind of target
-    hasTarget =
-        tc.addHint(
-            tc.optional(isbool),
-            "hasTarget must either be true, false or nil!"
-        ),
-
-    -- Who receives the notification. Can be either one of the list or a function that returns a table of players
-    receivers =
-        tc.addHint(
-            fn.FOr{tc.client, isfunction, tc.oneOf{"everyone", "admins", "superadmins", "self", "targets", "involved", "involved+admins", "involved+superadmins"}},
-            "receivers must either be a function returning a table of players or one of 'admins', 'superadmins', 'everyone', 'self', 'targets', 'involved', 'involved+admins', 'involved+superadmins'"
-        ),
-
-    -- A table containing the message in parts. There are special strings
-    message =
-        tc.addHint(
-            tc.tableOf(isstring),
-            "The message field must be a table of strings! with special strings 'targets', 'you', 'instigator', 'extraInfo.#', with # a number."
-        ),
-
-    -- The message type when chat notifications are disabled. NOTIFY by default
-    msgType =
-        tc.default(
-            "NOTIFY",
-            tc.addHint(
-                tc.oneOf{"ERROR", "NOTIFY", "QUESTION", "GOOD", "BAD"}, "msgType must be one of 'ERROR', 'NOTIFY', 'QUESTION', 'GOOD', 'BAD'"
-            )
-        ),
-
-    -- A function that writes extra data in the net message
-    writeExtraInfo =
-        tc.addHint(
-            tc.optional(isfunction),
-            "writeExtraInfo must be a function"
-        ),
-
-    -- A function that reads the written data, formats it and puts it in a table
-    readExtraInfo =
-        tc.addHint(
-            tc.optional(isfunction),
-            "writeExtraInfo must be a function"
-        ),
-
-    -- When using extra information, this table contains the colours of the extraInfo messages
-    extraInfoColors =
-        tc.addHint(
-            tc.optional(tc.tableOf(tc.iscolor)),
-            "extraInfoColors must be a table of colours!"
-        ),
-
-    -- Whether the notification is to be logged to console
-    logging =
-        tc.default(true,
-            tc.addHint(
-                isbool,
-                "logging must be a boolean!"
-            )
-        ),
+local notifList = {
+    ["everyone"] = true,
+    ["admins"] = true,
+    ["superadmins"] = true,
+    ["self"] = true,
+    ["targets"] = true,
+    ["involved"] = true,
+    ["involved+admins"] = true,
+    ["involved+superadmins"] = true
 }
+
+local notifTypes = {
+  ["ERROR"] = true,
+  ["NOTIFY"] = true,
+  ["QUESTION"] = true,
+  ["GOOD"] = true,
+  ["BAD"] = true
+}
+
+function isValidNotification(tbl)
+    if not tbl.name or not isstring(tbl.name) then
+        return false, "The name must be a string!"
+    end
+    if tbl.hasTarget and not isbool(tbl.hasTarget) then
+        return false, "hasTarget must either be true, false or nil!"
+    end
+    if not tbl.receivers or not (isfunction(tbl.receivers) or notifList[tbl.receivers]) then
+        return false, "receivers must either be a function returning a table of players or one of 'admins', 'superadmins', 'everyone', 'self', 'targets', 'involved', 'involved+admins', 'involved+superadmins'"
+    end
+    if not tbl.message or not isstring(tbl.message) then
+        return false, "The message field must be a table of strings! with special strings 'targets', 'you', 'instigator', 'extraInfo.#', with # a number."
+    end
+    if not tbl.msgType then
+        tbl.msgType = "NOTIFY"
+    end
+    if not isstring(tbl.msgType) or not notifTypes[tbl.msgType] then
+        return false, "msgType must be one of 'ERROR', 'NOTIFY', 'QUESTION', 'GOOD', 'BAD'"
+    end
+    if tbl.writeExtraInfo and not isfunction(tbl.writeExtraInfo) then
+        return false, "writeExtraInfo must be a function"
+    end
+    if tbl.readExtraInfo and not isfunction(tbl.readExtraInfo) then
+        return false, "readExtraInfo must be a function"
+    end
+    if tbl.extraInfoColors and not IsColor(tbl.extraInfoColors) then
+        return false, "extraInfoColors must be a table of colours!"
+    end
+    if not tbl.logging then tbl.logging = true end
+    if tbl.logging and not isbool(tbl.logging) then
+        return false, "logging must be a boolean!"
+    end
+    return true,""
+end
 
 
 FAdmin.NotificationNames = {}
 
 function FAdmin.Messages.RegisterNotification(tbl)
-    local correct, err = validNotification(tbl)
+    local correct, err = isValidNotification(tbl)
 
     if not correct then
         error(string.format("Incorrect notification format for notification '%s'!\n\n%s", istable(tbl) and tbl.name or "unknown", err), 2)

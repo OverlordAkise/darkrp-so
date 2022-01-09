@@ -1,84 +1,58 @@
 --[[
 The base elements are shared by every custom item
 ]]
-local baseSchema = tc.checkTable{
-    buttonColor =
-        tc.addHint(
-            tc.optional(tc.tableOf(isnumber)),
-            "The buttonColor must be a Color value."
-        ),
 
-    category =
-        tc.addHint(
-            tc.optional(isstring),
-            "The category must be the name of an existing category!"
-        ),
-
-    customCheck =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The customCheck must be a function."
-        ),
-
-    CustomCheckFailMsg =
-        tc.addHint(
-            tc.optional(isstring, isfunction),
-            "The CustomCheckFailMsg must be either a string or a function."
-        ),
-
-    sortOrder =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The sortOrder must be a number."
-        ),
-
-    label =
-        tc.addHint(
-            tc.optional(isstring),
-            "The label must be a valid string."
-        ),
-}
+function verifyBaseSchema(tbl)
+    if tbl.buttonColor and not IsColor(tbl.buttonColor) then
+        return false, "The buttonColor must be a Color value!"
+    end
+    if tbl.category and not isstring(tbl.category) then
+        return false, "The category must be a string and the name of an existing category!"
+    end
+    if tbl.customCheck and not isfunction(tbl.customCheck) then
+        return false, "The buttonColor must be a Color value!"
+    end
+    if tbl.CustomCheckFailMsg and not (isfunction(tbl.CustomCheckFailMsg) or isstring(tbl.CustomCheckFailMsg)) then
+        return false, "The CustomCheckFailMsg must be either a string or a function."
+    end
+    if tbl.sortOrder and not isnumber(tbl.sortOrder) then
+        return false, "The sortOrder must be a number."
+    end
+    if tbl.label and not isstring(tbl.label) then
+        return false, "The label must be a valid string."
+    end
+    return true,"",""
+end
 
 --[[
 Properties shared by anything buyable
 ]]
-local buyableSchema = fn.FAnd{baseSchema, tc.checkTable{
-    allowed =
-        tc.addHint(
-            tc.optional(tc.tableOf(isnumber), isnumber),
-            "The allowed field must be either an existing team or a table of existing teams.",
-            {"Is there a job here that doesn't exist (anymore)?"}
-        ),
 
-    getPrice =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The getPrice must be a function."
-        ),
-
-    model =
-        tc.addHint(
-            isstring,
-            "The model must be valid."
-        ),
-
-    price =
-        tc.addHint(
-            function(v, tbl) return isnumber(v) or isfunction(tbl.getPrice) end,
-            "The price must be an existing number or (for advanced users) the getPrice field must be a function."
-        ),
-
-    spawn =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The spawn must be a function."
-        ),
-    allowPurchaseWhileDead =
-        tc.addHint(
-            tc.default(false),
-            "The allowPurchaseWhileDead must be either true or false"
-        )
-}}
+function verifyBuySchema(tbl)
+    local isCorrect, err, hint = verifyBaseSchema(tbl)
+    if not isCorrect then
+        return isCorrect, err, hint
+    end
+    if tbl.allowed and not (isnumber(tbl.allowed) or istable(tbl.allowed)) then
+        return false, "The allowed field must be either an existing team or a table of existing teams.", {"Is there a job here that doesn't exist (anymore)?"}
+    end
+    if tbl.getPrice and not isfunction(tbl.getPrice) then
+        return false, "The getPrice must be a function."
+    end
+    if not tbl.model or not isstring(tbl.model) then
+        return false, "The model must be valid and a string."
+    end
+    if (not tbl.price and not tbl.getPrice) or not (isnumber(tbl.price) or isfunction(tbl.getPrice)) then
+        return false, "The price must be an existing number or (for advanced users) the getPrice field must be a function."
+    end
+    if tbl.spawn and not isfunction(tbl.spawn) then
+        return false, "The spawn must be a function."
+    end
+    if tbl.allowPurchaseWhileDead and not isbool(tbl.allowPurchaseWhileDead) then
+        tbl.allowPurchaseWhileDead = false
+    end
+    return true,"",""
+end
 
 -- The command of an entity must be unique
 local uniqueEntity = function(cmd, tbl)
@@ -94,7 +68,7 @@ local uniqueEntity = function(cmd, tbl)
             }
     end
 
-    return true
+    return true,"",""
 end
 
 -- The command of a job must be unique
@@ -115,390 +89,258 @@ end
 --[[
 Validate jobs
 ]]
-DarkRP.validateJob = fn.FAnd{baseSchema, tc.checkTable{
-    name =
-        tc.addHint(
-            isstring,
-            "The name must be a valid string."
-        ),
 
-    color =
-        tc.addHint(
-            tc.tableOf(isnumber),
-            "The color must be a Color value.",
-            {"Color values look like this: Color(r, g, b, a), where r, g, b and a are numbers between 0 and 255."}
-        ),
+function DarkRP.isValidJob(tbl)
+    local isCorrect, perr, phint = verifyBaseSchema(tbl)
+    if not isCorrect then
+        return isCorrect, perr, phint
+    end
+    if not tbl.color or not IsColor(tbl.color) then
+        return false, "The color must be a Color value.",{"Color values look like this: Color(r, g, b, a), where r, g, b and a are numbers between 0 and 255."}
+    end
+    if not tbl.name or not isstring(tbl.name) then
+        return false, "The name must be a valid string."
+    end
+    if not tbl.model or not (isstring(tbl.model) or istable(tbl.model)) then
+        return false, "The model must either be a table of correct model strings or a single correct model string."
+    end
+    if not tbl.description or not isstring(tbl.description) then
+        return false, "The description must be a string."
+    end
+    if tbl.weapons and not istable(tbl.weapons) then
+        return false, "The weapons must be a valid table of strings.",{"Example: weapons = {\"med_kit\", \"weapon_bugbait\"},"}
+    end
+    if not tbl.command then
+        return false, "The command must be a string."
+    end
+    if tbl.command then
+        if not isstring(tbl.command) then
+            return false, "The command must be a string."
+        end
+        local isValid, err, hint = uniqueJob(tbl.command)
+        if not isValid then
+            return isValid, err, hint
+        end
+    end
+    if not tbl.max or not isnumber(tbl.max) or tbl.max < 0 then
+        return false, "The max must be a number greater than or equal to zero.",{"Zero means infinite.","A decimal between 0 and 1 is seen as a percentage."}
+    end
+    if not tbl.salary or not isnumber(tbl.salary) or tbl.salary < 0 then
+        return false, "The salary must be a number and it must be greater than or equal zero."
+    end
+    if not tbl.admin or not isnumber(tbl.admin) or tbl.admin < 0 or tbl.admin > 2 then
+        return false, "The admin value must be a number and it must be greater than or equal to zero and smaller than three."
+    end
+    if tbl.vote and not isbool(tbl.vote) then
+        return false, "The vote must be either true or false."
+    end
+    if tbl.ammo and not istable(tbl.ammo) then
+        return false, "The ammo must be a table containing numbers.",{"See example on https://darkrp.miraheze.org/wiki/DarkRP:CustomJobFields"}
+    end
+    if tbl.hasLicense and not isbool(tbl.hasLicense) then
+        return false, "The hasLicense must be either true or false."
+    end
+    
+        if tbl.mayor and not isbool(tbl.mayor) then
+        return false, "The mayor value must be either true or false."
+    end
 
-    model =
-        tc.addHint(
-            fn.FOr{isstring, tc.nonEmpty(tc.tableOf(isstring))},
-            "The model must either be a table of correct model strings or a single correct model string.",
-            {
-                "This error could happens when the model does not exist on the server.",
-                "Are you sure the model path is right?",
-                "Is the model from an addon that is not properly installed?"
-            }
-        ),
+    if tbl.chief and not isbool(tbl.chief) then
+        return false, "The chief value must be either true or false."
+    end
 
-    description =
-        tc.addHint(
-            isstring,
-            "The description must be a string."
-        ),
+    if tbl.medic and not isbool(tbl.medic) then
+        return false, "The medic value must be either true or false."
+    end
 
-    weapons =
-        tc.addHint(
-            tc.optional(tc.tableOf(isstring)),
-            "The weapons must be a valid table of strings.",
-            {"Example: weapons = {\"med_kit\", \"weapon_bugbait\"},"}
-        ),
+    if tbl.cook and not isbool(tbl.cook) then
+        return false, "The cook value must be either true or false."
+    end
 
-    command =
-        fn.FAnd
-        {
-            tc.addHint(
-                isstring,
-                "The command must be a string."
-            ),
-            uniqueJob
-        },
+    if tbl.hobo and not isbool(tbl.hobo) then
+        return false, "The hobo value must be either true or false."
+    end
 
-    max =
-        tc.addHint(
-            fn.FAnd{isnumber, fp{fn.Lte, 0}},
-            "The max must be a number greater than or equal to zero.",
-            {
-                "Zero means infinite.",
-                "A decimal between 0 and 1 is seen as a percentage."
-            }
-        ),
+    if tbl.playerClass and not isstring(tbl.playerClass) then
+        return false, "The playerClass must be a valid string."
+    end
 
-    salary =
-        tc.addHint(
-            fn.FAnd{isnumber, fp{fn.Lte, 0}},
-            "The salary must be a number and it must be greater than zero."
-        ),
+    if tbl.CanPlayerSuicide and not isfunction(tbl.CanPlayerSuicide) then
+        return false, "The CanPlayerSuicide must be a function."
+    end
 
-    admin =
-        tc.addHint(
-            fn.FAnd{isnumber, fp{fn.Lte, 0}, fp{fn.Gte, 2}},
-            "The admin value must be a number and it must be greater than or equal to zero and smaller than three."
-        ),
+    if tbl.PlayerCanPickupWeapon and not isfunction(tbl.PlayerCanPickupWeapon) then
+        return false, "The PlayerCanPickupWeapon must be a function."
+    end
 
-    vote =
-        tc.addHint(
-            tc.optional(isbool),
-            "The vote must be either true or false."
-        ),
+    if tbl.PlayerDeath and not isfunction(tbl.PlayerDeath) then
+        return false, "The PlayerDeath must be a function."
+    end
 
-    ammo =
-        tc.addHint(
-            tc.optional(tc.tableOf(isnumber)),
-            "The ammo must be a table containing numbers.",
-            {"See example on https://darkrp.miraheze.org/wiki/DarkRP:CustomJobFields"}
-        ),
+    if tbl.PlayerLoadout and not isfunction(tbl.PlayerLoadout) then
+        return false, "The PlayerLoadout must be a function."
+    end
 
-    hasLicense =
-        tc.addHint(
-            tc.optional(isbool),
-            "The hasLicense must be either true or false."
-        ),
+    if tbl.PlayerSelectSpawn and not isfunction(tbl.PlayerSelectSpawn) then
+        return false, "The PlayerSelectSpawn must be a function."
+    end
 
-    NeedToChangeFrom =
-        tc.addHint(
-            tc.optional(tc.tableOf(isnumber), isnumber),
-            "The NeedToChangeFrom must be either an existing team or a table of existing teams",
-            {"Is there a job here that doesn't exist (anymore)?"}
-        ),
+    if tbl.PlayerSetModel and not isfunction(tbl.PlayerSetModel) then
+        return false, "The PlayerSetModel must be a function."
+    end
 
-    modelScale =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The modelScale must be a number."
-        ),
+    if tbl.PlayerSpawn and not isfunction(tbl.PlayerSpawn) then
+        return false, "The PlayerSpawn must be a function."
+    end
 
-    maxpocket =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The maxPocket must be a number."
-        ),
+    if tbl.PlayerSpawnProp and not isfunction(tbl.PlayerSpawnProp) then
+        return false, "The PlayerSpawnProp must be a function."
+    end
 
-    maps =
-        tc.addHint(
-            tc.optional(tc.tableOf(isstring)),
-            "The maps value must be a table of valid map names."
-        ),
+    if tbl.RequiresVote and not isfunction(tbl.RequiresVote) then
+        return false, "The RequiresVote must be a function."
+    end
 
-    candemote =
-        tc.default(true,
-            tc.addHint(
-                isbool,
-                "The candemote value must be either true or false."
-            )
-        ),
+    if tbl.ShowSpare1 and not isfunction(tbl.ShowSpare1) then
+        return false, "The ShowSpare1 must be a function."
+    end
 
-    mayor =
-        tc.addHint(
-            tc.optional(isbool),
-            "The mayor value must be either true or false."
-        ),
+    if tbl.ShowSpare2 and not isfunction(tbl.ShowSpare2) then
+        return false, "The ShowSpare2 must be a function."
+    end
 
-    chief =
-        tc.addHint(
-            tc.optional(isbool),
-            "The chief value must be either true or false."
-        ),
-
-    medic =
-        tc.addHint(
-            tc.optional(isbool),
-            "The medic value must be either true or false."
-        ),
-
-    cook =
-        tc.addHint(
-            tc.optional(isbool),
-            "The cook value must be either true or false."
-        ),
-
-    hobo =
-        tc.addHint(
-            tc.optional(isbool),
-            "The hobo value must be either true or false."
-        ),
-
-    playerClass =
-        tc.addHint(
-            tc.optional(isstring),
-            "The playerClass must be a valid string."
-        ),
-
-    CanPlayerSuicide =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The CanPlayerSuicide must be a function."
-        ),
-
-    PlayerCanPickupWeapon =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The PlayerCanPickupWeapon must be a function."
-        ),
-
-    PlayerDeath =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The PlayerDeath must be a function."
-        ),
-
-    PlayerLoadout =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The PlayerLoadout must be a function."
-        ),
-
-    PlayerSelectSpawn =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The PlayerSelectSpawn must be a function."
-        ),
-
-    PlayerSetModel =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The PlayerSetModel must be a function."
-        ),
-
-    PlayerSpawn =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The PlayerSpawn must be a function."
-        ),
-
-    PlayerSpawnProp =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The PlayerSpawnProp must be a function."
-        ),
-
-    RequiresVote =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The RequiresVote must be a function."
-        ),
-
-    ShowSpare1 =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The ShowSpare1 must be a function."
-        ),
-
-    ShowSpare2 =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The ShowSpare2 must be a function."
-        ),
-
-    canStartVote =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The canStartVote must be a function."
-        ),
-
-    canStartVoteReason =
-        tc.addHint(
-            tc.optional(isstring, isfunction),
-            "The canStartVoteReason must be either a string or a function."
-        ),
-}}
+    if tbl.canStartVote and not isfunction(tbl.canStartVote) then
+        return false, "The canStartVote must be a function."
+    end
+    if tbl.modelScale and not isnumber(tbl.modelScale) then
+        return false, "The modelScale must be a number."
+    end
+    if tbl.maxpocket and not isnumber(tbl.maxpocket) then
+        return false, "The maxPocket must be a number."
+    end
+    if tbl.maps and not istable(tbl.maps) then
+        return false, "The maps value must be a table of valid map names as strings."
+    end
+    if not tbl.candemote or not isbool(candemote) then
+        tbl.candemote = true
+    end
+    if tbl.canStartVoteReason and not (isstring(tbl.canStartVoteReason) or isfunction(tbl.canStartVoteReason)) then
+        return false, "The canStartVoteReason must be either a string or a function."
+    end
+    if tbl.NeedToChangeFrom and not (isnumber(tbl.NeedToChangeFrom) or istable(tbl.NeedToChangeFrom)) then
+        return false, "The NeedToChangeFrom must be either an existing team or a table of existing teams",{"Is there a job here that doesn't exist (anymore)?"}
+    end
+    return true,"",""
+end
 
 --[[
 Validate shipments
 ]]
-DarkRP.validateShipment = fn.FAnd{buyableSchema, tc.checkTable{
-    name =
-        tc.addHint(
-            isstring,
-            "The name must be a valid string."
-        ),
-
-    entity =
-        tc.addHint(
-            isstring, "The entity of the shipment must be a string."
-        ),
-
-    amount =
-        tc.addHint(
-            fn.FAnd{isnumber, fp{fn.Lte, 0}}, "The amount must be a number and it must be greater than zero."
-        ),
-
-    separate =
-        tc.addHint(
-            tc.optional(isbool), "the separate field must be either true or false."
-        ),
-
-    pricesep =
-        tc.addHint(
-            function(v, tbl) return not tbl.separate or isnumber(v) and v >= 0 end,
-            "The pricesep must be a number and it must be greater than or equal to zero."
-        ),
-
-    noship =
-        tc.addHint(
-            tc.optional(isbool),
-            "The noship must be either true or false."
-        ),
-
-    shipmodel =
-        tc.addHint(
-            tc.optional(isstring),
-            "The shipmodel must be a valid model."
-        ),
-
-    weight =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The weight must be a number."
-        ),
-
-    spareammo =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The spareammo must be a number."
-        ),
-
-    clip1 =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The clip1 must be a number."
-        ),
-
-    clip2 =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The clip2 must be a number."
-        ),
-
-    shipmentClass =
-        tc.addHint(
-            tc.optional(isstring),
-            "The shipmentClass must be a string."
-        ),
-
-    onBought =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The onBought must be a function."
-        ),
-
-}}
+function DarkRP.isValidShipment(tbl)
+    local isCorrect, perr, phint = verifyBuySchema(tbl)
+    if not isCorrect then
+        return isCorrect, perr, phint
+    end
+    if not tbl.entity or not isstring(tbl.entity) then
+        return false, "The entity of the shipment must be a string."
+    end
+    if not tbl.name or not isstring(tbl.name) then
+        return false, "The name must be a valid string."
+    end
+    if not tbl.amount or not isnumber(tbl.amount) or tbl.amount < 1 then
+        return false, "The amount must be a number and it must be greater than zero."
+    end
+    if tbl.separate and not isbool(tbl.separate) then
+        return false, "The separate field must be either true or false."
+    end
+    if tbl.pricesep and (not tbl.separate or isnumber(tbl.pricesep) and tbl.pricesep < 1) then
+        return false, "The pricesep must be a number and it must be greater than or equal to zero."
+    end
+    if tbl.noship and not isbool(tbl.noship) then
+        return false, "The noship must be either true or false."
+    end    
+    if tbl.shipmodel and not isstring(tbl.shipmodel) then
+        return false, "The shipmodel must be a valid model."
+    end    
+    if tbl.weight and not isnumber(tbl.weight) then
+        return false, "The weight must be a number."
+    end    
+    if tbl.spareammo and not isnumber(tbl.spareammo) then
+        return false, "The spareammo must be a number."
+    end    
+    if tbl.clip1 and not isnumber(tbl.clip1) then
+        return false, "The clip1 must be a number."
+    end    
+    if tbl.clip2 and not isnumber(tbl.clip2) then
+        return false, "The clip2 must be a number."
+    end    
+    if tbl.shipmentClass and not isstring(tbl.shipmentClass) then
+        return false, "The shipmentClass must be a string."
+    end    
+    if tbl.onBought and not isfunction(tbl.onBought) then
+        return false, "The onBought must be a function."
+    end
+    return true,"",""
+end
 
 --[[
 Validate vehicles
 ]]
-DarkRP.validateVehicle = fn.FAnd{buyableSchema, tc.checkTable{
-    name =
-        tc.addHint(
-            isstring,
-            "The name of the vehicle must be a string."
-        ),
-
-    distance =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The distance must be a number."
-        ),
-
-    angle =
-        tc.addHint(
-            tc.optional(isangle),
-            "The distance must be a valid Angle."
-        ),
-}}
+function DarkRP.isValidVehicle(tbl)
+    local isCorrect, perr, phint = verifyBuySchema(tbl)
+    if not isCorrect then
+        return isCorrect, perr, phint
+    end
+    if not tbl.name or not isstring(tbl.name) then
+        return false, "The name field must be a string."
+    end
+    if tbl.distance and not isnumber(tbl.distance) then
+        return false, "The distance must be a number."
+    end
+    if tbl.angle and not isangle(tbl.angle) then
+        return false, "The angle must be a valid Angle."
+    end
+    return true,"",""
+end
 
 --[[
 Validate Entities
 ]]
-DarkRP.validateEntity = fn.FAnd{buyableSchema, tc.checkTable{
-    ent =
-        tc.addHint(
-            isstring,
-            "The ent field must be a string."
-        ),
 
-    max =
-        tc.addHint(
-            function(v, tbl) return isnumber(v) or isfunction(tbl.getMax) end,
-            "The max must be an existing number or (for advanced users) the getMax field must be a function."
-        ),
-
-    cmd =
-        fn.FAnd
-        {
-            tc.addHint(isstring, "The cmd must be a valid string."),
-            uniqueEntity
-        },
-
-    name =
-        tc.addHint(
-            isstring,
-            "The name must be a valid string."
-        ),
-
-    allowTools =
-        tc.default(false,
-            tc.addHint(
-                tc.optional(isbool),
-                "The allowTools must be either true or false."
-            )
-        ),
-
-    delay =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The delay must be a number."
-        ),
-}}
+function DarkRP.isValidEntity(tbl)
+    local isCorrect, perr, phint = verifyBuySchema(tbl)
+    if not isCorrect then
+        return isCorrect, perr, phint
+    end
+    if not tbl.ent or not isstring(tbl.ent) then
+        return false, "The ent field must be a string."
+    end
+    if not tbl.max or not (isnumber(tbl.max) or isfunction(tbl.getMax)) then
+        return false, "The max must be an existing number or (for advanced users) the getMax field must be a function."
+    end
+    if not tbl.cmd then
+        return false, "The cmd field must be a valid string."
+    end
+    if tbl.cmd then
+        if not isstring(tbl.cmd) then
+            return false, "The cmd field must be a string."
+        end
+        local isValid, err, hint = uniqueEntity(tbl.cmd)
+        if not isValid then
+            return isValid, err, hint
+        end
+    end
+    if not tbl.name or not isstring(tbl.name) then
+        return false, "The name field must be a string."
+    end
+    if tbl.allowTools and not isbool(tbl.allowTools) then
+        return false, "The allowTools must be either true or false."
+    end
+    if tbl.delay and not isnumber(tbl.delay) then
+        return false, "The delay must be a number."
+    end
+    return true,"",""
+end
 
 
 -- Checks whether a team already has an agenda assigned.
@@ -508,7 +350,7 @@ local overlappingAgendaCheck = function(t, tbl)
     local agenda = DarkRP.getAgendas()[t]
 
     -- Team being -1 means the job is disabled
-    if agenda == nil or t == -1 then return true end
+    if agenda == nil or t == -1 then return true,"","" end
 
     local teamName = team.GetName(t)
     local err = "At least one job has multiple agendas assigned to them"
@@ -529,96 +371,77 @@ end
 --[[
 Validate Agendas
 ]]
-local managerNumberCheck = tc.addHint(
-    isnumber,
-    "The Manager must either be a single team or a non-empty table of existing teams.",
-    {"Is there a job here that doesn't exist (anymore)?"}
-)
 
-DarkRP.validateAgenda = tc.checkTable{
-    Title =
-        tc.addHint(
-            isstring,
-            "The title must be a string."
-        ),
-
-    -- Custom function to ensure the right error message is thrown
-    Manager = function(manager, tbl)
-            -- Check whether the manager is an existing team
-            -- that does not already have an agenda assigned
-            if isnumber(manager) then
-                return fn.FAnd{overlappingAgendaCheck}(manager, tbl)
-
-            -- Check whether the manager is a table of existing teams
-            -- and that none of the teams already have agendas assigned
-            elseif istable(manager) then
-                return tc.nonEmpty(
-                    tc.tableOf(
-                        fn.FAnd{managerNumberCheck, overlappingAgendaCheck}
-                    )
-                )(manager, tbl)
+function DarkRP.isValidAgenda(tbl)
+    if not tbl.Title or not isstring(tbl.Title) then
+        return false, "The title must be a string."
+    end
+    if not tbl.Manager or not (isnumber(tbl.Manager) or istable(tbl.Manager)) then
+        return false, "The Manager must either be a single team or a non-empty table of existing teams.",{"Is there a job here that doesn't exist (anymore)?"}
+    end
+    if isnumber(tbl.Manager) then
+        local oValid, oErr, oHint = overlappingAgendaCheck(tbl.Manager,tbl)
+        if not oValid then
+            return oValid, oErr, oHint
+        end
+    end
+    if istable(tbl.Manager) then
+        for k,v in pairs(tbl.Manager) do
+            if not isnumber(v) then
+                return false, "Every Manager needs to be a number!",{"Is there a job here that doesn't exist (anymore)?"}
             end
-
-            return managerNumberCheck(manager, tbl)
-        end,
-    Listeners =
-        tc.default({}, -- Default to empty table
-            fn.FAnd{ -- Checks for a table of valid teams that do not already have an agenda assigned
-                tc.addHint(
-                    tc.tableOf(isnumber),
-                    "The Listeners must be a table of existing teams.",
-                    {
-                        "Is there a job here that doesn't exist (anymore)?",
-                        "Are you trying to have multiple manager jobs in this agenda? In that case you must put the list of manager jobs in curly braces.",
-                        [[Like so: DarkRP.createAgenda("Some agenda", {TEAM_MANAGER1, TEAM_MANAGER2}, {TEAM_LISTENER1, TEAM_LISTENER2})]]
-                    }
-                ),
-                tc.tableOf(overlappingAgendaCheck)
-            }
-        )
-}
+            local oValid, oErr, oHint = overlappingAgendaCheck(v,tbl)
+            if not oValid then
+                return oValid, oErr, oHint
+            end
+        end
+    end
+    if not tbl.Listeners then tbl.Listeners = {} end
+    if #tbl.Listeners > 0 then
+      for k,v in pairs(tbl.Listeners) do
+        if not isnumber(v) then
+          return false, "The Listeners must be a table of existing teams.",{"Is there a job here that doesn't exist (anymore)?","Are you trying to have multiple manager jobs in this agenda? In that case you must put the list of manager jobs in curly braces.",[[Like so: DarkRP.createAgenda("Some agenda", {TEAM_MANAGER1, TEAM_MANAGER2}, {TEAM_LISTENER1, TEAM_LISTENER2})]]}
+        end
+        local oValid, oErr, oHint = overlappingAgendaCheck(v,tbl)
+        if not oValid then
+            return oValid, oErr, oHint
+        end
+      end
+    end
+    return true,"",""
+end
 
 --[[
 Validate Categories
 ]]
-DarkRP.validateCategory = tc.checkTable{
-    name =
-        tc.addHint(
-            isstring,
-            "The name must be a string."
-        ),
 
-    categorises =
-        tc.addHint(
-            tc.oneOf{"jobs", "entities", "shipments", "weapons", "vehicles", "ammo"},
-            [[The categorises must be one of "jobs", "entities", "shipments", "weapons", "vehicles", "ammo"]],
-            {
-                "Mind that this is case sensitive.",
-                "Also mind the quotation marks."
-            }
-        ),
-
-    startExpanded =
-        tc.addHint(
-            isbool,
-            "The startExpanded must be either true or false."
-        ),
-
-    color =
-        tc.addHint(
-            tc.tableOf(isnumber),
-            "The color must be a Color value."
-        ),
-
-    canSee =
-        tc.addHint(
-            tc.optional(isfunction),
-            "The canSee must be a function."
-        ),
-
-    sortOrder =
-        tc.addHint(
-            tc.optional(isnumber),
-            "The sortOrder must be a number."
-        ),
+local validCategories = {
+  ["jobs"] = true,
+  ["entities"] = true,
+  ["shipments"] = true,
+  ["weapons"] = true,
+  ["vehicles"] = true,
+  ["ammo"] = true
 }
+
+function DarkRP.isValidCategory(tbl)
+    if not tbl.name or not isstring(tbl.name) then
+        return false, "The name must be a string."
+    end
+    if not tbl.categorises or not isstring(tbl.categorises) or not validCategories[tbl.categorises] then
+        return false, 'The categorises must be one of "jobs", "entities", "shipments", "weapons", "vehicles", "ammo"',{"Mind that this is case sensitive.","Also mind the quotation marks."}
+    end
+    if not tbl.startExpanded or not isbool(tbl.startExpanded) then
+        return false, "The startExpanded must be either true or false."
+    end
+    if not tbl.color or not IsColor(tbl.color) then
+        return false, "The color must be a Color value."
+    end
+    if tbl.canSee and not isfunction(tbl.canSee) then
+        return false, "The canSee must be a function."
+    end
+    if tbl.sortOrder and not isnumber(tbl.sortOrder) then
+        return false, "The sortOrder must be a number."
+    end
+    return true,"",""
+end
