@@ -51,26 +51,3 @@ properties.Add("createShipment",
                         end
     }
 )
-
---[[---------------------------------------------------------------------------
-Interface
----------------------------------------------------------------------------]]
-DarkRP.hookStub{
-    name = "onDrawSpawnedWeapon",
-    description = "Draw spawned weapons.",
-    realm = "Client",
-    parameters = {
-        {
-            name = "weapon",
-            description = "The weapon to perform drawing operations on.",
-            type = "Player"
-        }
-    },
-    returns = {
-        {
-            name = "value",
-            description = "Return a value to completely override drawing",
-            type = "any"
-        }
-    }
-}

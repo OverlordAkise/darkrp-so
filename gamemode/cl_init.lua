@@ -8,7 +8,7 @@ DeriveGamemode("sandbox")
 DEFINE_BASECLASS("gamemode_sandbox")
 GM.Sandbox = BaseClass
 
-GM.Config = {} -- config table
+GM.Config = {}
 GM.NoLicense = GM.NoLicense or {}
 
 include("shared.lua")
@@ -16,31 +16,11 @@ include("config/config.lua")
 include("libraries/sh_cami.lua")
 include("libraries/simplerr.lua")
 include("libraries/fn.lua")
---include("libraries/interfaceloader.lua")
 
+--interfaceloader.lua start
 DarkRP = {}
-DarkRP.stubs = {}
-DarkRP.hookStubs = {}
-
 DarkRP.hooks = {}
-DarkRP.delayedCalls = {}
-
-DarkRP.returnsLayout = nil
-DarkRP.isreturns = nil
-DarkRP.parameterLayout = nil
-DarkRP.isparameters = nil
-DarkRP.isdeprecated = nil
-DarkRP.checkStub = nil
-
-DarkRP.hookLayout = nil
-DarkRP.realm = nil
-DarkRP.isreturns = function()end
-DarkRP.isparameters = function()end
-DarkRP.isdeprecated = function()end
-DarkRP.checkStub = function()end
-DarkRP.notImplemented = function()end
-DarkRP.stub = function()end
-DarkRP.hookStub = function()end
+--interfaceloader.lua end
 
 include("libraries/modificationloader.lua")
 

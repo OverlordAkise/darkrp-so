@@ -259,63 +259,6 @@ function SWEP:GetViewModelPosition(pos, ang)
     return pos,ang
 end
 
-DarkRP.hookStub{
-    name = "canDoorRam",
-    description = "Called when a player attempts to ram something. Use this to override ram behaviour or to disallow ramming.",
-    parameters = {
-        {
-            name = "ply",
-            description = "The player using the door ram.",
-            type = "Player"
-        },
-        {
-            name = "trace",
-            description = "The trace containing information about the hit position and ram entity.",
-            type = "table"
-        },
-        {
-            name = "ent",
-            description = "Short for the entity that is about to be hit by the door ram.",
-            type = "Entity"
-        }
-    },
-    returns = {
-        {
-            name = "override",
-            description = "Return true to override behaviour, false to disallow ramming and nil (or no value) to defer the decision.",
-            type = "boolean"
-        }
-    },
-    realm = "Shared"
-}
-
-if SERVER then
-    DarkRP.hookStub{
-        name = "onDoorRamUsed",
-        description = "Called when the door ram has been used.",
-        parameters = {
-            {
-                name = "success",
-                description = "Whether the door ram has been successful in ramming.",
-                type = "boolean"
-            },
-            {
-                name = "ply",
-                description = "The player that used the door ram.",
-                type = "Player"
-            },
-            {
-                name = "trace",
-                description = "The trace containing information about the hit position and ram entity.",
-                type = "table"
-            }
-        },
-        returns = {
-
-        }
-    }
-end
-
 hook.Add("SetupMove", "DarkRP_DoorRamJump", function(ply, mv)
     local wep = ply:GetActiveWeapon()
     if not wep:IsValid() or wep:GetClass() ~= "door_ram" or not wep.GetIronsights or not wep:GetIronsights() then return end

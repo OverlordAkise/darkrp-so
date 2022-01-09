@@ -10,35 +10,6 @@ local function AddButtonToFrame(Frame)
     return button
 end
 
-DarkRP.stub{
-    name = "openKeysMenu",
-    description = "Open the keys/F2 menu.",
-    parameters = {},
-    realm = "Client",
-    returns = {},
-    metatable = DarkRP
-}
-
-DarkRP.hookStub{
-    name = "onKeysMenuOpened",
-    description = "Called when the keys menu is opened.",
-    parameters = {
-        {
-            name = "ent",
-            description = "The door entity.",
-            type = "Entity"
-        },
-        {
-            name = "Frame",
-            description = "The keys menu frame.",
-            type = "Panel"
-        }
-    },
-    returns = {
-    },
-    realm = "Client"
-}
-
 local KeyFrameVisible = false
 
 local function openMenu(setDoorOwnerAccess, doorSettingsAccess)

@@ -236,22 +236,3 @@ function ENT:StartTouch(ent)
 
     ent:Remove()
 end
-
-DarkRP.hookStub{
-    name = "playerOpenedShipment",
-    description = "When a player opens a shipment.",
-    parameters = {
-        {
-            name = "player",
-            description = "The player who opens a shipment.",
-            type = "Player"
-        },
-        {
-            name = "entity",
-            description = "Entity of spawned shipment.",
-            type = "Entity"
-        }
-    },
-    returns = {
-    },
-}

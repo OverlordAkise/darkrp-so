@@ -44,27 +44,3 @@ function ENT:Use(activator, caller)
     self:Remove()
     activator:EmitSound(self.EatSound, 100, 100)
 end
-
-DarkRP.hookStub{
-    name = "playerAteFood",
-    description = "When a player eats food.",
-    parameters = {
-        {
-            name = "ply",
-            description = "The player who ate food.",
-            type = "Player"
-        },
-        {
-            name = "food",
-            description = "Food table.",
-            type = "table"
-        },
-        {
-            name = "spawnedfood",
-            description = "Entity of spawned food.",
-            type = "Entity"
-        },
-    },
-    returns = {
-    },
-}

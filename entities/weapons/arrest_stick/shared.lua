@@ -18,66 +18,6 @@ SWEP.StickColor = Color(255, 0, 0)
 
 SWEP.Switched = true
 
-DarkRP.hookStub{
-    name = "canArrest",
-    description = "Whether someone can arrest another player.",
-    parameters = {
-        {
-            name = "arrester",
-            description = "The player trying to arrest someone.",
-            type = "Player"
-        },
-        {
-            name = "arrestee",
-            description = "The player being arrested.",
-            type = "Player"
-        }
-    },
-    returns = {
-        {
-            name = "canArrest",
-            description = "A yes or no as to whether the arrester can arrest the arestee.",
-            type = "boolean"
-        },
-        {
-            name = "message",
-            description = "The message that is shown when they can't arrest the player.",
-            type = "string"
-        }
-    },
-    realm = "Server"
-}
-
-DarkRP.hookStub{
-    name = "setArrestStickTime",
-    description = "Sets arrest time for an arrest made via the arrest stick",
-    parameters = {
-        {
-            name = "arrest_stick",
-            description = "The arrest strick weapon with which the arrestee was arrested.",
-            type = "Weapon"
-        },
-        {
-            name = "arrester",
-            description = "The player trying to arrest someone.",
-            type = "Player"
-        },
-        {
-            name = "arrestee",
-            description = "The player being arrested.",
-            type = "Player"
-        }
-    },
-    returns = {
-        {
-            name = "time",
-            description = "The time to arrest the player.",
-            type = "integer"
-        }
-    },
-    realm = "Server"
-}
-
 function SWEP:Deploy()
     self.Switched = true
     return BaseClass.Deploy(self)

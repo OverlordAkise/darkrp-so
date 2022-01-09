@@ -4,20 +4,6 @@ local frame
 local reload
 
 --[[---------------------------------------------------------------------------
-Stubs
----------------------------------------------------------------------------]]
-DarkRP.stub{
-    name = "openPocketMenu",
-    description = "Open the DarkRP pocket menu.",
-    realm = "Client",
-    parameters = {
-    },
-    returns = {
-    },
-    metatable = DarkRP
-}
-
---[[---------------------------------------------------------------------------
 Interface functions
 ---------------------------------------------------------------------------]]
 function meta:getPocketItems()

@@ -127,20 +127,3 @@ function SWEP:Reload()
         net.Send(self:GetOwner())
     end
 end
-
-local meta = FindMetaTable("Player")
-DarkRP.stub{
-    name = "getPocketItems",
-    description = "Get a player's pocket items.",
-    parameters = {
-    },
-    returns = {
-        {
-            name = "items",
-            description = "A table containing crucial information about the items in the pocket.",
-            type = "table"
-        }
-    },
-    metatable = meta,
-    realm = "Shared"
-}

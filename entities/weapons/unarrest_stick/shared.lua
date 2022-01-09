@@ -16,36 +16,6 @@ SWEP.Category = "DarkRP (Utility)"
 
 SWEP.StickColor = Color(0, 255, 0)
 
-DarkRP.hookStub{
-    name = "canUnarrest",
-    description = "Whether someone can unarrest another player.",
-    parameters = {
-        {
-            name = "unarrester",
-            description = "The player trying to unarrest someone.",
-            type = "Player"
-        },
-        {
-            name = "unarrestee",
-            description = "The player being unarrested.",
-            type = "Player"
-        }
-    },
-    returns = {
-        {
-            name = "canUnarrest",
-            description = "A yes or no as to whether the player can unarrest the other player.",
-            type = "boolean"
-        },
-        {
-            name = "message",
-            description = "The message that is shown when they can't unarrest the player.",
-            type = "string"
-        }
-    },
-    realm = "Server"
-}
-
 -- Default for canUnarrest hook
 local hookCanUnarrest = {canUnarrest = fp{fn.Id, true}}
 

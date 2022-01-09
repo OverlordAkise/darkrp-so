@@ -12,7 +12,6 @@ GM.Sandbox = BaseClass
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("libraries/sh_cami.lua")
 AddCSLuaFile("libraries/simplerr.lua")
---AddCSLuaFile("libraries/interfaceloader.lua")
 AddCSLuaFile("libraries/modificationloader.lua")
 AddCSLuaFile("libraries/fn.lua")
 
@@ -27,32 +26,10 @@ GM.Config = GM.Config or {}
 GM.NoLicense = GM.NoLicense or {}
 
 include("shared.lua")
---include("libraries/interfaceloader.lua")
 
 --interfaceloader.lua start
 DarkRP = {}
-DarkRP.stubs = {}
-DarkRP.hookStubs = {}
-
 DarkRP.hooks = {}
-DarkRP.delayedCalls = {}
-
-DarkRP.returnsLayout = nil
-DarkRP.isreturns = nil
-DarkRP.parameterLayout = nil
-DarkRP.isparameters = nil
-DarkRP.isdeprecated = nil
-DarkRP.checkStub = nil
-
-DarkRP.hookLayout = nil
-DarkRP.realm = nil
-DarkRP.isreturns = function()end
-DarkRP.isparameters = function()end
-DarkRP.isdeprecated = function()end
-DarkRP.checkStub = function()end
-DarkRP.notImplemented = function()end
-DarkRP.stub = function()end
-DarkRP.hookStub = function()end
 --interfaceloader.lua end
 
 include("config/_MySQL.lua")
