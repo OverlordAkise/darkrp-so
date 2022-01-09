@@ -1,3 +1,4 @@
+local ss = SysTime()
 hook.Run("DarkRPStartedLoading")
 
 GM.Version = "2.7.0"
@@ -215,3 +216,4 @@ DarkRP.DARKRP_LOADING = nil
 
 hook.Call("DarkRPFinishedLoading", GM)
 MySQLite.initialize()
+print("Loaded SV in "..(SysTime()-ss).."s")

@@ -1,3 +1,4 @@
+local ss = SysTime()
 hook.Run("DarkRPStartedLoading")
 
 GM.Version = "2.7.0"
@@ -107,3 +108,4 @@ DarkRP.DARKRP_LOADING = nil
 --DarkRP.finish()
 
 hook.Call("DarkRPFinishedLoading", GM)
+print("Loaded CL in "..(SysTime()-ss).."s")
