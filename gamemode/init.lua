@@ -12,7 +12,7 @@ GM.Sandbox = BaseClass
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("libraries/sh_cami.lua")
 AddCSLuaFile("libraries/simplerr.lua")
-AddCSLuaFile("libraries/interfaceloader.lua")
+--AddCSLuaFile("libraries/interfaceloader.lua")
 AddCSLuaFile("libraries/modificationloader.lua")
 AddCSLuaFile("libraries/fn.lua")
 
@@ -27,7 +27,33 @@ GM.Config = GM.Config or {}
 GM.NoLicense = GM.NoLicense or {}
 
 include("shared.lua")
-include("libraries/interfaceloader.lua")
+--include("libraries/interfaceloader.lua")
+
+--interfaceloader.lua start
+DarkRP = {}
+DarkRP.stubs = {}
+DarkRP.hookStubs = {}
+
+DarkRP.hooks = {}
+DarkRP.delayedCalls = {}
+
+DarkRP.returnsLayout = nil
+DarkRP.isreturns = nil
+DarkRP.parameterLayout = nil
+DarkRP.isparameters = nil
+DarkRP.isdeprecated = nil
+DarkRP.checkStub = nil
+
+DarkRP.hookLayout = nil
+DarkRP.realm = nil
+DarkRP.isreturns = function()end
+DarkRP.isparameters = function()end
+DarkRP.isdeprecated = function()end
+DarkRP.checkStub = function()end
+DarkRP.notImplemented = function()end
+DarkRP.stub = function()end
+DarkRP.hookStub = function()end
+--interfaceloader.lua end
 
 include("config/_MySQL.lua")
 include("config/config.lua")
@@ -64,39 +90,143 @@ resource.AddFile("materials/vgui/entities/weaponchecker.vmt")
 hook.Call("DarkRPPreLoadModules", GM)
 
 
---[[---------------------------------------------------------------------------
-Loading modules
----------------------------------------------------------------------------]]
-local fol = GM.FolderName .. "/gamemode/modules/"
-local files, folders = file.Find(fol .. "*", "LUA")
-local SortedPairs = SortedPairs
+--Modules for client
+AddCSLuaFile("darkrp/gamemode/modules/workarounds/sh_workarounds.lua")
+AddCSLuaFile("darkrp/gamemode/modules/voting/sh_chatcommands.lua")
+AddCSLuaFile("darkrp/gamemode/modules/voting/cl_voting.lua")
+AddCSLuaFile("darkrp/gamemode/modules/tipjar/cl_model.lua")
+AddCSLuaFile("darkrp/gamemode/modules/tipjar/cl_frame.lua")
+AddCSLuaFile("darkrp/gamemode/modules/tipjar/cl_communication.lua")
+AddCSLuaFile("darkrp/gamemode/modules/sleep/sh_sleep.lua")
+AddCSLuaFile("darkrp/gamemode/modules/positions/sh_commands.lua")
+AddCSLuaFile("darkrp/gamemode/modules/police/sh_init.lua")
+AddCSLuaFile("darkrp/gamemode/modules/playerscale/cl_playerscale.lua")
+AddCSLuaFile("darkrp/gamemode/modules/money/sh_money.lua")
+AddCSLuaFile("darkrp/gamemode/modules/money/sh_commands.lua")
+AddCSLuaFile("darkrp/gamemode/modules/logging/cl_init.lua")
+AddCSLuaFile("darkrp/gamemode/modules/language/sh_language.lua")
+AddCSLuaFile("darkrp/gamemode/modules/language/sh_english.lua")
+AddCSLuaFile("darkrp/gamemode/modules/jobs/sh_commands.lua")
+AddCSLuaFile("darkrp/gamemode/modules/hud/sh_chatcommands.lua")
+AddCSLuaFile("darkrp/gamemode/modules/hud/cl_hud.lua")
+AddCSLuaFile("darkrp/gamemode/modules/hobo/cl_hobo.lua")
+AddCSLuaFile("darkrp/gamemode/modules/hitmenu/sh_init.lua")
+AddCSLuaFile("darkrp/gamemode/modules/hitmenu/cl_menu.lua")
+AddCSLuaFile("darkrp/gamemode/modules/hitmenu/cl_init.lua")
+AddCSLuaFile("darkrp/gamemode/modules/fspectate/sh_init.lua")
+AddCSLuaFile("darkrp/gamemode/modules/fspectate/cl_init.lua")
+AddCSLuaFile("darkrp/gamemode/modules/fpp/cl_fpp.lua")
+AddCSLuaFile("darkrp/gamemode/modules/fadmin/sh_fadmin_darkrp.lua")
+AddCSLuaFile("darkrp/gamemode/modules/fadmin/cl_fadmin_darkrp.lua")
+AddCSLuaFile("darkrp/gamemode/modules/fadmin/cl_fadmin.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f4menu/cl_menuitem.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f4menu/cl_jobstab.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f4menu/cl_init.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f4menu/cl_frame.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f4menu/cl_entitiestab.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f4menu/cl_categories.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f1menu/cl_titlelabel.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f1menu/cl_searchbox.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f1menu/cl_htmlcontrols.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f1menu/cl_f1menupanel.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f1menu/cl_f1menu.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f1menu/cl_chatcommandspanel.lua")
+AddCSLuaFile("darkrp/gamemode/modules/f1menu/cl_chatcommandlabel.lua")
+AddCSLuaFile("darkrp/gamemode/modules/doorsystem/sh_doors.lua")
+AddCSLuaFile("darkrp/gamemode/modules/doorsystem/cl_doors.lua")
+AddCSLuaFile("darkrp/gamemode/modules/dermaskin/cl_dermaskin.lua")
+AddCSLuaFile("darkrp/gamemode/modules/deathpov/cl_init.lua")
+AddCSLuaFile("darkrp/gamemode/modules/cppi/sh_cppi.lua")
+AddCSLuaFile("darkrp/gamemode/modules/chat/sh_chatcommands.lua")
+AddCSLuaFile("darkrp/gamemode/modules/chat/cl_chatlisteners.lua")
+AddCSLuaFile("darkrp/gamemode/modules/chat/cl_chat.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/sh_util.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/sh_simplerr.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/sh_playerclass.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/sh_gamemode_functions.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/sh_entityvars.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/sh_createitems.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/sh_commands.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/sh_checkitems.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/cl_util.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/cl_jobmodels.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/cl_gamemode_functions.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/cl_fonts.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/cl_entityvars.lua")
+AddCSLuaFile("darkrp/gamemode/modules/base/cl_drawfunctions.lua")
+AddCSLuaFile("darkrp/gamemode/modules/animations/sh_animations.lua")
 
-for _, v in ipairs(files) do
-    if DarkRP.disabledDefaults["modules"][v:Left(-5)] then continue end
-    if string.GetExtensionFromFilename(v) ~= "lua" then continue end
-    include(fol .. v)
-end
 
-for _, folder in SortedPairs(folders, true) do
-    if folder == "." or folder == ".." or DarkRP.disabledDefaults["modules"][folder] then continue end
+--server modules to load
+--chat stuff
+include("darkrp/gamemode/modules/chat/sh_chatcommands.lua")
+include("darkrp/gamemode/modules/chat/sv_chat.lua")--reversed sv_chat and sv_chatcommand or error
+include("darkrp/gamemode/modules/chat/sv_chatcommands.lua")
 
-    for _, File in SortedPairs(file.Find(fol .. folder .. "/sh_*.lua", "LUA"), true) do
-        if File == "sh_interface.lua" then continue end
-        AddCSLuaFile(fol .. folder .. "/" .. File)
-        include(fol .. folder .. "/" .. File)
-    end
-
-    for _, File in SortedPairs(file.Find(fol .. folder .. "/sv_*.lua", "LUA"), true) do
-        if File == "sv_interface.lua" then continue end
-        include(fol .. folder .. "/" .. File)
-    end
-
-    for _, File in SortedPairs(file.Find(fol .. folder .. "/cl_*.lua", "LUA"), true) do
-        if File == "cl_interface.lua" then continue end
-        AddCSLuaFile(fol .. folder .. "/" .. File)
-    end
-end
-
+include("darkrp/gamemode/modules/chatsounds.lua")
+include("darkrp/gamemode/modules/cssmount.lua")
+include("darkrp/gamemode/modules/passengermodcompat.lua")
+include("darkrp/gamemode/modules/workarounds/sh_workarounds.lua")
+include("darkrp/gamemode/modules/workarounds/sv_antimultirun.lua")
+include("darkrp/gamemode/modules/voting/sh_chatcommands.lua")
+include("darkrp/gamemode/modules/voting/sv_votes.lua")
+include("darkrp/gamemode/modules/voting/sv_questions.lua")
+include("darkrp/gamemode/modules/tipjar/sv_communication.lua")
+include("darkrp/gamemode/modules/sleep/sh_sleep.lua")
+include("darkrp/gamemode/modules/sleep/sv_sleep.lua")
+include("darkrp/gamemode/modules/positions/sh_commands.lua")
+include("darkrp/gamemode/modules/positions/sv_spawnpos.lua")
+include("darkrp/gamemode/modules/positions/sv_jailpos.lua")
+include("darkrp/gamemode/modules/positions/sv_database.lua")
+--police to bot
+include("darkrp/gamemode/modules/playerscale/sv_playerscale.lua")
+include("darkrp/gamemode/modules/money/sh_money.lua")
+include("darkrp/gamemode/modules/money/sh_commands.lua")
+include("darkrp/gamemode/modules/money/sv_money.lua")
+include("darkrp/gamemode/modules/logging/sv_logging.lua")
+include("darkrp/gamemode/modules/language/sh_language.lua")
+include("darkrp/gamemode/modules/language/sh_english.lua")
+include("darkrp/gamemode/modules/jobs/sh_commands.lua")
+include("darkrp/gamemode/modules/jobs/sv_jobs.lua")
+include("darkrp/gamemode/modules/hud/sh_chatcommands.lua")
+include("darkrp/gamemode/modules/hud/sv_admintell.lua")
+include("darkrp/gamemode/modules/hobo/sv_hobo.lua")
+--hitmenu to bot (needs darkrpregistervar)
+include("darkrp/gamemode/modules/fspectate/sh_init.lua")
+include("darkrp/gamemode/modules/fspectate/sv_init.lua")
+include("darkrp/gamemode/modules/fpp/sv_fpp.lua")
+include("darkrp/gamemode/modules/fadmin/sh_fadmin_darkrp.lua")
+include("darkrp/gamemode/modules/fadmin/sv_fadmin_sql.lua")
+include("darkrp/gamemode/modules/fadmin/sv_fadmin.lua")
+include("darkrp/gamemode/modules/doorsystem/sh_doors.lua")
+include("darkrp/gamemode/modules/doorsystem/sv_doorvars.lua")
+include("darkrp/gamemode/modules/doorsystem/sv_doors.lua")
+include("darkrp/gamemode/modules/doorsystem/sv_dooradministration.lua")
+include("darkrp/gamemode/modules/dermaskin/sv_resource.lua")
+include("darkrp/gamemode/modules/cppi/sh_cppi.lua")
+--chat to top (errors because other modules need chatAddreceiver)
+include("darkrp/gamemode/modules/base/sh_util.lua")
+include("darkrp/gamemode/modules/base/sh_simplerr.lua")
+include("darkrp/gamemode/modules/base/sh_playerclass.lua")
+include("darkrp/gamemode/modules/base/sh_gamemode_functions.lua")
+include("darkrp/gamemode/modules/base/sh_entityvars.lua")
+include("darkrp/gamemode/modules/base/sh_createitems.lua")
+include("darkrp/gamemode/modules/base/sh_commands.lua")
+include("darkrp/gamemode/modules/base/sh_checkitems.lua")
+include("darkrp/gamemode/modules/base/sv_util.lua")
+include("darkrp/gamemode/modules/base/sv_purchasing.lua")
+include("darkrp/gamemode/modules/base/sv_jobmodels.lua")
+include("darkrp/gamemode/modules/base/sv_gamemode_functions.lua")
+include("darkrp/gamemode/modules/base/sv_entityvars.lua")
+include("darkrp/gamemode/modules/base/sv_data.lua")
+include("darkrp/gamemode/modules/animations/sh_animations.lua")
+--police stuff
+include("darkrp/gamemode/modules/police/sh_init.lua")
+include("darkrp/gamemode/modules/police/sv_init.lua")
+include("darkrp/gamemode/modules/police/sv_commands.lua")
+--hitmen stuff
+include("darkrp/gamemode/modules/hitmenu/sh_init.lua")
+include("darkrp/gamemode/modules/hitmenu/sv_init.lua")
 
 DarkRP.DARKRP_LOADING = true
 include("config/jobrelated.lua")
@@ -104,7 +234,7 @@ include("config/addentities.lua")
 include("config/ammotypes.lua")
 DarkRP.DARKRP_LOADING = nil
 
-DarkRP.finish()
+--DarkRP.finish() 
 
 hook.Call("DarkRPFinishedLoading", GM)
 MySQLite.initialize()
