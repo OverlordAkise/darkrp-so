@@ -323,6 +323,13 @@ function DarkRP.toInt(value)
     return value and math.floor(value)
 end
 
+-- Moved the isMedic shared thing here
+
+function meta:isMedic()
+    return self:getJobTable().medic
+end
+
+
 --[[-------------------------------------------------------------------------
 Check the database for integrity errors. Use in cases when stuff doesn't load
 on restart, or you get corruption errors.
