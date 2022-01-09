@@ -76,7 +76,7 @@ function isValidNotification(tbl)
     if not tbl.receivers or not (isfunction(tbl.receivers) or notifList[tbl.receivers]) then
         return false, "receivers must either be a function returning a table of players or one of 'admins', 'superadmins', 'everyone', 'self', 'targets', 'involved', 'involved+admins', 'involved+superadmins'"
     end
-    if not tbl.message or not isstring(tbl.message) then
+    if not tbl.message or not istable(tbl.message) then
         return false, "The message field must be a table of strings! with special strings 'targets', 'you', 'instigator', 'extraInfo.#', with # a number."
     end
     if not tbl.msgType then
