@@ -329,12 +329,8 @@ if SERVER and not DarkRP.disabledDefaults["workarounds"]["Deprecated console com
         {command = "rp_teamban",            alternative = "teamban"                 },
         {command = "rp_setsalary",          alternative = "setmoney"                },
         {command = "rp_setmoney",           alternative = "setmoney"                },
-        {command = "rp_revokelicense",      alternative = "unsetlicense"            },
-        {command = "rp_givelicense",        alternative = "setlicense"              },
         {command = "rp_unlockdown",         alternative = "unlockdown"              },
         {command = "rp_lockdown",           alternative = "lockdown"                },
-        {command = "rp_unarrest",           alternative = "unarrest"                },
-        {command = "rp_arrest",             alternative = "arrest"                  },
         {command = "rp_cancelvote",         alternative = "forcecancelvote"         },
     }
 

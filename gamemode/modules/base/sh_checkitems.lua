@@ -137,9 +137,6 @@ function DarkRP.isValidJob(tbl)
     if tbl.ammo and not istable(tbl.ammo) then
         return false, "The ammo must be a table containing numbers.",{"See example on https://darkrp.miraheze.org/wiki/DarkRP:CustomJobFields"}
     end
-    if tbl.hasLicense and not isbool(tbl.hasLicense) then
-        return false, "The hasLicense must be either true or false."
-    end
     
         if tbl.mayor and not isbool(tbl.mayor) then
         return false, "The mayor value must be either true or false."

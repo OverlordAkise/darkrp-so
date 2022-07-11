@@ -5,10 +5,6 @@ function DarkRP.hooks:canBuyPistol(ply, shipment)
         return false, false, "Custom object does not fit map"
     end
 
-    if ply:isArrested() then
-        return false, false, DarkRP.getPhrase("unable", "/buy", "")
-    end
-
     if shipment.customCheck and not shipment.customCheck(ply) then
         local message = isfunction(shipment.CustomCheckFailMsg) and shipment.CustomCheckFailMsg(ply, shipment) or
                 shipment.CustomCheckFailMsg or
@@ -109,10 +105,6 @@ function DarkRP.hooks:canBuyShipment(ply, shipment)
 
     if ply.LastShipmentSpawn and ply.LastShipmentSpawn > (CurTime() - GAMEMODE.Config.ShipmentSpamTime) then
         return false, false, DarkRP.getPhrase("shipment_antispam_wait")
-    end
-
-    if ply:isArrested() then
-        return false, false, DarkRP.getPhrase("unable", "/buyshipment", "")
     end
 
     if shipment.customCheck and not shipment.customCheck(ply) then
@@ -221,10 +213,6 @@ function DarkRP.hooks:canBuyVehicle(ply, vehicle)
     end
     if not GAMEMODE:CustomObjFitsMap(vehicle) then
         return false, false, "Custom object does not fit map"
-    end
-
-    if ply:isArrested() then
-        return false, false, DarkRP.getPhrase("unable", "/buyvehicle", "")
     end
 
     if vehicle.allowed and not table.HasValue(vehicle.allowed, ply:Team()) then
@@ -342,10 +330,6 @@ DarkRP.defineChatCommand("buyvehicle", BuyVehicle)
 function DarkRP.hooks:canBuyAmmo(ply, ammo)
     if not GAMEMODE:CustomObjFitsMap(ammo) then
         return false, false, "Custom object does not fit map"
-    end
-
-    if ply:isArrested() then
-        return false, false, DarkRP.getPhrase("unable", "/buyammo", "")
     end
 
     if ammo.allowed and not table.HasValue(ammo.allowed, ply:Team()) then

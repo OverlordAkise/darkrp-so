@@ -13,25 +13,6 @@ local function stopSleep(ply)
     end
 end
 
-local function onRagdollArrested(arrestee, _, arrester)
-    DarkRP.toggleSleep(arrestee, "force")
-
-    -- onArrestStickUsed
-    local canArrest, message = hook.Call("canArrest", DarkRP.hooks, arrester, arrestee)
-    if not canArrest then
-        if message then DarkRP.notify(arrester, 1, 5, message) end
-        return
-    end
-
-    arrestee:arrest(nil, arrester)
-
-    DarkRP.notify(arrestee, 0, 20, DarkRP.getPhrase("youre_arrested_by", arrester:Nick()))
-
-    if arrester.SteamName then
-        DarkRP.log(arrester:Nick() .. " (" .. arrester:SteamID() .. ") arrested " .. arrestee:Nick(), Color(0, 255, 255))
-    end
-end
-
 local hookCanSleep = {canSleep = function(_, ply, force)
     if not ply:Alive() then return false, DarkRP.getPhrase("must_be_alive_to_do_x", "/sleep") end
     if (not ply.KnockoutTimer or ply.KnockoutTimer + KnockoutTime >= CurTime()) and not force then return false, DarkRP.getPhrase("have_to_wait", math.ceil((ply.KnockoutTimer + KnockoutTime) - CurTime()), "/sleep") end
@@ -112,18 +93,12 @@ function DarkRP.toggleSleep(player, command)
             SendUserMessage("blackScreen", player, false)
         end
 
-        if command == true then
-            player:arrest()
-        end
         player.Sleeping = false
         if player:getDarkRPVar("Energy") then
             player:setSelfDarkRPVar("Energy", player.OldHunger)
             player.OldHunger = nil
         end
 
-        if player:isArrested() then
-            GAMEMODE:SetPlayerSpeed(player, GAMEMODE.Config.arrestspeed, GAMEMODE.Config.arrestspeed)
-        end
         timer.Remove(timerName)
     else
         if IsValid(player:GetObserverTarget()) then return "" end
@@ -134,15 +109,14 @@ function DarkRP.toggleSleep(player, command)
             end
         end
 
-        if not player:isArrested() then
-            player.WeaponsForSleep = {}
-            for k, v in ipairs(player:GetWeapons()) do
-                player.WeaponsForSleep[k] = {v:GetClass(), player:GetAmmoCount(v:GetPrimaryAmmoType()),
-                v:GetPrimaryAmmoType(), player:GetAmmoCount(v:GetSecondaryAmmoType()), v:GetSecondaryAmmoType(),
-                v:Clip1(), v:Clip2()}
-                --[[{class, ammocount primary, type primary, ammo count secondary, type secondary, clip primary, clip secondary]]
-            end
+        player.WeaponsForSleep = {}
+        for k, v in ipairs(player:GetWeapons()) do
+            player.WeaponsForSleep[k] = {v:GetClass(), player:GetAmmoCount(v:GetPrimaryAmmoType()),
+            v:GetPrimaryAmmoType(), player:GetAmmoCount(v:GetSecondaryAmmoType()), v:GetSecondaryAmmoType(),
+            v:Clip1(), v:Clip2()}
+            --[[{class, ammocount primary, type primary, ammo count secondary, type secondary, clip primary, clip secondary]]
         end
+        
         local ragdoll = ents.Create("prop_ragdoll")
         ragdoll:SetPos(player:GetPos())
         ragdoll:SetAngles(Angle(0,player:GetAngles().Yaw,0))
@@ -158,7 +132,6 @@ function DarkRP.toggleSleep(player, command)
         ragdoll.OwnerINT = player:EntIndex()
         ragdoll.PhysgunPickup = false
         ragdoll.CanTool = false
-        ragdoll.onArrestStickUsed = fp{onRagdollArrested, player}
         player:StripWeapons()
         player:Spectate(OBS_MODE_CHASE)
         player:SpectateEntity(ragdoll)

@@ -39,13 +39,8 @@ TEAM_POLICE = DarkRP.createJob("Civil Protection", {
     color = Color(25, 25, 170, 255),
     model = {"models/player/police.mdl", "models/player/police_fem.mdl"},
     description = [[The protector of every citizen that lives in the city.
-        You have the power to arrest criminals and protect innocents.
-        Hit a player with your arrest baton to put them in jail.
-        Bash a player with a stunstick and they may learn to obey the law.
-        The Battering Ram can break down the door of a criminal, with a warrant for their arrest.
-        The Battering Ram can also unfreeze frozen props (if enabled).
-        Type /wanted <name> to alert the public to the presence of a criminal.]],
-    weapons = {"arrest_stick", "unarrest_stick", "weapon_glock2", "stunstick", "door_ram", "weaponchecker"},
+        Bash a player with a stunstick and they may learn to obey the law.]],
+    weapons = {"stunstick"},
     command = "cp",
     max = 4,
     salary = GAMEMODE.Config.normalsalary * 1.45,
@@ -93,9 +88,8 @@ TEAM_MOB = DarkRP.createJob("Mob boss", {
     model = "models/player/gman_high.mdl",
     description = [[The Mob boss is the boss of the criminals in the city.
         With his power he coordinates the gangsters and forms an efficient crime organization.
-        He has the ability to break into houses by using a lockpick.
-        The Mob boss posesses the ability to unarrest you.]],
-    weapons = {"lockpick", "unarrest_stick"},
+        He has the ability to break into houses by using a lockpick.]],
+    weapons = {"lockpick"},
     command = "mobboss",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 1.34,
@@ -109,7 +103,7 @@ TEAM_GUN = DarkRP.createJob("Gun Dealer", {
     color = Color(255, 140, 0, 255),
     model = "models/player/monk.mdl",
     description = [[A Gun Dealer is the only person who can sell guns to other people.
-        Make sure you aren't caught selling illegal firearms to the public! You might get arrested!]],
+        Make sure you aren't caught selling illegal firearms to the public!]],
     weapons = {},
     command = "gundealer",
     max = 2,
@@ -143,12 +137,8 @@ TEAM_CHIEF = DarkRP.createJob("Civil Protection Chief", {
     model = "models/player/combine_soldier_prisonguard.mdl",
     description = [[The Chief is the leader of the Civil Protection unit.
         Coordinate the police force to enforce law in the city.
-        Hit a player with arrest baton to put them in jail.
-        Bash a player with a stunstick and they may learn to obey the law.
-        The Battering Ram can break down the door of a criminal, with a warrant for his/her arrest.
-        Type /wanted <name> to alert the public to the presence of a criminal.
-        Type /jailpos to set the Jail Position]],
-    weapons = {"arrest_stick", "unarrest_stick", "weapon_deagle2", "stunstick", "door_ram", "weaponchecker"},
+        Bash a player with a stunstick and they may learn to obey the law.]],
+    weapons = {"stunstick"},
     command = "chief",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 1.67,
@@ -167,9 +157,6 @@ TEAM_MAYOR = DarkRP.createJob("Mayor", {
     color = Color(150, 20, 20, 255),
     model = "models/player/breen.mdl",
     description = [[The Mayor of the city creates laws to govern the city.
-    If you are the mayor you may create and accept warrants.
-    Type /wanted <name>  to warrant a player.
-    Type /jailpos to set the Jail Position.
     Type /lockdown initiate a lockdown of the city.
     Everyone must be inside during a lockdown.
     The cops patrol the area.

@@ -19,7 +19,6 @@ local function declareTeamCommands(CTeam)
         if isnumber(CTeam.NeedToChangeFrom) and plyTeam ~= CTeam.NeedToChangeFrom then return false end
         if istable(CTeam.NeedToChangeFrom) and not table.HasValue(CTeam.NeedToChangeFrom, plyTeam) then return false end
         if CTeam.customCheck and CTeam.customCheck(ply) == false then return false end
-        if ply:isArrested() then return false end
         local numPlayers = team.NumPlayers(k)
         if CTeam.max ~= 0 and ((CTeam.max % 1 == 0 and numPlayers >= CTeam.max) or (CTeam.max % 1 ~= 0 and (numPlayers + 1) / player.GetCount() > CTeam.max)) then return false end
         if ply.LastJob and 10 - (CurTime() - ply.LastJob) >= 0 then return false end
@@ -281,7 +280,6 @@ local function addEntityCommands(tblEnt)
         condition =
             function(ply)
                 if not tblEnt.allowPurchaseWhileDead and not ply:Alive() then return false end
-                if ply:isArrested() then return false end
                 if istable(tblEnt.allowed) and not table.HasValue(tblEnt.allowed, ply:Team()) then return false end
                 if not ply:canAfford(tblEnt.price) then return false end
                 if tblEnt.customCheck and tblEnt.customCheck(ply) == false then return false end
@@ -317,7 +315,6 @@ local function addEntityCommands(tblEnt)
     end
 
     local function buythis(ply, args)
-        if ply:isArrested() then return "" end
         if not tblEnt.allowPurchaseWhileDead and not ply:Alive() then
             DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("must_be_alive_to_do_x", DarkRP.getPhrase("buy_x", tblEnt.name)))
             return ""
@@ -409,12 +406,12 @@ plyMeta.getJobTable = function(ply)
     return tbl
 end
 
-function DarkRP.createJob(Name, colorOrTable, model, Description, Weapons, command, maximum_amount_of_this_class, Salary, admin, Vote, Haslicense, NeedToChangeFrom, CustomCheck)
+function DarkRP.createJob(Name, colorOrTable, model, Description, Weapons, command, maximum_amount_of_this_class, Salary, admin, Vote, NeedToChangeFrom, CustomCheck)
     local tableSyntaxUsed = not IsColor(colorOrTable)
 
     local CustomTeam = tableSyntaxUsed and colorOrTable or
         {color = colorOrTable, model = model, description = Description, weapons = Weapons, command = command,
-            max = maximum_amount_of_this_class, salary = Salary, admin = admin or 0, vote = tobool(Vote), hasLicense = Haslicense,
+            max = maximum_amount_of_this_class, salary = Salary, admin = admin or 0, vote = tobool(Vote),
             NeedToChangeFrom = NeedToChangeFrom, customCheck = CustomCheck
         }
     CustomTeam.name = Name

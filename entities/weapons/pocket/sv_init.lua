@@ -205,8 +205,3 @@ hook.Add("PlayerDeath", "DropPocketItems", function(ply)
     if not GAMEMODE.Config.droppocketdeath or not ply.darkRPPocket then return end
     dropAllPocketItems(ply)
 end)
-
-hook.Add("playerArrested", "DropPocketItems", function(ply)
-    if not GAMEMODE.Config.droppocketarrest then return end
-    dropAllPocketItems(ply)
-end)

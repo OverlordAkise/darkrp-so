@@ -1,16 +1,8 @@
 function GM:SetupMove(ply, mv, cmd)
-    if ply:isArrested() then
-        mv:SetMaxClientSpeed(self.Config.arrestspeed)
-    end
     return self.Sandbox.SetupMove(self, ply, mv, cmd)
 end
 
 function GM:StartCommand(ply, usrcmd)
-    -- Used in arrest_stick and unarrest_stick but addons can use it too!
-    local wep = ply:GetActiveWeapon()
-    if wep:IsValid() and isfunction(wep.startDarkRPCommand) then
-        wep:startDarkRPCommand(usrcmd)
-    end
 end
 
 function GM:OnPlayerChangedTeam(ply, oldTeam, newTeam)
@@ -66,11 +58,6 @@ hook.Add("loadCustomDarkRPItems", "CAMI privs", function()
 
     CAMI.RegisterPrivilege{
         Name = "DarkRP_SetMoney",
-        MinAccess = "superadmin"
-    }
-
-    CAMI.RegisterPrivilege{
-        Name = "DarkRP_SetLicense",
         MinAccess = "superadmin"
     }
 

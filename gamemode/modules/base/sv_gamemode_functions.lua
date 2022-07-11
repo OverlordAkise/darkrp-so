@@ -115,7 +115,6 @@ function GM:PlayerSpawnProp(ply, model)
     local allowed = GAMEMODE.Config.propspawning
 
     if not allowed then return false end
-    if ply:isArrested() then return false end
 
     model = string.gsub(tostring(model), "\\", "/")
     model = string.gsub(tostring(model), "//", "/")
@@ -169,7 +168,7 @@ local function checkAdminSpawn(ply, configVar, errorStr)
 end
 
 function GM:PlayerSpawnSENT(ply, class)
-    return checkAdminSpawn(ply, "adminsents", "gm_spawnsent") and self.Sandbox.PlayerSpawnSENT(self, ply, class) and not ply:isArrested()
+    return checkAdminSpawn(ply, "adminsents", "gm_spawnsent") and self.Sandbox.PlayerSpawnSENT(self, ply, class)
 end
 
 function GM:PlayerSpawnedSENT(ply, ent)
@@ -190,19 +189,19 @@ local function canSpawnWeapon(ply)
 end
 
 function GM:PlayerSpawnSWEP(ply, class, info)
-    return canSpawnWeapon(ply) and self.Sandbox.PlayerSpawnSWEP(self, ply, class, info) and not ply:isArrested()
+    return canSpawnWeapon(ply) and self.Sandbox.PlayerSpawnSWEP(self, ply, class, info)
 end
 
 function GM:PlayerGiveSWEP(ply, class, info)
-    return canSpawnWeapon(ply) and self.Sandbox.PlayerGiveSWEP(self, ply, class, info) and not ply:isArrested()
+    return canSpawnWeapon(ply) and self.Sandbox.PlayerGiveSWEP(self, ply, class, info)
 end
 
 function GM:PlayerSpawnEffect(ply, model)
-    return self.Sandbox.PlayerSpawnEffect(self, ply, model) and not ply:isArrested()
+    return self.Sandbox.PlayerSpawnEffect(self, ply, model)
 end
 
 function GM:PlayerSpawnVehicle(ply, model, class, info)
-    return checkAdminSpawn(ply, "adminvehicles", "gm_spawnvehicle") and self.Sandbox.PlayerSpawnVehicle(self, ply, model, class, info) and not ply:isArrested()
+    return checkAdminSpawn(ply, "adminvehicles", "gm_spawnvehicle") and self.Sandbox.PlayerSpawnVehicle(self, ply, model, class, info)
 end
 
 function GM:PlayerSpawnedVehicle(ply, ent)
@@ -212,7 +211,7 @@ function GM:PlayerSpawnedVehicle(ply, ent)
 end
 
 function GM:PlayerSpawnNPC(ply, type, weapon)
-    return checkAdminSpawn(ply, "adminnpcs", "gm_spawnnpc") and self.Sandbox.PlayerSpawnNPC(self, ply, type, weapon) and not ply:isArrested()
+    return checkAdminSpawn(ply, "adminnpcs", "gm_spawnnpc") and self.Sandbox.PlayerSpawnNPC(self, ply, type, weapon)
 end
 
 function GM:PlayerSpawnedNPC(ply, ent)
@@ -221,7 +220,7 @@ function GM:PlayerSpawnedNPC(ply, ent)
 end
 
 function GM:PlayerSpawnRagdoll(ply, model)
-    return self.Sandbox.PlayerSpawnRagdoll(self, ply, model) and not ply:isArrested()
+    return self.Sandbox.PlayerSpawnRagdoll(self, ply, model)
 end
 
 function GM:PlayerSpawnedRagdoll(ply, model, ent)
@@ -457,14 +456,6 @@ function GM:CanPlayerSuicide(ply)
         DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", "suicide", ""))
         return false
     end
-    if ply:isArrested() then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", "suicide", ""))
-        return false
-    end
-    if GAMEMODE.Config.wantedsuicide and ply:getDarkRPVar("wanted") then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", "suicide", ""))
-        return false
-    end
 
     local jobTable = ply:getJobTable()
     if jobTable.CanPlayerSuicide then
@@ -525,16 +516,7 @@ function GM:PlayerDeath(ply, weapon, killer)
 
     ply:ExitVehicle()
 
-    if ply:isArrested() and not GAMEMODE.Config.respawninjail then
-        -- If the player died in jail, make sure they can't respawn until their jail sentence is over
-        -- NextSpawnTime is set to CurTime() on unarrest
-        ply.NextSpawnTime = math.huge
-        DarkRP.printMessageAll(HUD_PRINTCENTER, DarkRP.getPhrase("died_in_jail", ply:Nick()))
-        DarkRP.notify(ply, 4, 4, DarkRP.getPhrase("dead_in_jail"))
-    else
-        -- Normal death, respawning.
-        ply.NextSpawnTime = CurTime() + math.Clamp(GAMEMODE.Config.respawntime, 0, 10)
-    end
+    ply.NextSpawnTime = CurTime() + math.Clamp(GAMEMODE.Config.respawntime, 0, 10)
     ply.DeathPos = ply:GetPos()
 
     if GAMEMODE.Config.dropmoneyondeath then
@@ -549,10 +531,7 @@ function GM:PlayerDeath(ply, weapon, killer)
         end
     end
 
-    if IsValid(ply) and (ply ~= killer or ply.Slayed) and not ply:isArrested() then
-        if not GAMEMODE.Config.wantedrespawn then
-            ply:setDarkRPVar("wanted", nil)
-        end
+    if IsValid(ply) and (ply ~= killer or ply.Slayed) then
         ply.DeathPos = nil
         ply.Slayed = false
     end
@@ -571,14 +550,10 @@ function GM:PlayerDeath(ply, weapon, killer)
 end
 
 local adminCopWeapons = {
-    ["door_ram"] = true,
-    ["arrest_stick"] = true,
-    ["unarrest_stick"] = true,
     ["stunstick"] = true,
     ["weaponchecker"] = true,
 }
 function GM:PlayerCanPickupWeapon(ply, weapon)
-    if ply:isArrested() then return false end
     if weapon.PlayerUse == false then return false end
     local weaponClass = weapon:GetClass()
     if ply:IsAdmin() and GAMEMODE.Config.AdminsCopWeapons and adminCopWeapons[weaponClass] then return true end
@@ -588,13 +563,6 @@ function GM:PlayerCanPickupWeapon(ply, weapon)
         local val = jobTable.PlayerCanPickupWeapon(ply, weapon)
 
         return val == nil or val
-    end
-
-    if GAMEMODE.Config.license and not ply:getDarkRPVar("HasGunlicense") and not ply.RPLicenseSpawn then
-        if GAMEMODE.NoLicense[string.lower(weaponClass)] or not weapon:IsWeapon() then
-            return true
-        end
-        return false
     end
 
     return true
@@ -739,17 +707,13 @@ function GM:PlayerSelectSpawn(ply)
     end
 
     local CustomSpawnPos = DarkRP.retrieveTeamSpawnPos(ply:Team())
-    if GAMEMODE.Config.customspawns and not ply:isArrested() and CustomSpawnPos and next(CustomSpawnPos) ~= nil then
+    if GAMEMODE.Config.customspawns and CustomSpawnPos and next(CustomSpawnPos) ~= nil then
         POS = CustomSpawnPos[math.random(1, #CustomSpawnPos)]
     end
 
     -- Spawn where died in certain cases
     if GAMEMODE.Config.strictsuicide and ply.DeathPos then
         POS = ply.DeathPos
-    end
-
-    if ply:isArrested() then
-        POS = DarkRP.retrieveJailPos() or ply.DeathPos -- If we can't find a jail pos then we'll use where they died as a last resort
     end
 
     -- Make sure the player doesn't get stuck in something
@@ -880,14 +844,6 @@ end
 function GM:PlayerLoadout(ply)
     self.Sandbox.PlayerLoadout(self, ply)
 
-    if ply:isArrested() then return end
-
-    ply.RPLicenseSpawn = true
-    timer.Simple(1, function()
-        if not IsValid(ply) then return end
-        ply.RPLicenseSpawn = false
-    end)
-
     local jobTable = ply:getJobTable()
 
     for _, v in pairs(jobTable.weapons or {}) do
@@ -921,9 +877,6 @@ function GM:PlayerLoadout(ply)
 
         if not GAMEMODE.Config.AdminsCopWeapons then return end
 
-        ply:Give("door_ram")
-        ply:Give("arrest_stick")
-        ply:Give("unarrest_stick")
         ply:Give("stunstick")
         ply:Give("weaponchecker")
     end)

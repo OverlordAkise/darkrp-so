@@ -53,8 +53,6 @@ GM.Config.cit_propertytax               = false
 GM.Config.copscanunfreeze               = true
 -- copscanunweld - Enable/disable the ability of cops to unweld other people's props.
 GM.Config.copscanunweld                 = false
--- cpcanarrestcp - Allow/Disallow CPs to arrest other CPs.
-GM.Config.cpcanarrestcp                 = true
 -- currencyLeft - The position of the currency symbol. true for left, false for right.
 GM.Config.currencyLeft                  = true
 -- customjobs - Enable/disable the /job command (personalized job names).
@@ -73,12 +71,8 @@ GM.Config.deadvoice                     = true
 GM.Config.deathpov                      = false
 -- decalcleaner - Enable/Disable clearing every player's decals.
 GM.Config.decalcleaner                  = false
--- doorwarrants - Enable/disable Warrant requirement to enter property.
-GM.Config.doorwarrants                  = true
 -- dropmoneyondeath - Enable/disable whether people drop money on death.
 GM.Config.dropmoneyondeath              = false
--- droppocketarrest - Enable/disable whether people drop the stuff in their pockets when they get arrested.
-GM.Config.droppocketarrest              = false
 -- droppocketdeath - Enable/disable whether people drop the stuff in their pockets when they die.
 GM.Config.droppocketdeath               = true
 -- dropweapondeath - Enable/disable whether people drop their current weapon when they die.
@@ -97,8 +91,6 @@ GM.Config.ironshoot                     = true
 GM.Config.showjob                       = true
 -- letters - Enable/disable letter writing / typing.
 GM.Config.letters                       = true
--- license - Enable/disable People need a license to be able to pick up guns.
-GM.Config.license                       = false
 -- lockdown - Enable/Disable initiating lockdowns for mayors.
 GM.Config.lockdown                      = true
 -- lockpickfading - Enable/disable the lockpicking of fading doors.
@@ -111,16 +103,12 @@ GM.Config.lottery                       = true
 GM.Config.showname                      = true
 -- showhealth - Whether or not to display a player's health above their head in-game.
 GM.Config.showhealth                    = true
--- needwantedforarrest - Enable/disable Cops can only arrest wanted people.
-GM.Config.needwantedforarrest           = false
 -- noguns - Enabling this feature bans Guns and Gun Dealers.
 GM.Config.noguns                        = false
 -- norespawn - Enable/Disable that people don't have to respawn when they change job.
 GM.Config.norespawn                     = true
 -- instantjob - Enable/Disable instantly respawning when norespawn is false
 GM.Config.instantjob                    = false
--- npcarrest - Enable/disable arresting npc's.
-GM.Config.npcarrest                     = true
 -- ooc - Whether or not OOC tags are enabled.
 GM.Config.ooc                           = true
 -- propertytax - Enable/disable property tax.
@@ -141,8 +129,6 @@ GM.Config.restrictallteams              = false
 GM.Config.restrictbuypistol             = false
 -- restrictdrop - Enable/disable restricting the weapons players can drop. Setting this to true disallows weapons from shipments from being dropped.
 GM.Config.restrictdrop                  = false
--- revokeLicenseOnJobChange - Whether licenses are revoked when a player changes jobs.
-GM.Config.revokeLicenseOnJobChange      = true
 -- shouldResetLaws - Enable/Disable resetting the laws back to the default law set when the mayor changes.
 GM.Config.shouldResetLaws               = false
 -- strictsuicide - Whether or not players should spawn where they suicided.
@@ -155,10 +141,6 @@ GM.Config.teletojail                    = true
 GM.Config.unlockdoorsonstart            = false
 -- tax - Whether players pay taxes on their wallets.
 GM.Config.wallettax                     = false
--- wantedrespawn - Whether players remain wanted on respawn.
-GM.Config.wantedrespawn                 = false
--- wantedsuicide - Enable/Disable suiciding while you are wanted by the police.
-GM.Config.wantedsuicide                 = false
 -- realisticfalldamage - Enable/Disable dynamic fall damage. Setting mp_falldamage to 1 will over-ride this.
 GM.Config.realisticfalldamage           = true
 -- printeroverheat - Whether the default money printer can overheat on its own.
@@ -179,8 +161,6 @@ GM.Config.adminsents                    = 2
 GM.Config.adminvehicles                 = 2
 -- adminweapons - Who can spawn weapons: 0: admins only, 1: supadmins only, 2: no one, 3: everyone
 GM.Config.adminweapons                  = 1
--- arrestspeed - Sets the max arrest speed.
-GM.Config.arrestspeed                   = 120
 -- babygodtime - How long the babygod lasts.
 GM.Config.babygodtime                   = 5
 -- chatsoundsdelay - How long to wait before letting a player emit a sound from their chat again.
@@ -252,8 +232,6 @@ GM.Config.changejobtime                 = 10
 GM.Config.runspeed                      = 240
 -- runspeed - Sets the max running speed for CP teams.
 GM.Config.runspeedcp                    = 255
--- searchtime - Number of seconds for which a search warrant is valid.
-GM.Config.searchtime                    = 30
 -- ShipmentSpawnTime - Antispam time between spawning shipments.
 GM.Config.ShipmentSpamTime              = 3
 -- shipmenttime - The number of seconds it takes for a shipment to spawn.
@@ -274,8 +252,6 @@ GM.Config.wallettaxmax                  = 5
 GM.Config.wallettaxmin                  = 1
 -- wallettaxtime - Time in seconds between taxing players. Requires server restart.
 GM.Config.wallettaxtime                 = 600
--- wantedtime - Number of seconds for which a player is wanted for.
-GM.Config.wantedtime                    = 120
 -- walkspeed - Sets the max walking speed.
 GM.Config.walkspeed                     = 160
 -- falldamagedamper - The damper on realistic fall damage. Default is 15. Decrease this for more damage.
@@ -334,7 +310,6 @@ GM.Config.DisabledCustomModules = {
 
 -- The list of weapons that players are not allowed to drop. Items set to true are not allowed to be dropped.
 GM.Config.DisallowDrop = {
-    ["arrest_stick"] = true,
     ["door_ram"] = true,
     ["gmod_camera"] = true,
     ["gmod_tool"] = true,
@@ -343,7 +318,6 @@ GM.Config.DisallowDrop = {
     ["med_kit"] = true,
     ["pocket"] = true,
     ["stunstick"] = true,
-    ["unarrest_stick"] = true,
     ["weapon_keypadchecker"] = true,
     ["weapon_physcannon"] = true,
     ["weapon_physgun"] = true,

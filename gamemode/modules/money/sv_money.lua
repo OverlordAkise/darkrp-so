@@ -20,22 +20,18 @@ function DarkRP.payPlayer(ply1, ply2, amount)
 end
 
 function meta:payDay()
-    if not self:isArrested() then
-        DarkRP.retrieveSalary(self, function(amount)
-            amount = math.floor(amount or GAMEMODE.Config.normalsalary)
-            local suppress, message, hookAmount = hook.Call("playerGetSalary", GAMEMODE, self, amount)
-            amount = hookAmount or amount
+    DarkRP.retrieveSalary(self, function(amount)
+        amount = math.floor(amount or GAMEMODE.Config.normalsalary)
+        local suppress, message, hookAmount = hook.Call("playerGetSalary", GAMEMODE, self, amount)
+        amount = hookAmount or amount
 
-            if amount == 0 or not amount then
-                if not suppress then DarkRP.notify(self, 4, 4, message or DarkRP.getPhrase("payday_unemployed")) end
-            else
-                self:addMoney(amount)
-                if not suppress then DarkRP.notify(self, 4, 4, message or DarkRP.getPhrase("payday_message", DarkRP.formatMoney(amount))) end
-            end
-        end)
-    else
-        DarkRP.notify(self, 4, 4, DarkRP.getPhrase("payday_missed"))
-    end
+        if amount == 0 or not amount then
+            if not suppress then DarkRP.notify(self, 4, 4, message or DarkRP.getPhrase("payday_unemployed")) end
+        else
+            self:addMoney(amount)
+            if not suppress then DarkRP.notify(self, 4, 4, message or DarkRP.getPhrase("payday_message", DarkRP.formatMoney(amount))) end
+        end
+    end)
 end
 
 function DarkRP.createMoneyBag(pos, amount)

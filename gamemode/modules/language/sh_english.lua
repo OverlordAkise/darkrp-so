@@ -73,48 +73,6 @@ local my_language = {
 
     owner_poor = "The %s owner is too poor to subsidize this sale!",
 
-    -- Police
-    Wanted_text = "Wanted!",
-    wanted = "Wanted by Police!\nReason: %s",
-    youre_arrested = "You have been arrested. Time left: %d seconds!",
-    youre_arrested_by = "You have been arrested by %s.",
-    youre_unarrested_by = "You were unarrested by %s.",
-    hes_arrested = "%s has been arrested for %d seconds!",
-    hes_unarrested = "%s has been released from jail!",
-    warrant_ordered = "%s ordered a search warrant for %s. Reason: %s",
-    warrant_request = "%s requests a search warrant for %s\nReason: %s",
-    warrant_request2 = "Search warrant request sent to Mayor %s!",
-    warrant_approved = "Search warrant approved for %s!\nReason: %s\nOrdered by: %s",
-    warrant_approved2 = "You are now able to search his house.",
-    warrant_denied = "Mayor %s has denied your search warrant request.",
-    warrant_expired = "The search warrant for %s has expired!",
-    warrant_required = "You need a warrant in order to be able to open this door.",
-    warrant_required_unfreeze = "You need a warrant in order to be able to unfreeze this prop.",
-    warrant_required_unweld = "You need a warrant in order to be able to unweld this prop.",
-    wanted_by_police = "%s is wanted by the police!\nReason: %s\nOrdered by: %s",
-    wanted_by_police_print = "%s has made %s wanted, reason: %s",
-    wanted_expired = "%s is no longer wanted by the Police.",
-    wanted_revoked = "%s is no longer wanted by the Police.\nRevoked by: %s",
-    cant_arrest_other_cp = "You cannot arrest other CPs!",
-    must_be_wanted_for_arrest = "The player must be wanted in order to be able to arrest them.",
-    cant_arrest_fadmin_jailed = "You cannot arrest a player who has been jailed by an admin.",
-    cant_arrest_no_jail_pos = "You cannot arrest people since there are no jail positions set!",
-    cant_arrest_spawning_players = "You cannot arrest players who are spawning.",
-
-    suspect_doesnt_exist = "Suspect does not exist.",
-    actor_doesnt_exist = "Actor does not exist.",
-    get_a_warrant = "get a warrant",
-    remove_a_warrant = "remove a warrant",
-    make_someone_wanted = "make someone wanted",
-    remove_wanted_status = "remove wanted status",
-    already_a_warrant = "There already is a search warrant for this suspect.",
-    not_warranted = "There is no search warrant for this person.",
-    already_wanted = "The suspect is already wanted.",
-    not_wanted = "The suspect is not wanted.",
-    need_to_be_cp = "You have to be a member of the police force.",
-    suspect_must_be_alive_to_do_x = "The suspect must be alive in order to %s.",
-    suspect_already_arrested = "The suspect is already in jail.",
-
     -- Players
     health = "Health: %s",
     job = "Job: %s",
@@ -151,7 +109,6 @@ local my_language = {
     keys_owned_by = "Owned by:",
     keys_unowned = "Unowned\n(Press Reload with keys or press F2 to own)",
     keys_everyone = "(Press Reload with keys or press F2 to enable for everyone)",
-    door_unown_arrested = "You can not own or unown things while arrested!",
     door_unownable = "This door cannot be owned or unowned!",
     door_sold = "You have sold this for %s",
     door_already_owned = "This door is already owned by someone!",
@@ -334,14 +291,6 @@ local my_language = {
     tried_to_avoid_demotion = "You tried to escape demotion. You failed and have been demoted.", -- naughty boy!
     lockdown_started = "The mayor has initiated a Lockdown, please return to your homes!",
     lockdown_ended = "The lockdown has ended",
-    gunlicense_requested = "%s has requested %s a gun license",
-    gunlicense_granted = "%s has granted %s a gun license",
-    gunlicense_denied = "%s has denied %s a gun license",
-    gunlicense_question_text = "Grant %s a gun license?",
-    gunlicense_remove_vote_text = "%s has started a vote for the gun license removal of %s",
-    gunlicense_remove_vote_text2 = "Revoke gunlicense:\n%s", -- Where %s is the reason
-    gunlicense_removed = "%s's license has been removed!",
-    gunlicense_not_removed = "%s's license has not been removed!",
     vote_specify_reason = "You need to specify a reason!",
     vote_started = "The vote has been created",
     vote_alone = "You have won the vote since you are alone in the server.",
@@ -485,17 +434,9 @@ local my_language = {
     go_to_sleep = "Go to sleep/wake up",
     drop_weapon = "Drop current weapon",
     buy_health = "Buy health(%s)",
-    request_gunlicense = "Request gunlicense",
     demote_player_menu = "Demote a player",
 
-    searchwarrantbutton = "Make a player wanted",
-    unwarrantbutton = "Remove the wanted status from a player",
     noone_available = "No one available",
-    request_warrant = "Request a search warrant for a player",
-    make_wanted = "Make someone wanted",
-    make_unwanted = "Make someone unwanted",
-    set_jailpos = "Set the jail position",
-    add_jailpos = "Add a jail position",
 
     set_custom_job = "Set a custom job (press enter to activate)",
 
@@ -504,7 +445,6 @@ local my_language = {
     initiate_lockdown = "Initiate a lockdown",
     stop_lockdown = "Stop the lockdown",
     start_lottery = "Start a lottery",
-    give_license_lookingat = "Give <lookingat> a gun license",
 
     laws_of_the_land = "LAWS OF THE LAND",
     law_added = "Law added.",
@@ -521,13 +461,6 @@ local my_language = {
 
     -- Entities tab
     buy_a = "Buy %s: %s",
-
-    -- Licenseweaponstab
-    license_tab = [[License weapons
-
-    Tick the weapons people should be able to get WITHOUT a license!
-    ]],
-    license_tab_other_weapons = "Other weapons:",
 }
 
 -- The language code is usually (but not always) a two-letter code. The default language is "en".

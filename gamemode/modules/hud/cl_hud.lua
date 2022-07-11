@@ -120,15 +120,6 @@ local function DrawInfo()
     draw.DrawNonParsedText(JobWalletText, "DarkRPHUD2", RelativeX + 4, RelativeY - HUDHeight + h + 5, ConVars.Job2, 0)
 end
 
-local Page = Material("icon16/page_white_text.png")
-local function GunLicense()
-    if localplayer:getDarkRPVar("HasGunlicense") then
-        surface.SetMaterial(Page)
-        surface.SetDrawColor(255, 255, 255, 255)
-        surface.DrawTexturedRect(RelativeX + HUDWidth, Scrh - 34, 32, 32)
-    end
-end
-
 local agendaText
 local function Agenda()
     local shouldDraw = hook.Call("HUDShouldDraw", GAMEMODE, "DarkRP_Agenda")
@@ -196,24 +187,6 @@ local function LockDown()
     end
 end
 
-local Arrested = function() end
-
-usermessage.Hook("GotArrested", function(msg)
-    local StartArrested = CurTime()
-    local ArrestedUntil = msg:ReadFloat()
-
-    Arrested = function()
-        local shouldDraw = hook.Call("HUDShouldDraw", GAMEMODE, "DarkRP_ArrestedHUD")
-        if shouldDraw == false then return end
-
-        if CurTime() - StartArrested <= ArrestedUntil and localplayer:getDarkRPVar("Arrested") then
-            draw.DrawNonParsedText(DarkRP.getPhrase("youre_arrested", math.ceil((ArrestedUntil - (CurTime() - StartArrested)) * 1 / game.GetTimeScale())), "DarkRPHUD1", Scrw / 2, Scrh - Scrh / 12, colors.white, 1)
-        elseif not localplayer:getDarkRPVar("Arrested") then
-            Arrested = function() end
-        end
-    end
-end)
-
 local AdminTell = function() end
 
 usermessage.Hook("AdminTell", function(msg)
@@ -248,13 +221,11 @@ local function DrawHUD()
         draw.RoundedBox(6, 0, Scrh - HUDHeight, HUDWidth, HUDHeight, ConVars.background)
         DrawHealth()
         DrawInfo()
-        GunLicense()
     end
     Agenda()
     DrawVoiceChat()
     LockDown()
 
-    Arrested()
     AdminTell()
 end
 
@@ -268,10 +239,7 @@ plyMeta.drawPlayerInfo = plyMeta.drawPlayerInfo or function(self)
 
     pos.z = pos.z + 10 -- The position we want is a bit above the position of the eyes
     pos = pos:ToScreen()
-    if not self:getDarkRPVar("wanted") then
-        -- Move the text up a few pixels to compensate for the height of the text
-        pos.y = pos.y - 50
-    end
+    pos.y = pos.y - 50
 
     if GAMEMODE.Config.showname then
         local nick, plyTeam = self:Nick(), self:Team()
@@ -290,35 +258,6 @@ plyMeta.drawPlayerInfo = plyMeta.drawPlayerInfo or function(self)
         draw.DrawNonParsedText(teamname, "DarkRPHUD2", pos.x + 1, pos.y + 41, colors.black, 1)
         draw.DrawNonParsedText(teamname, "DarkRPHUD2", pos.x, pos.y + 40, colors.white1, 1)
     end
-
-    if self:getDarkRPVar("HasGunlicense") then
-        surface.SetMaterial(Page)
-        surface.SetDrawColor(255,255,255,255)
-        surface.DrawTexturedRect(pos.x-16, pos.y + 60, 32, 32)
-    end
-end
-
--- Draw wanted information above a player's head
--- This syntax allows for easy overriding
-plyMeta.drawWantedInfo = plyMeta.drawWantedInfo or function(self)
-    if not self:Alive() then return end
-
-    local pos = self:EyePos()
-    if not pos:isInSight({localplayer, self}) then return end
-
-    pos.z = pos.z + 10
-    pos = pos:ToScreen()
-
-    if GAMEMODE.Config.showname then
-        local nick, plyTeam = self:Nick(), self:Team()
-        draw.DrawNonParsedText(nick, "DarkRPHUD2", pos.x + 1, pos.y + 1, colors.black, 1)
-        draw.DrawNonParsedText(nick, "DarkRPHUD2", pos.x, pos.y, RPExtraTeams[plyTeam] and RPExtraTeams[plyTeam].color or team.GetColor(plyTeam) , 1)
-    end
-
-    local wantedText = DarkRP.getPhrase("wanted", tostring(self:getDarkRPVar("wantedReason")))
-
-    draw.DrawNonParsedText(wantedText, "DarkRPHUD2", pos.x, pos.y - 40, colors.white1, 1)
-    draw.DrawNonParsedText(wantedText, "DarkRPHUD2", pos.x + 1, pos.y - 41, colors.red, 1)
 end
 
 --[[---------------------------------------------------------------------------
@@ -334,7 +273,6 @@ local function DrawEntityDisplay()
     for _, ply in ipairs(players or player.GetAll()) do
         if not IsValid(ply) or ply == localplayer or not ply:Alive() or ply:GetNoDraw() or ply:IsDormant() then continue end
         local hisPos = ply:GetShootPos()
-        if ply:getDarkRPVar("wanted") then ply:drawWantedInfo() end
 
         if hisPos:DistToSqr(shootPos) < 160000 then
             local pos = hisPos - shootPos

@@ -341,11 +341,6 @@ local function OwnDoor(ply)
 
     local Owner = ent:CPPIGetOwner()
 
-    if ply:isArrested() then
-        DarkRP.notify(ply, 1, 5, DarkRP.getPhrase("door_unown_arrested"))
-        return ""
-    end
-
     if ent:getKeysNonOwnable() or ent:getKeysDoorGroup() or not fn.Null(ent:getKeysDoorTeams() or {}) then
         DarkRP.notify(ply, 1, 5, DarkRP.getPhrase("door_unownable"))
         return ""
