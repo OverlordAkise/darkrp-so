@@ -50,7 +50,6 @@ include("darkrp/gamemode/modules/language/sh_english.lua")
 include("darkrp/gamemode/modules/jobs/sh_commands.lua")
 include("darkrp/gamemode/modules/hud/sh_chatcommands.lua")
 include("darkrp/gamemode/modules/hud/cl_hud.lua")
-include("darkrp/gamemode/modules/hobo/cl_hobo.lua")
 --hitman below base
 include("darkrp/gamemode/modules/fspectate/sh_init.lua")
 include("darkrp/gamemode/modules/fspectate/cl_init.lua")
