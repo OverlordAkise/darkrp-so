@@ -47,7 +47,6 @@ include("darkrp/gamemode/modules/language/sh_english.lua")
 include("darkrp/gamemode/modules/jobs/sh_commands.lua")
 include("darkrp/gamemode/modules/hud/sh_chatcommands.lua")
 include("darkrp/gamemode/modules/hud/cl_hud.lua")
---hitman below base
 include("darkrp/gamemode/modules/fspectate/sh_init.lua")
 include("darkrp/gamemode/modules/fspectate/cl_init.lua")
 include("darkrp/gamemode/modules/fpp/cl_fpp.lua")
@@ -88,10 +87,6 @@ include("darkrp/gamemode/modules/base/cl_fonts.lua")
 include("darkrp/gamemode/modules/base/cl_entityvars.lua")
 include("darkrp/gamemode/modules/base/cl_drawfunctions.lua")
 include("darkrp/gamemode/modules/animations/sh_animations.lua")
---hitman stuff
-include("darkrp/gamemode/modules/hitmenu/sh_init.lua")
-include("darkrp/gamemode/modules/hitmenu/cl_menu.lua")
-include("darkrp/gamemode/modules/hitmenu/cl_init.lua")
 --police stuff
 include("darkrp/gamemode/modules/police/sh_init.lua")
 
