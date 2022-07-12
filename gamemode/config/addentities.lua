@@ -1,20 +1,3 @@
-DarkRP.createEntity("Drug lab", {
-    ent = "drug_lab",
-    model = "models/props_lab/crematorcase.mdl",
-    price = 400,
-    max = 3,
-    cmd = "buydruglab",
-    allowed = {TEAM_GANG, TEAM_MOB}
-})
-
-DarkRP.createEntity("Money printer", {
-    ent = "money_printer",
-    model = "models/props_c17/consolebox01a.mdl",
-    price = 1000,
-    max = 2,
-    cmd = "buymoneyprinter"
-})
-
 if not DarkRP.disabledDefaults["modules"]["hungermod"] then
     DarkRP.createEntity("Microwave", {
         ent = "microwave",

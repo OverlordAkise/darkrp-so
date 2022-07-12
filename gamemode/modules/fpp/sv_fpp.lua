@@ -19,12 +19,8 @@ DarkRP blocked entities
 local blockTypes = {"Physgun1", "Spawning1", "Toolgun1"}
 
 FPP.AddDefaultBlocked(blockTypes, "chatindicator")
-FPP.AddDefaultBlocked(blockTypes, "drug")
-FPP.AddDefaultBlocked(blockTypes, "drug_lab")
-FPP.AddDefaultBlocked(blockTypes, "fadmin_jail")
 FPP.AddDefaultBlocked(blockTypes, "food")
 FPP.AddDefaultBlocked(blockTypes, "microwave")
-FPP.AddDefaultBlocked(blockTypes, "money_printer")
 FPP.AddDefaultBlocked(blockTypes, "spawned_ammo")
 FPP.AddDefaultBlocked(blockTypes, "spawned_food")
 FPP.AddDefaultBlocked(blockTypes, "spawned_money")
