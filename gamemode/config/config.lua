@@ -293,27 +293,15 @@ GM.Config.CategoryOverride = {
         ["Citizen"]                             = "Citizens",
         ["Medic"]                               = "Citizens",
         ["Civil Protection"]                    = "Civil Protection",
-        ["Gangster"]                            = "Gangsters",
-        ["Mob boss"]                            = "Gangsters",
         ["Civil Protection Chief"]              = "Civil Protection",
         ["Mayor"]                               = "Civil Protection",
     },
     entities = {
     },
     shipments = {
-        ["AK47"]                                = "Rifles",
-        ["MP5"]                                 = "Rifles",
-        ["M4"]                                  = "Rifles",
-        ["Mac 10"]                              = "Other",
-        ["Pump shotgun"]                        = "Shotguns",
-        ["Sniper rifle"]                        = "Snipers",
 
     },
     weapons = {
-        ["Desert eagle"]                        = "Pistols",
-        ["Fiveseven"]                           = "Pistols",
-        ["Glock"]                               = "Pistols",
-        ["P228"]                                = "Pistols",
     },
     vehicles = {}, -- There are no default vehicles.
     ammo = {

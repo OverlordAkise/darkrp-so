@@ -53,51 +53,6 @@ TEAM_POLICE = DarkRP.createJob("Civil Protection", {
     category = "Civil Protection",
 })
 
-TEAM_GANG = DarkRP.createJob("Gangster", {
-    color = Color(75, 75, 75, 255),
-    model = {
-        "models/player/Group03/Female_01.mdl",
-        "models/player/Group03/Female_02.mdl",
-        "models/player/Group03/Female_03.mdl",
-        "models/player/Group03/Female_04.mdl",
-        "models/player/Group03/Female_06.mdl",
-        "models/player/group03/male_01.mdl",
-        "models/player/Group03/Male_02.mdl",
-        "models/player/Group03/male_03.mdl",
-        "models/player/Group03/Male_04.mdl",
-        "models/player/Group03/Male_05.mdl",
-        "models/player/Group03/Male_06.mdl",
-        "models/player/Group03/Male_07.mdl",
-        "models/player/Group03/Male_08.mdl",
-        "models/player/Group03/Male_09.mdl"},
-    description = [[The lowest person of crime.
-        A gangster generally works for the Mobboss who runs the crime family.]],
-    weapons = {},
-    command = "gangster",
-    max = 3,
-    salary = GAMEMODE.Config.normalsalary,
-    admin = 0,
-    vote = false,
-    hasLicense = false,
-    category = "Gangsters",
-})
-
-TEAM_MOB = DarkRP.createJob("Mob boss", {
-    color = Color(25, 25, 25, 255),
-    model = "models/player/gman_high.mdl",
-    description = [[The Mob boss is the boss of the criminals in the city.
-        With his power he coordinates the gangsters and forms an efficient crime organization.
-        He has the ability to break into houses by using a lockpick.]],
-    weapons = {"lockpick"},
-    command = "mobboss",
-    max = 1,
-    salary = GAMEMODE.Config.normalsalary * 1.34,
-    admin = 0,
-    vote = false,
-    hasLicense = false,
-    category = "Gangsters",
-})
-
 TEAM_MEDIC = DarkRP.createJob("Medic", {
     color = Color(47, 79, 79, 255),
     model = "models/player/kleiner.mdl",
@@ -173,8 +128,8 @@ end
 -- Compatibility for when default teams are disabled
 TEAM_CITIZEN = TEAM_CITIZEN  or -1
 TEAM_POLICE  = TEAM_POLICE   or -1
-TEAM_GANG    = TEAM_GANG     or -1
-TEAM_MOB     = TEAM_MOB      or -1
+TEAM_GANG    = -1
+TEAM_MOB     = -1
 TEAM_GUN     = -1
 TEAM_MEDIC   = TEAM_MEDIC    or -1
 TEAM_CHIEF   = TEAM_CHIEF    or -1
@@ -187,7 +142,6 @@ AddDoorGroup("Cops and Mayor only", TEAM_CHIEF, TEAM_POLICE, TEAM_MAYOR)
 
 -- Group chats
 DarkRP.createGroupChat(function(ply) return ply:isCP() end)
-DarkRP.createGroupChat(TEAM_MOB, TEAM_GANG)
 DarkRP.createGroupChat(function(listener, ply) return not ply or ply:Team() == listener:Team() end)
 
 -- Initial team when first spawning
@@ -202,7 +156,6 @@ GAMEMODE.CivilProtection = {
 
 -- Demote groups
 DarkRP.createDemoteGroup("Cops", {TEAM_POLICE, TEAM_CHIEF})
-DarkRP.createDemoteGroup("Gangsters", {TEAM_GANG, TEAM_MOB})
 
 -- Default categories
 DarkRP.createCategory{
@@ -219,15 +172,6 @@ DarkRP.createCategory{
     categorises = "jobs",
     startExpanded = true,
     color = Color(25, 25, 170, 255),
-    canSee = returnTrue,
-    sortOrder = 101,
-}
-
-DarkRP.createCategory{
-    name = "Gangsters",
-    categorises = "jobs",
-    startExpanded = true,
-    color = Color(75, 75, 75, 255),
     canSee = returnTrue,
     sortOrder = 101,
 }

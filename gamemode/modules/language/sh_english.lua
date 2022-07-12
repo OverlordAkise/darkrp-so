@@ -339,10 +339,6 @@ local my_language = {
     player_now_afk = "%s is now AFK.",
     player_no_longer_afk = "%s is no longer AFK.",
 
-    -- Vote Restrictions
-    gangsters_cant_vote_for_government = "Gangsters cannot vote for government things!",
-    government_cant_vote_for_gangsters = "Government officials cannot vote for gangster things!",
-
     -- VGUI and some more doors/vehicles
     vote = "Vote",
     time = "Time: %d",
