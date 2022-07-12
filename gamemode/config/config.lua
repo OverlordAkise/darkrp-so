@@ -93,8 +93,6 @@ GM.Config.lockdown                      = true
 GM.Config.lockpickfading                = true
 -- logging - Enable/disable logging everything that happens.
 GM.Config.logging                       = true
--- lottery - Enable/disable creating lotteries for mayors.
-GM.Config.lottery                       = true
 -- showname - Whether or not to display a player's name above their head in-game.
 GM.Config.showname                      = true
 -- showhealth - Whether or not to display a player's health above their head in-game.
@@ -180,14 +178,10 @@ GM.Config.maxfoods                      = 2
 GM.Config.maxfooditems                  = 20
 -- maxlawboards - The maximum number of law boards the mayor can place.
 GM.Config.maxlawboards                  = 2
--- maxlotterycost - Maximum payment the mayor can set to join a lottery.
-GM.Config.maxlotterycost                = 250
 -- maxvehicles - Sets how many vehicles one can buy.
 GM.Config.maxvehicles                   = 5
 -- microwavefoodcost - Sets the sale price of Microwave Food.
 GM.Config.microwavefoodcost             = 30
--- minlotterycost - Minimum payment the mayor can set to join a lottery.
-GM.Config.minlotterycost                = 30
 -- Money packets will get removed if they don't get picked up after a while. Set to 0 to disable.
 GM.Config.moneyRemoveTime               = 600
 -- mprintamount - Value of the money printed by the money printer.

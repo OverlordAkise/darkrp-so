@@ -321,18 +321,6 @@ local my_language = {
 
     cmd_cant_be_run_server_console = "This command cannot be run from the server console.",
 
-    -- The lottery
-    lottery_started = "There is a lottery! Participate for %s%d?", -- backwards compatibility
-    lottery_has_started = "There is a lottery! Participate for %s?",
-    lottery_entered = "You entered the lottery for %s",
-    lottery_not_entered = "%s did not enter the lottery",
-    lottery_noone_entered = "No-one has entered the lottery",
-    lottery_won = "%s has won the lottery! He has won %s",
-    lottery = "lottery",
-    lottery_please_specify_an_entry_cost = "Please specify an entry cost (%s-%s)",
-    too_few_players_for_lottery = "There are too few players to start a lottery. There need to be at least %d players",
-    lottery_ongoing = "Cannot start a lottery, there is already a lottery ongoing",
-
     -- Animations
     custom_animation = "Custom animation!",
     bow = "Bow",
@@ -411,7 +399,6 @@ local my_language = {
 
     initiate_lockdown = "Initiate a lockdown",
     stop_lockdown = "Stop the lockdown",
-    start_lottery = "Start a lottery",
 
     laws_of_the_land = "LAWS OF THE LAND",
     law_added = "Law added.",
