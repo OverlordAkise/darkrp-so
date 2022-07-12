@@ -73,6 +73,10 @@ SetGlobalBool("DarkRP_Lockdown", false)
 function DarkRP.unLockdown() end
 function DarkRP.lockdown() end
 
+--Laws
+function DarkRP.getLaws() return {} end
+function DarkRP.resetLaws() end
+
 
 --Jobs
 TEAM_HOBO = -1
