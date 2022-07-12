@@ -26,6 +26,10 @@ AddCSLuaFile("cl_init.lua")
 GM.Config = GM.Config or {}
 GM.NoLicense = GM.NoLicense or {}
 
+function DarkRP.log(text)
+    print("[darkrpso_log] "..text)
+end
+
 include("shared.lua")
 
 --interfaceloader.lua start
@@ -133,7 +137,6 @@ include("darkrp/gamemode/modules/playerscale/sv_playerscale.lua")
 include("darkrp/gamemode/modules/money/sh_money.lua")
 include("darkrp/gamemode/modules/money/sh_commands.lua")
 include("darkrp/gamemode/modules/money/sv_money.lua")
-include("darkrp/gamemode/modules/logging/sv_logging.lua")
 include("darkrp/gamemode/modules/language/sh_language.lua")
 include("darkrp/gamemode/modules/language/sh_english.lua")
 include("darkrp/gamemode/modules/jobs/sh_commands.lua")

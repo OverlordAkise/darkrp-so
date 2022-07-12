@@ -86,10 +86,6 @@ function GM:DatabaseInitialized()
     DarkRP.initDatabase()
 end
 
-function GM:canSeeLogMessage(ply, message, colour)
-    return true
-end
-
 function GM:canEarnNPCKillPay(ply, npc)
     return GAMEMODE.Config.npckillpay > 0
 end
