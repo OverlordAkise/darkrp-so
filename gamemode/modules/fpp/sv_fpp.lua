@@ -27,8 +27,6 @@ FPP.AddDefaultBlocked(blockTypes, "spawned_money")
 FPP.AddDefaultBlocked(blockTypes, "spawned_shipment")
 FPP.AddDefaultBlocked(blockTypes, "spawned_weapon")
 
-FPP.AddDefaultBlocked("Spawning1", "darkrp_laws")
-
 hook.Add("DarkRPDBInitialized", "FPPInit", function()
 	FPP.Init()
 end)

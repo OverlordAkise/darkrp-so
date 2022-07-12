@@ -39,7 +39,7 @@ TEAM_POLICE = DarkRP.createJob("Civil Protection", {
     color = Color(25, 25, 170, 255),
     model = {"models/player/police.mdl", "models/player/police_fem.mdl"},
     description = [[The protector of every citizen that lives in the city.
-        Bash a player with a stunstick and they may learn to obey the law.]],
+        Bash a player with a stunstick.]],
     weapons = {"stunstick"},
     command = "cp",
     max = 4,
@@ -140,7 +140,7 @@ TEAM_CHIEF = DarkRP.createJob("Civil Protection Chief", {
 TEAM_MAYOR = DarkRP.createJob("Mayor", {
     color = Color(150, 20, 20, 255),
     model = "models/player/breen.mdl",
-    description = [[The Mayor of the city creates laws to govern the city.]],
+    description = [[The Mayor of the city.]],
     weapons = {},
     command = "mayor",
     max = 1,

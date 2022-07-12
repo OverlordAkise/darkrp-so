@@ -112,19 +112,6 @@ function meta:changeTeam(t, force, suppressNotification, ignoreMaxMembers)
         end
     end
 
-    if isMayor then
-        for _, ent in ipairs(self.lawboards or {}) do
-            if IsValid(ent) then
-                ent:Remove()
-            end
-        end
-        self.lawboards = {}
-    end
-
-    if isMayor and GAMEMODE.Config.shouldResetLaws then
-        DarkRP.resetLaws()
-    end
-
     local DoEffect = false
 
     self:SetTeam(t)

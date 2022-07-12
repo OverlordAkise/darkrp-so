@@ -119,8 +119,6 @@ GM.Config.restrictallteams              = false
 GM.Config.restrictbuypistol             = false
 -- restrictdrop - Enable/disable restricting the weapons players can drop. Setting this to true disallows weapons from shipments from being dropped.
 GM.Config.restrictdrop                  = false
--- shouldResetLaws - Enable/Disable resetting the laws back to the default law set when the mayor changes.
-GM.Config.shouldResetLaws               = false
 -- strictsuicide - Whether or not players should spawn where they suicided.
 GM.Config.strictsuicide                 = false
 -- unlockdoorsonstart - Enable/Disable unlocking all doors on map start.
@@ -168,8 +166,6 @@ GM.Config.maxdoors                      = 20
 GM.Config.maxfoods                      = 2
 -- maxfooditems - Sets the max amount of food items a player can buy from the F4 menu.
 GM.Config.maxfooditems                  = 20
--- maxlawboards - The maximum number of law boards the mayor can place.
-GM.Config.maxlawboards                  = 2
 -- maxvehicles - Sets how many vehicles one can buy.
 GM.Config.maxvehicles                   = 5
 -- microwavefoodcost - Sets the sale price of Microwave Food.
@@ -332,12 +328,6 @@ GM.Config.CategoryOverride = {
 -- The list of weapons admins spawn with, in addition to the default weapons, a job's weapons and GM.Config.AdminsCopWeapons.
 GM.Config.AdminWeapons = {
     "weapon_keypadchecker",
-}
-
--- These are the default laws, they're unchangeable in-game.
-GM.Config.DefaultLaws = {
-    "Do not attack other citizens except in self-defence.",
-    "Do not steal or break into people's homes.",
 }
 
 GM.Config.PocketBlacklist = {

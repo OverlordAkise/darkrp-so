@@ -912,13 +912,6 @@ local function collectRemoveEntities(ply)
         table.insert(collect, v)
     end
 
-    if not ply:isMayor() then return collect end
-
-    for _, ent in pairs(ply.lawboards or {}) do
-        if not IsValid(ent) then continue end
-        table.insert(collect, ent)
-    end
-
     return collect
 end
 
@@ -934,10 +927,6 @@ function GM:PlayerDisconnected(ply)
 
     DarkRP.destroyQuestionsWithEnt(ply)
     DarkRP.destroyVotesWithEnt(ply)
-
-    if isMayor and GAMEMODE.Config.shouldResetLaws then
-        DarkRP.resetLaws()
-    end
 
     if IsValid(ply.SleepRagdoll) then
         ply.SleepRagdoll:Remove()
