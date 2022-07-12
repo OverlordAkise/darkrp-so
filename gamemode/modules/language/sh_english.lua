@@ -62,12 +62,6 @@ local my_language = {
     property_tax_cant_afford = "You couldn't pay the taxes! Your property has been taken away from you!",
     taxday = "Tax Day! %s%% of your income was taken!",
 
-    found_cheque = "You have found %s%s in a cheque made out to you from %s.",
-    cheque_details = "This cheque is made out to %s.",
-    cheque_torn = "You have torn up the cheque.",
-    cheque_pay = "Pay: %s",
-    signed = "Signed: %s",
-
     found_cash = "You have picked up %s%d!", -- backwards compatibility
     found_money = "You have picked up %s!",
 
@@ -136,17 +130,11 @@ local my_language = {
     drugs = "drugs",
     Drugs = "Drugs",
     drug_lab = "Drug Lab",
-    gun_lab = "Gun Lab",
-    any_lab = "any lab",
     gun = "gun",
     microwave = "Microwave",
     food = "food",
     Food = "Food",
     money_printer = "Money Printer",
-    tip_jar = "Tip Jar",
-
-    sign_this_letter = "Sign this letter",
-    signed_yours = "Yours,",
 
     money_printer_exploded = "Your money printer has exploded!",
     money_printer_overheating = "Your money printer is overheating!",

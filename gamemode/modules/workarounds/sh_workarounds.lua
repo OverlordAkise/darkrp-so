@@ -314,7 +314,6 @@ Actively deprecate commands
 ---------------------------------------------------------------------------]]
 if SERVER and not DarkRP.disabledDefaults["workarounds"]["Deprecated console commands"] then
     local deprecated = {
-        {command = "rp_removeletters",      alternative = "removeletters"           },
         {command = "rp_setname",            alternative = "forcerpname"             },
         {command = "rp_unlock",             alternative = "forceunlock"             },
         {command = "rp_lock",               alternative = "forcelock"               },

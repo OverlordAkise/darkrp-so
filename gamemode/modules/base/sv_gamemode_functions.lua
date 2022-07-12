@@ -625,7 +625,6 @@ local function initPlayer(ply)
 
     ply.Ownedz = {}
 
-    ply.LastLetterMade = CurTime() - 61
     ply.LastVoteCop = CurTime() - 61
 
     ply:SetTeam(GAMEMODE.DefaultTeam)

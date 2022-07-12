@@ -89,8 +89,6 @@ GM.Config.enforceplayermodel            = true
 GM.Config.ironshoot                     = true
 -- showjob - Whether or not to display a player's job above their head in-game.
 GM.Config.showjob                       = true
--- letters - Enable/disable letter writing / typing.
-GM.Config.letters                       = true
 -- lockdown - Enable/Disable initiating lockdowns for mayors.
 GM.Config.lockdown                      = true
 -- lockpickfading - Enable/disable the lockpicking of fading doors.
@@ -182,8 +180,6 @@ GM.Config.jailtimer                     = 120
 GM.Config.lockdowndelay                 = 120
 -- maxadvertbillboards - The maximum number of /advert billboards a player can place.
 GM.Config.maxadvertbillboards           = 3
--- maxCheques - The maximum number of cheques someone can write
-GM.Config.maxCheques                    = 5
 -- maxdoors - Sets the max amount of doors one can own.
 GM.Config.maxdoors                      = 20
 -- maxdrugs - Sets max drugs.
@@ -194,8 +190,6 @@ GM.Config.maxfoods                      = 2
 GM.Config.maxfooditems                  = 20
 -- maxlawboards - The maximum number of law boards the mayor can place.
 GM.Config.maxlawboards                  = 2
--- maxletters - Sets max letters.
-GM.Config.maxletters                    = 10
 -- maxlotterycost - Maximum payment the mayor can set to join a lottery.
 GM.Config.maxlotterycost                = 250
 -- maxvehicles - Sets how many vehicles one can buy.
