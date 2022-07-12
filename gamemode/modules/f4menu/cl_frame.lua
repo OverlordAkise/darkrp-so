@@ -187,7 +187,7 @@ end
 function PANEL:generateTabs()
     DarkRP.hooks.F4MenuTabs()
     hook.Call("F4MenuTabs")
-    self:SetSkin(GAMEMODE.Config.DarkRPSkin)
+    --darkrp skin was here
 end
 
 derma.DefineControl("F4EditablePropertySheet", "", vgui.GetControlTable("DPropertySheet"), "EditablePanel")

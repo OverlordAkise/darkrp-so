@@ -93,7 +93,7 @@ local function MsgDoVote(msg)
 
     PanelNum = PanelNum + 140
     VoteVGUI[voteid .. "vote"] = panel
-    panel:SetSkin(GAMEMODE.Config.DarkRPSkin)
+    --darkrp skin was here
 end
 usermessage.Hook("DoVote", MsgDoVote)
 
@@ -190,7 +190,7 @@ local function MsgDoQuestion(msg)
     PanelNum = PanelNum + 300
     QuestionVGUI[quesid .. "ques"] = panel
 
-    panel:SetSkin(GAMEMODE.Config.DarkRPSkin)
+    --darkrp skin was here
 end
 usermessage.Hook("DoQuestion", MsgDoQuestion)
 
