@@ -99,21 +99,6 @@ TEAM_MOB = DarkRP.createJob("Mob boss", {
     category = "Gangsters",
 })
 
-TEAM_GUN = DarkRP.createJob("Gun Dealer", {
-    color = Color(255, 140, 0, 255),
-    model = "models/player/monk.mdl",
-    description = [[A Gun Dealer is the only person who can sell guns to other people.
-        Make sure you aren't caught selling illegal firearms to the public!]],
-    weapons = {},
-    command = "gundealer",
-    max = 2,
-    salary = GAMEMODE.Config.normalsalary,
-    admin = 0,
-    vote = false,
-    hasLicense = false,
-    category = "Citizens",
-})
-
 TEAM_MEDIC = DarkRP.createJob("Medic", {
     color = Color(47, 79, 79, 255),
     model = "models/player/kleiner.mdl",
@@ -195,7 +180,7 @@ TEAM_CITIZEN = TEAM_CITIZEN  or -1
 TEAM_POLICE  = TEAM_POLICE   or -1
 TEAM_GANG    = TEAM_GANG     or -1
 TEAM_MOB     = TEAM_MOB      or -1
-TEAM_GUN     = TEAM_GUN      or -1
+TEAM_GUN     = -1
 TEAM_MEDIC   = TEAM_MEDIC    or -1
 TEAM_CHIEF   = TEAM_CHIEF    or -1
 TEAM_MAYOR   = TEAM_MAYOR    or -1
@@ -204,7 +189,6 @@ TEAM_COOK    = TEAM_COOK     or -1
 
 -- Door groups
 AddDoorGroup("Cops and Mayor only", TEAM_CHIEF, TEAM_POLICE, TEAM_MAYOR)
-AddDoorGroup("Gundealer only", TEAM_GUN)
 
 
 -- Agendas

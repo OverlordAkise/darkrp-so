@@ -47,13 +47,13 @@ DarkRP.declareChatCommand{
 
 DarkRP.declareChatCommand{
     command = "price",
-    description = "Set the price of the microwave or gunlab you're looking at",
+    description = "Set the price of the microwave you're looking at",
     delay = 1.5
 }
 
 DarkRP.declareChatCommand{
     command = "setprice",
-    description = "Set the price of the microwave or gunlab you're looking at",
+    description = "Set the price of the microwave you're looking at",
     delay = 1.5
 }
 

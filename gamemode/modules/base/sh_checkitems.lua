@@ -108,7 +108,7 @@ function DarkRP.isValidJob(tbl)
         return false, "The description must be a string."
     end
     if tbl.weapons and not istable(tbl.weapons) then
-        return false, "The weapons must be a valid table of strings.",{"Example: weapons = {\"med_kit\", \"weapon_bugbait\"},"}
+        return false, "The weapons must be a valid table of strings.",{"Example: weapons = {\"med_kit\", \"weapon_crowbar\"},"}
     end
     if not tbl.command then
         return false, "The command must be a string."
