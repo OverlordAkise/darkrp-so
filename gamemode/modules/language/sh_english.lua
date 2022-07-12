@@ -30,10 +30,6 @@ local my_language = {
     no_jail_pos = "No jail position",
     invalid_x = "Invalid %s! %s",
 
-    -- F1 menu
-    f1ChatCommandTitle = "Chat commands",
-    f1Search = "Search...",
-
     -- Money things:
     price = "Price: %s%d",
     priceTag = "Price: %s",
