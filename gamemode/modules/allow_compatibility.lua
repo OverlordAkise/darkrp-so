@@ -9,7 +9,6 @@ function DarkRP.getHits() return {} end
 --sh
 function plymeta:isHitman() return false end
 function plymeta:hasHit() return false end
-function plymeta:getEyeSightHitEntity() return nil end
 function plymeta:getHitPrice() return 0 end
 function plymeta:getHitTarget() return nil end
 --sv
