@@ -129,8 +129,6 @@ GM.Config.unlockdoorsonstart            = false
 GM.Config.wallettax                     = false
 -- realisticfalldamage - Enable/Disable dynamic fall damage. Setting mp_falldamage to 1 will over-ride this.
 GM.Config.realisticfalldamage           = true
--- printeroverheat - Whether the default money printer can overheat on its own.
-GM.Config.printeroverheat               = true
 -- weaponCheckerHideDefault - Hide default weapons when checking weapons.
 GM.Config.weaponCheckerHideDefault      = true
 -- weaponCheckerHideNoLicense - Hide weapons that do not require a license.
@@ -166,8 +164,6 @@ GM.Config.entremovedelay                = 0
 GM.Config.maxadvertbillboards           = 3
 -- maxdoors - Sets the max amount of doors one can own.
 GM.Config.maxdoors                      = 20
--- maxdrugs - Sets max drugs.
-GM.Config.maxdrugs                      = 2
 -- maxfoods - Sets the max food cartons per Microwave owner.
 GM.Config.maxfoods                      = 2
 -- maxfooditems - Sets the max amount of food items a player can buy from the F4 menu.
@@ -180,8 +176,6 @@ GM.Config.maxvehicles                   = 5
 GM.Config.microwavefoodcost             = 30
 -- Money packets will get removed if they don't get picked up after a while. Set to 0 to disable.
 GM.Config.moneyRemoveTime               = 600
--- mprintamount - Value of the money printed by the money printer.
-GM.Config.mprintamount                  = 250
 -- normalsalary - Sets the starting salary for newly joined players.
 GM.Config.normalsalary                  = 45
 -- npckillpay - Sets the money given for each NPC kill.
@@ -230,10 +224,6 @@ GM.Config.walkspeed                     = 160
 GM.Config.falldamagedamper              = 15
 -- falldamageamount - The base damage taken from falling for static fall damage. Default is 10.
 GM.Config.falldamageamount              = 10
--- printeroverheatchance - The likelyhood of a printer overheating. The higher this number, the less likely (minimum 3, default 22).
-GM.Config.printeroverheatchance         = 22
--- printerreward - Reward for destroying a money printer.
-GM.Config.printerreward                 = 950
 
 --[[---------------------------------------------------------------------------
 Chat distance settings
@@ -315,10 +305,6 @@ GM.Config.CategoryOverride = {
         ["Mayor"]                               = "Civil Protection",
     },
     entities = {
-        ["Drug lab"]                            = "Other",
-        ["Money printer"]                       = "Other",
-        ["Gun lab"]                             = "Other",
-
     },
     shipments = {
         ["AK47"]                                = "Rifles",
@@ -352,11 +338,9 @@ GM.Config.AdminWeapons = {
 GM.Config.DefaultLaws = {
     "Do not attack other citizens except in self-defence.",
     "Do not steal or break into people's homes.",
-    "Money printers/drugs are illegal.",
 }
 
 GM.Config.PocketBlacklist = {
-    ["fadmin_jail"] = true,
     ["door"] = true,
     ["func_"] = true,
     ["player"] = true,
@@ -365,7 +349,6 @@ GM.Config.PocketBlacklist = {
     ["env_"] = true,
     ["path_"] = true,
     ["prop_physics"] = true,
-    ["money_printer"] = true,
     ["prop_dynamic"] = true,
     ["prop_vehicle_prisoner_pod"] = true,
     ["keypad_wire"] = true,

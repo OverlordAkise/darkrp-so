@@ -122,17 +122,10 @@ local my_language = {
     sold_x_doors = "You have sold %d doors for %s!",
 
     -- Entities
-    drugs = "drugs",
-    Drugs = "Drugs",
-    drug_lab = "Drug Lab",
     gun = "gun",
     microwave = "Microwave",
     food = "food",
     Food = "Food",
-    money_printer = "Money Printer",
-
-    money_printer_exploded = "Your money printer has exploded!",
-    money_printer_overheating = "Your money printer is overheating!",
 
     contents = "Contents: ",
     amount = "Amount: ",
