@@ -1,6 +1,4 @@
 -- Modification loader.
--- Dependencies:
---     - simplerr
 
 --[[---------------------------------------------------------------------------
 Disabled defaults
@@ -30,7 +28,8 @@ DarkRP.disabledDefaults["vehicles"]         = {}
 DarkRP.disabledDefaults["workarounds"]      = {}
 
 -- The client cannot use simplerr.runLuaFile because of restrictions in GMod.
-local doInclude = CLIENT and include or fc{simplerr.wrapError, simplerr.wrapLog, simplerr.runFile}
+-- simplerr was here
+local doInclude = include
 
 if file.Exists("darkrp_config/disabled_defaults.lua", "LUA") then
     if SERVER then AddCSLuaFile("darkrp_config/disabled_defaults.lua") end

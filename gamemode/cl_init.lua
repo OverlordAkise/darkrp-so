@@ -15,7 +15,6 @@ GM.NoLicense = GM.NoLicense or {}
 include("shared.lua")
 include("config/config.lua")
 include("libraries/sh_cami.lua")
-include("libraries/simplerr.lua")
 include("libraries/fn.lua")
 
 --interfaceloader.lua start

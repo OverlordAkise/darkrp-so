@@ -431,20 +431,20 @@ function DarkRP.createJob(Name, colorOrTable, model, Description, Weapons, comma
 
     CustomTeam.salary = math.floor(CustomTeam.salary)
 
-    CustomTeam.customCheck           = CustomTeam.customCheck           and fp{DarkRP.simplerrRun, CustomTeam.customCheck}
-    CustomTeam.CustomCheckFailMsg = isfunction(CustomTeam.CustomCheckFailMsg) and fp{DarkRP.simplerrRun, CustomTeam.CustomCheckFailMsg} or CustomTeam.CustomCheckFailMsg
-    CustomTeam.CanPlayerSuicide      = CustomTeam.CanPlayerSuicide      and fp{DarkRP.simplerrRun, CustomTeam.CanPlayerSuicide}
-    CustomTeam.PlayerCanPickupWeapon = CustomTeam.PlayerCanPickupWeapon and fp{DarkRP.simplerrRun, CustomTeam.PlayerCanPickupWeapon}
-    CustomTeam.PlayerDeath           = CustomTeam.PlayerDeath           and fp{DarkRP.simplerrRun, CustomTeam.PlayerDeath}
-    CustomTeam.PlayerLoadout         = CustomTeam.PlayerLoadout         and fp{DarkRP.simplerrRun, CustomTeam.PlayerLoadout}
-    CustomTeam.PlayerSelectSpawn     = CustomTeam.PlayerSelectSpawn     and fp{DarkRP.simplerrRun, CustomTeam.PlayerSelectSpawn}
-    CustomTeam.PlayerSetModel        = CustomTeam.PlayerSetModel        and fp{DarkRP.simplerrRun, CustomTeam.PlayerSetModel}
-    CustomTeam.PlayerSpawn           = CustomTeam.PlayerSpawn           and fp{DarkRP.simplerrRun, CustomTeam.PlayerSpawn}
-    CustomTeam.PlayerSpawnProp       = CustomTeam.PlayerSpawnProp       and fp{DarkRP.simplerrRun, CustomTeam.PlayerSpawnProp}
-    CustomTeam.RequiresVote          = CustomTeam.RequiresVote          and fp{DarkRP.simplerrRun, CustomTeam.RequiresVote}
-    CustomTeam.ShowSpare1            = CustomTeam.ShowSpare1            and fp{DarkRP.simplerrRun, CustomTeam.ShowSpare1}
-    CustomTeam.ShowSpare2            = CustomTeam.ShowSpare2            and fp{DarkRP.simplerrRun, CustomTeam.ShowSpare2}
-    CustomTeam.canStartVote          = CustomTeam.canStartVote          and fp{DarkRP.simplerrRun, CustomTeam.canStartVote}
+    CustomTeam.customCheck           = CustomTeam.customCheck           and CustomTeam.customCheck
+    CustomTeam.CustomCheckFailMsg = isfunction(CustomTeam.CustomCheckFailMsg) and CustomTeam.CustomCheckFailMsg or CustomTeam.CustomCheckFailMsg
+    CustomTeam.CanPlayerSuicide      = CustomTeam.CanPlayerSuicide      and CustomTeam.CanPlayerSuicide
+    CustomTeam.PlayerCanPickupWeapon = CustomTeam.PlayerCanPickupWeapon and CustomTeam.PlayerCanPickupWeapon
+    CustomTeam.PlayerDeath           = CustomTeam.PlayerDeath           and CustomTeam.PlayerDeath
+    CustomTeam.PlayerLoadout         = CustomTeam.PlayerLoadout         and CustomTeam.PlayerLoadout
+    CustomTeam.PlayerSelectSpawn     = CustomTeam.PlayerSelectSpawn     and CustomTeam.PlayerSelectSpawn
+    CustomTeam.PlayerSetModel        = CustomTeam.PlayerSetModel        and CustomTeam.PlayerSetModel
+    CustomTeam.PlayerSpawn           = CustomTeam.PlayerSpawn           and CustomTeam.PlayerSpawn
+    CustomTeam.PlayerSpawnProp       = CustomTeam.PlayerSpawnProp       and CustomTeam.PlayerSpawnProp
+    CustomTeam.RequiresVote          = CustomTeam.RequiresVote          and CustomTeam.RequiresVote
+    CustomTeam.ShowSpare1            = CustomTeam.ShowSpare1            and CustomTeam.ShowSpare1
+    CustomTeam.ShowSpare2            = CustomTeam.ShowSpare2            and CustomTeam.ShowSpare2
+    CustomTeam.canStartVote          = CustomTeam.canStartVote          and CustomTeam.canStartVote
 
     jobByCmd[CustomTeam.command] = table.insert(RPExtraTeams, CustomTeam)
     DarkRP.addToCategory(CustomTeam, "jobs", CustomTeam.category)
@@ -541,10 +541,10 @@ function DarkRP.createShipment(name, model, entity, price, Amount_of_guns_in_one
     local valid, err, hints = DarkRP.isValidShipment(customShipment)
     if not valid then DarkRP.error(string.format("Corrupt shipment: %s!\n%s", name or "", err), 2, hints) end
 
-    customShipment.spawn = customShipment.spawn and fp{DarkRP.simplerrRun, customShipment.spawn}
+    customShipment.spawn = customShipment.spawn and customShipment.spawn
     customShipment.allowed = isnumber(customShipment.allowed) and {customShipment.allowed} or customShipment.allowed
-    customShipment.customCheck = customShipment.customCheck   and fp{DarkRP.simplerrRun, customShipment.customCheck}
-    customShipment.CustomCheckFailMsg = isfunction(customShipment.CustomCheckFailMsg) and fp{DarkRP.simplerrRun, customShipment.CustomCheckFailMsg} or customShipment.CustomCheckFailMsg
+    customShipment.customCheck = customShipment.customCheck   and customShipment.customCheck
+    customShipment.CustomCheckFailMsg = isfunction(customShipment.CustomCheckFailMsg) and customShipment.CustomCheckFailMsg or customShipment.CustomCheckFailMsg
 
     if not customShipment.noship then DarkRP.addToCategory(customShipment, "shipments", customShipment.category) end
     if customShipment.separate then DarkRP.addToCategory(customShipment, "weapons", customShipment.category) end
@@ -578,8 +578,8 @@ function DarkRP.createVehicle(Name_of_vehicle, model, price, Jobs_that_can_buy_i
 
     if not found then DarkRP.error("Vehicle invalid: " .. vehicle.name .. ". Unknown vehicle name.", 2) end
 
-    vehicle.customCheck = vehicle.customCheck and fp{DarkRP.simplerrRun, vehicle.customCheck}
-    vehicle.CustomCheckFailMsg = isfunction(vehicle.CustomCheckFailMsg) and fp{DarkRP.simplerrRun, vehicle.CustomCheckFailMsg} or vehicle.CustomCheckFailMsg
+    vehicle.customCheck = vehicle.customCheck and vehicle.customCheck
+    vehicle.CustomCheckFailMsg = isfunction(vehicle.CustomCheckFailMsg) and vehicle.CustomCheckFailMsg or vehicle.CustomCheckFailMsg
 
     table.insert(CustomVehicles, vehicle)
     DarkRP.addToCategory(vehicle, "vehicles", vehicle.category)
@@ -620,11 +620,11 @@ function DarkRP.createEntity(name, entity, model, price, max, command, classes, 
     local valid, err, hints = DarkRP.isValidEntity(tblEnt)
     if not valid then DarkRP.error(string.format("Corrupt entity: %s!\n%s", name or "", err), 2, hints) end
 
-    tblEnt.customCheck = tblEnt.customCheck and fp{DarkRP.simplerrRun, tblEnt.customCheck}
-    tblEnt.CustomCheckFailMsg = isfunction(tblEnt.CustomCheckFailMsg) and fp{DarkRP.simplerrRun, tblEnt.CustomCheckFailMsg} or tblEnt.CustomCheckFailMsg
-    tblEnt.getPrice    = tblEnt.getPrice    and fp{DarkRP.simplerrRun, tblEnt.getPrice}
-    tblEnt.getMax      = tblEnt.getMax      and fp{DarkRP.simplerrRun, tblEnt.getMax}
-    tblEnt.spawn       = tblEnt.spawn       and fp{DarkRP.simplerrRun, tblEnt.spawn}
+    tblEnt.customCheck = tblEnt.customCheck and tblEnt.customCheck
+    tblEnt.CustomCheckFailMsg = isfunction(tblEnt.CustomCheckFailMsg) and tblEnt.CustomCheckFailMsg or tblEnt.CustomCheckFailMsg
+    tblEnt.getPrice    = tblEnt.getPrice    and tblEnt.getPrice
+    tblEnt.getMax      = tblEnt.getMax      and tblEnt.getMax
+    tblEnt.spawn       = tblEnt.spawn       and tblEnt.spawn
 
     -- if SERVER and FPP then
     --  FPP.AddDefaultBlocked(blockTypes, tblEnt.ent)
@@ -650,7 +650,7 @@ function DarkRP.createGroupChat(funcOrTeam, ...)
     end
     -- People can enter either functions or a list of teams as parameter(s)
     if isfunction(funcOrTeam) then
-        table.insert(gm.DarkRPGroupChats, fp{DarkRP.simplerrRun, funcOrTeam})
+        table.insert(gm.DarkRPGroupChats, funcOrTeam)
     else
         local teams = {funcOrTeam, ...}
         table.insert(gm.DarkRPGroupChats, function(ply) return table.HasValue(teams, ply:Team()) end)
@@ -679,8 +679,8 @@ function DarkRP.createAmmoType(ammoType, name, model, price, amountGiven, custom
 
     if DarkRP.DARKRP_LOADING and DarkRP.disabledDefaults["ammo"][ammo.name] then return end
 
-    ammo.customCheck = ammo.customCheck and fp{DarkRP.simplerrRun, ammo.customCheck}
-    ammo.CustomCheckFailMsg = isfunction(ammo.CustomCheckFailMsg) and fp{DarkRP.simplerrRun, ammo.CustomCheckFailMsg} or ammo.CustomCheckFailMsg
+    ammo.customCheck = ammo.customCheck and ammo.customCheck
+    ammo.CustomCheckFailMsg = isfunction(ammo.CustomCheckFailMsg) and ammo.CustomCheckFailMsg or ammo.CustomCheckFailMsg
     ammo.id = table.insert(gm.AmmoTypes, ammo)
 
     DarkRP.addToCategory(ammo, "ammo", ammo.category)

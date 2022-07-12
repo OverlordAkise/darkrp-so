@@ -1,4 +1,4 @@
-local TextColor = Color(GetConVar("Healthforeground1"):GetFloat(), GetConVar("Healthforeground2"):GetFloat(), GetConVar("Healthforeground3"):GetFloat(), GetConVar("Healthforeground4"):GetFloat())
+local TextColor = Color(255, 0, 0, 255)
 
 local function AFKHUDPaint()
     local scrw = ScrW()/2
