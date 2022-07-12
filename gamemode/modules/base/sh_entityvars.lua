@@ -90,7 +90,6 @@ DarkRP.registerDarkRPVar("money",         net.WriteDouble, net.ReadDouble)
 DarkRP.registerDarkRPVar("salary",        fp{fn.Flip(net.WriteInt), 32}, fp{net.ReadInt, 32})
 DarkRP.registerDarkRPVar("rpname",        net.WriteString, net.ReadString)
 DarkRP.registerDarkRPVar("job",           net.WriteString, net.ReadString)
-DarkRP.registerDarkRPVar("agenda",        net.WriteString, net.ReadString)
 
 --[[---------------------------------------------------------------------------
 RP name override

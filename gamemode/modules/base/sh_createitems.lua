@@ -638,62 +638,6 @@ AddEntity = DarkRP.createEntity
 
 DarkRP.removeEntity = fp{removeCustomItem, DarkRPEntities, "entities", "onEntityRemoved", true}
 
--- here for backwards compatibility
-DarkRPAgendas = {}
-
-local agendas = {}
--- Returns the agenda managed by the player
-plyMeta.getAgenda = fn.Compose{fn.Curry(fn.Flip(fn.GetValue), 2)(DarkRPAgendas), plyMeta.Team}
-
--- Returns the agenda this player is member of
-function plyMeta:getAgendaTable()
-    return agendas[self:Team()]
-end
-
-DarkRP.getAgendas = fp{fn.Id, agendas}
-
-function DarkRP.createAgenda(Title, Manager, Listeners)
-    if DarkRP.DARKRP_LOADING and DarkRP.disabledDefaults["agendas"][Title] then return end
-
-    local agenda = {Manager = Manager, Title = Title, Listeners = Listeners, ManagersByKey = {}}
-    agenda.default = DarkRP.DARKRP_LOADING
-
-    local valid, err, hints = DarkRP.isValidAgenda(agenda)
-    if not valid then DarkRP.error(string.format("Corrupt agenda: %s!\n%s", agenda.Title or "", err), 2, hints) end
-
-    for _, v in pairs(agenda.Listeners) do
-        agendas[v] = agenda
-    end
-
-    for _, v in pairs(istable(agenda.Manager) and agenda.Manager or {agenda.Manager}) do
-        agendas[v] = agenda
-        DarkRPAgendas[v] = agenda -- backwards compat
-        agenda.ManagersByKey[v] = true
-    end
-
-    if SERVER then
-        timer.Simple(0, function()
-            -- Run after scripts have loaded
-            agenda.text = hook.Run("agendaUpdated", nil, agenda, "")
-        end)
-    end
-end
-AddAgenda = DarkRP.createAgenda
-
-function DarkRP.removeAgenda(title)
-    local agenda
-    for k, v in pairs(agendas) do
-        if v.Title == title then
-            agenda = v
-            agendas[k] = nil
-        end
-    end
-
-    for k, v in pairs(DarkRPAgendas) do
-        if v.Title == title then DarkRPAgendas[k] = nil end
-    end
-    hook.Run("onAgendaRemoved", title, agenda)
-end
 
 GM.DarkRPGroupChats = {}
 local groupChatNumber = 0

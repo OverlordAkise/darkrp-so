@@ -71,8 +71,7 @@ TEAM_GANG = DarkRP.createJob("Gangster", {
         "models/player/Group03/Male_08.mdl",
         "models/player/Group03/Male_09.mdl"},
     description = [[The lowest person of crime.
-        A gangster generally works for the Mobboss who runs the crime family.
-        The Mob boss sets your agenda and you follow it or you might be punished.]],
+        A gangster generally works for the Mobboss who runs the crime family.]],
     weapons = {},
     command = "gangster",
     max = 3,
@@ -189,11 +188,6 @@ TEAM_COOK    = TEAM_COOK     or -1
 
 -- Door groups
 AddDoorGroup("Cops and Mayor only", TEAM_CHIEF, TEAM_POLICE, TEAM_MAYOR)
-
-
--- Agendas
-DarkRP.createAgenda("Gangster's agenda", TEAM_MOB, {TEAM_GANG})
-DarkRP.createAgenda("Police agenda", {TEAM_MAYOR, TEAM_CHIEF}, {TEAM_POLICE})
 
 -- Group chats
 DarkRP.createGroupChat(function(ply) return ply:isCP() end)

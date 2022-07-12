@@ -257,8 +257,6 @@ local my_language = {
     nlr = "New Life Rule: Do Not Revenge Arrest/Kill.",
     reset_settings = "You have reset all settings!",
     must_be_x = "You must be a %s in order to be able to %s.",
-    agenda = "agenda",
-    agenda_updated = "The agenda has been updated",
     job_set = "%s has set his/her job to '%s'",
     demote_vote = "demote",
     demoted = "%s has been demoted",
@@ -410,8 +408,6 @@ local my_language = {
     noone_available = "No one available",
 
     set_custom_job = "Set a custom job (press enter to activate)",
-
-    set_agenda = "Set the agenda (press enter to activate)",
 
     initiate_lockdown = "Initiate a lockdown",
     stop_lockdown = "Stop the lockdown",

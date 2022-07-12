@@ -50,10 +50,24 @@ if SERVER then
     function plymeta:arrest() end
     function plymeta:unArrest() end
 end
+--vars
 DarkRP.registerDarkRPVar("HasGunlicense", net.WriteBit, fc{tobool, net.ReadBit})
-DarkRP.registerDarkRPVar("Arrested",      net.WriteBit, fc{tobool, net.ReadBit})
-DarkRP.registerDarkRPVar("wanted",        net.WriteBit, fc{tobool, net.ReadBit})
-DarkRP.registerDarkRPVar("wantedReason",  net.WriteString, net.ReadString)
+DarkRP.registerDarkRPVar("Arrested", net.WriteBit, fc{tobool, net.ReadBit})
+DarkRP.registerDarkRPVar("wanted", net.WriteBit, fc{tobool, net.ReadBit})
+DarkRP.registerDarkRPVar("wantedReason", net.WriteString, net.ReadString)
+
+
+--Agenda
+DarkRP.registerDarkRPVar("agenda", net.WriteString, net.ReadString)
+function DarkRP.createAgenda() end
+function DarkRP.isValidAgenda() return true end
+function plymeta.getAgenda() return nil end
+function plymeta:getAgendaTable() return nil end
+function DarkRP.getAgendas() return nil end
+function DarkRP.createAgenda() end
+function AddAgenda() end
+function DarkRP.removeAgenda() end
+
 
 
 

@@ -961,17 +961,6 @@ function GM:PlayerDisconnected(ply)
     ply:keysUnOwnAll()
     DarkRP.log(ply:Nick() .. " (" .. ply:SteamID() .. ") disconnected", Color(0, 130, 255))
 
-    local agenda = ply:getAgendaTable()
-
-    -- Clear agenda
-    if agenda and ply:Team() == agenda.Manager and team.NumPlayers(ply:Team()) <= 1 then
-        agenda.text = nil
-        for _, v in ipairs(player.GetAll()) do
-            if v:getAgendaTable() ~= agenda then continue end
-            v:setSelfDarkRPVar("agenda", agenda.text)
-        end
-    end
-
     local jobTable = ply:getJobTable()
     if jobTable.PlayerDisconnected then
         jobTable.PlayerDisconnected(ply)

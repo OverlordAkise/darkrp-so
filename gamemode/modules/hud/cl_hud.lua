@@ -120,43 +120,6 @@ local function DrawInfo()
     draw.DrawNonParsedText(JobWalletText, "DarkRPHUD2", RelativeX + 4, RelativeY - HUDHeight + h + 5, ConVars.Job2, 0)
 end
 
-local agendaText
-local function Agenda()
-    local shouldDraw = hook.Call("HUDShouldDraw", GAMEMODE, "DarkRP_Agenda")
-    if shouldDraw == false then return end
-
-    local agenda = localplayer:getAgendaTable()
-    if not agenda then return end
-    agendaText = agendaText or DarkRP.textWrap((localplayer:getDarkRPVar("agenda") or ""):gsub("//", "\n"):gsub("\\n", "\n"), "DarkRPHUD1", 440)
-
-    draw.RoundedBox(10, 10, 10, 460, 110, colors.gray1)
-    draw.RoundedBox(10, 12, 12, 456, 106, colors.gray2)
-    draw.RoundedBox(10, 12, 12, 456, 20, colors.darkred)
-
-    draw.DrawNonParsedText(agenda.Title, "DarkRPHUD1", 30, 12, colors.red, 0)
-    draw.DrawNonParsedText(agendaText, "DarkRPHUD1", 30, 35, colors.white, 0)
-end
-
-hook.Add("DarkRPVarChanged", "agendaHUD", function(ply, var, _, new)
-    if ply ~= localplayer then return end
-    if var == "agenda" and new then
-        agendaText = DarkRP.textWrap(new:gsub("//", "\n"):gsub("\\n", "\n"), "DarkRPHUD1", 440)
-    else
-        agendaText = nil
-    end
-
-    if var == "salary" then
-        salaryText = DarkRP.getPhrase("salary", DarkRP.formatMoney(new), "")
-    end
-
-    if var == "job" or var == "money" then
-        JobWalletText = string.format("%s\n%s",
-            DarkRP.getPhrase("job", var == "job" and new or localplayer:getDarkRPVar("job") or ""),
-            DarkRP.getPhrase("wallet", var == "money" and DarkRP.formatMoney(new) or DarkRP.formatMoney(localplayer:getDarkRPVar("money")), "")
-        )
-    end
-end)
-
 local VoiceChatTexture = surface.GetTextureID("voice/icntlk_pl")
 local function DrawVoiceChat()
     if localplayer.DRPIsTalking then
@@ -222,7 +185,6 @@ local function DrawHUD()
         DrawHealth()
         DrawInfo()
     end
-    Agenda()
     DrawVoiceChat()
     LockDown()
 
