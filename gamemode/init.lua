@@ -26,16 +26,16 @@ AddCSLuaFile("cl_init.lua")
 GM.Config = GM.Config or {}
 GM.NoLicense = GM.NoLicense or {}
 
-function DarkRP.log(text)
-    print("[darkrpso_log] "..text)
-end
-
 include("shared.lua")
 
 --interfaceloader.lua start
 DarkRP = {}
 DarkRP.hooks = {}
 --interfaceloader.lua end
+
+function DarkRP.log(text)
+    print("[darkrpso_log] "..text)
+end
 
 include("config/_MySQL.lua")
 include("config/config.lua")

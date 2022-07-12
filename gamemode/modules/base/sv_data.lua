@@ -147,31 +147,28 @@ Database migration
 backwards compatibility with older versions of DarkRP
 ---------------------------------------------------------------------------]]
 function updateDBSchema(callback)
-        if version < 20211228 then
-            MySQLite.begin()
-                -- Migrate all tables to InnoDB if they weren't already.
-                -- See https://github.com/FPtje/DarkRP/issues/3157
-                if MySQLite.isMySQL() then
-                    MySQLite.queueQuery([[ALTER TABLE darkrp_dbversion ENGINE = InnoDB;]])
-                    MySQLite.queueQuery([[ALTER TABLE darkrp_door ENGINE = InnoDB;]])
-                    MySQLite.queueQuery([[ALTER TABLE darkrp_doorgroups ENGINE = InnoDB;]])
-                    MySQLite.queueQuery([[ALTER TABLE darkrp_doorjobs ENGINE = InnoDB;]])
-                    MySQLite.queueQuery([[ALTER TABLE darkrp_jobspawn ENGINE = InnoDB;]])
-                    MySQLite.queueQuery([[ALTER TABLE darkrp_player ENGINE = InnoDB;]])
-                    MySQLite.queueQuery([[ALTER TABLE darkrp_position ENGINE = InnoDB;]])
-                    MySQLite.queueQuery([[ALTER TABLE playerinformation ENGINE = InnoDB;]])
-                end
+    if DarkRP.DBVersion < 20211228 then
+        MySQLite.begin()
+            -- Migrate all tables to InnoDB if they weren't already.
+            -- See https://github.com/FPtje/DarkRP/issues/3157
+            if MySQLite.isMySQL() then
+                MySQLite.queueQuery([[ALTER TABLE darkrp_dbversion ENGINE = InnoDB;]])
+                MySQLite.queueQuery([[ALTER TABLE darkrp_door ENGINE = InnoDB;]])
+                MySQLite.queueQuery([[ALTER TABLE darkrp_doorgroups ENGINE = InnoDB;]])
+                MySQLite.queueQuery([[ALTER TABLE darkrp_doorjobs ENGINE = InnoDB;]])
+                MySQLite.queueQuery([[ALTER TABLE darkrp_jobspawn ENGINE = InnoDB;]])
+                MySQLite.queueQuery([[ALTER TABLE darkrp_player ENGINE = InnoDB;]])
+                MySQLite.queueQuery([[ALTER TABLE darkrp_position ENGINE = InnoDB;]])
+                MySQLite.queueQuery([[ALTER TABLE playerinformation ENGINE = InnoDB;]])
+            end
 
-                MySQLite.queueQuery([[REPLACE INTO darkrp_dbversion VALUES(20211228)]])
-            MySQLite.commit(fp{migrate, 20211228})
+            MySQLite.queueQuery([[REPLACE INTO darkrp_dbversion VALUES(20211228)]])
+        MySQLite.commit()
 
-            return
-        end
-
+        return
         -- All migrations finished
         callback()
     end
-    migrate(DarkRP.DBVersion)
 end
 
 --[[---------------------------------------------------------
