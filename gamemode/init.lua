@@ -175,8 +175,6 @@ include("darkrp/gamemode/modules/base/sv_data.lua")
 include("darkrp/gamemode/modules/animations/sh_animations.lua")
 --police stuff
 include("darkrp/gamemode/modules/police/sh_init.lua")
-include("darkrp/gamemode/modules/police/sv_init.lua")
-include("darkrp/gamemode/modules/police/sv_commands.lua")
 --afk
 include("darkrp/gamemode/modules/afk/sv_afk.lua")
 include("darkrp/gamemode/modules/afk/sh_commands.lua")

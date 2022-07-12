@@ -87,8 +87,6 @@ GM.Config.enforceplayermodel            = true
 GM.Config.ironshoot                     = true
 -- showjob - Whether or not to display a player's job above their head in-game.
 GM.Config.showjob                       = true
--- lockdown - Enable/Disable initiating lockdowns for mayors.
-GM.Config.lockdown                      = true
 -- lockpickfading - Enable/disable the lockpicking of fading doors.
 GM.Config.lockpickfading                = true
 -- logging - Enable/disable logging everything that happens.
@@ -164,8 +162,6 @@ GM.Config.demotetime                    = 120
 GM.Config.doorcost                      = 30
 -- entremovedelay - how long to wait before removing a bought entity after disconnect.
 GM.Config.entremovedelay                = 0
--- lockdowndelay - The amount of time a mayor must wait before starting the next lockdown.
-GM.Config.lockdowndelay                 = 120
 -- maxadvertbillboards - The maximum number of /advert billboards a player can place.
 GM.Config.maxadvertbillboards           = 3
 -- maxdoors - Sets the max amount of doors one can own.
@@ -258,9 +254,6 @@ Other settings
 GM.Config.MoneyClass = "spawned_money"
 -- In case you do wish to keep the default money, but change the model, this option is the way to go:
 GM.Config.moneyModel = "models/props/cs_assault/money.mdl"
--- You can set your own, custom sound to be played for all players whenever a lockdown is initiated.
--- Note: Remember to include the folder where the sound file is located.
-GM.Config.lockdownsound = "npc/overwatch/cityvoice/f_confirmcivilstatus_1_spkr.wav"
 
 -- The skin DarkRP uses. Set to "default" to use the GMod default derma theme.
 GM.Config.DarkRPSkin = "DarkRP"

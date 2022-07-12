@@ -609,13 +609,6 @@ function GM:PlayerSetModel(ply)
 end
 
 local function initPlayer(ply)
-    timer.Simple(5, function()
-        if not IsValid(ply) then return end
-
-        if GetGlobalBool("DarkRP_Lockdown") then
-            SetGlobalBool("DarkRP_Lockdown", true) -- so new players who join know there's a lockdown, is this bug still there?
-        end
-    end)
 
     ply:initiateTax()
 
@@ -945,10 +938,6 @@ function GM:PlayerDisconnected(ply)
 
     DarkRP.destroyQuestionsWithEnt(ply)
     DarkRP.destroyVotesWithEnt(ply)
-
-    if isMayor and GetGlobalBool("DarkRP_LockDown") then -- Stop the lockdown
-        DarkRP.unLockdown(ply)
-    end
 
     if isMayor and GAMEMODE.Config.shouldResetLaws then
         DarkRP.resetLaws()

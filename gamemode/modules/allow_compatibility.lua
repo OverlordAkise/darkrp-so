@@ -68,7 +68,10 @@ function DarkRP.createAgenda() end
 function AddAgenda() end
 function DarkRP.removeAgenda() end
 
-
+--Mayor
+SetGlobalBool("DarkRP_Lockdown", false)
+function DarkRP.unLockdown() end
+function DarkRP.lockdown() end
 
 
 --Jobs

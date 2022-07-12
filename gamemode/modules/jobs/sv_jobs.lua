@@ -85,9 +85,7 @@ function meta:changeTeam(t, force, suppressNotification, ignoreMaxMembers)
     end
 
     local isMayor = RPExtraTeams[prevTeam] and RPExtraTeams[prevTeam].mayor
-    if isMayor and GetGlobalBool("DarkRP_LockDown") then
-        DarkRP.unLockdown(self)
-    end
+    
     self:updateJob(TEAM.name)
     self:setSelfDarkRPVar("salary", TEAM.salary)
     notifyAll(0, 4, DarkRP.getPhrase("job_has_become", self:Nick(), TEAM.name))

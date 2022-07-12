@@ -266,8 +266,6 @@ local my_language = {
     cant_demote_self = "You cannot demote yourself.",
     i_want_to_demote_you = "I want to demote you. Reason: %s",
     tried_to_avoid_demotion = "You tried to escape demotion. You failed and have been demoted.", -- naughty boy!
-    lockdown_started = "The mayor has initiated a Lockdown, please return to your homes!",
-    lockdown_ended = "The lockdown has ended",
     vote_specify_reason = "You need to specify a reason!",
     vote_started = "The vote has been created",
     vote_alone = "You have won the vote since you are alone in the server.",
@@ -396,9 +394,6 @@ local my_language = {
     noone_available = "No one available",
 
     set_custom_job = "Set a custom job (press enter to activate)",
-
-    initiate_lockdown = "Initiate a lockdown",
-    stop_lockdown = "Stop the lockdown",
 
     laws_of_the_land = "LAWS OF THE LAND",
     law_added = "Law added.",

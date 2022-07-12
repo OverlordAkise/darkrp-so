@@ -140,11 +140,7 @@ TEAM_CHIEF = DarkRP.createJob("Civil Protection Chief", {
 TEAM_MAYOR = DarkRP.createJob("Mayor", {
     color = Color(150, 20, 20, 255),
     model = "models/player/breen.mdl",
-    description = [[The Mayor of the city creates laws to govern the city.
-    Type /lockdown initiate a lockdown of the city.
-    Everyone must be inside during a lockdown.
-    The cops patrol the area.
-    /unlockdown to end a lockdown]],
+    description = [[The Mayor of the city creates laws to govern the city.]],
     weapons = {},
     command = "mayor",
     max = 1,

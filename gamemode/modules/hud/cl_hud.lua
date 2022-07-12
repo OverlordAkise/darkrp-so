@@ -139,17 +139,6 @@ local function DrawVoiceChat()
     end
 end
 
-local function LockDown()
-    local chbxX, chboxY = chat.GetChatBoxPos()
-    if GetGlobalBool("DarkRP_LockDown") then
-        local shouldDraw = hook.Call("HUDShouldDraw", GAMEMODE, "DarkRP_LockdownHUD")
-        if shouldDraw == false then return end
-        local cin = (math.sin(CurTime()) + 1) / 2
-        local chatBoxSize = math.floor(Scrh / 4)
-        draw.DrawNonParsedText(DarkRP.getPhrase("lockdown_started"), "ScoreboardSubtitle", chbxX, chboxY + chatBoxSize, Color(cin * 255, 0, 255 - (cin * 255), 255), TEXT_ALIGN_LEFT)
-    end
-end
-
 local AdminTell = function() end
 
 usermessage.Hook("AdminTell", function(msg)
@@ -186,7 +175,6 @@ local function DrawHUD()
         DrawInfo()
     end
     DrawVoiceChat()
-    LockDown()
 
     AdminTell()
 end
