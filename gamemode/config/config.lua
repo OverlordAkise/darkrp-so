@@ -437,11 +437,3 @@ Hungermod module
 GM.Config.hungerspeed = 2
 -- starverate <Amount> - How much health that is taken away every second the player is starving  (3 is the default).
 GM.Config.starverate = 3
-
-
---Unused, these don't work but are kept for compatibility
-GM.Config.earthquakes = false --removed earthquakes
-GM.Config.quakechance = 4000 --removed earthquakes
-GM.Config.globalshow = false --never used, only a mess
-GM.Config.voiceradius = true --always on, no one uses global voice chat in a roleplay gamemode
-GM.Config.disallowClientsideScripts = true --no one wants cheaters

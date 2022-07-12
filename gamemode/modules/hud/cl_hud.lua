@@ -175,7 +175,6 @@ local function DrawHUD()
         DrawInfo()
     end
     DrawVoiceChat()
-
     AdminTell()
 end
 
