@@ -128,7 +128,6 @@ include("darkrp/gamemode/modules/sleep/sh_sleep.lua")
 include("darkrp/gamemode/modules/sleep/sv_sleep.lua")
 include("darkrp/gamemode/modules/positions/sh_commands.lua")
 include("darkrp/gamemode/modules/positions/sv_spawnpos.lua")
-include("darkrp/gamemode/modules/positions/sv_jailpos.lua")
 include("darkrp/gamemode/modules/positions/sv_database.lua")
 --police to bot
 include("darkrp/gamemode/modules/playerscale/sv_playerscale.lua")

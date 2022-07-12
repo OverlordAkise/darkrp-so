@@ -19,7 +19,7 @@ function DarkRP.initDatabase()
         -- SQLite has no database engine, so it is not explicitly set.
         local ENGINE_INNODB = is_mysql and "ENGINE=InnoDB" or ""
 
-        -- Table that holds all position data (jail, spawns etc.)
+        -- Table that holds all position data (spawns etc.)
         -- Queue these queries because other queries depend on the existence of the darkrp_position table
         -- Race conditions could occur if the queries are executed simultaneously
         MySQLite.queueQuery([[

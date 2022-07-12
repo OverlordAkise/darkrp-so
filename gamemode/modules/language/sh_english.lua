@@ -27,7 +27,6 @@ local my_language = {
     need_admin = "You need admin privileges in order to be able to %s",
     need_sadmin = "You need super admin privileges in order to be able to %s",
     no_privilege = "You don't have the right privileges to perform this action",
-    no_jail_pos = "No jail position",
     invalid_x = "Invalid %s! %s",
 
     -- Money things:
@@ -224,9 +223,6 @@ local my_language = {
     you_got_yourself = "You got yourself a %s.",
     you_received_x = "You have received %s for %s.",
 
-    created_first_jailpos = "You have created the first jail position!",
-    added_jailpos = "You have added one extra jail position!",
-    reset_add_jailpos = "You have removed all jail positions and you have added a new one here.",
     created_spawnpos = "You have added a spawn position for %s.",
     updated_spawnpos = "You have removed all spawn positions for %s and added a new one here.",
     remove_spawnpos = "You have removed all spawn positions for %s.",
@@ -280,18 +276,11 @@ local my_language = {
     you_cannot_vote = "You cannot vote!",
     x_cancelled_vote = "%s cancelled the last vote.",
     cant_cancel_vote = "Could not cancel the last vote as there was no last vote to cancel!",
-    jail_punishment = "Punishment for disconnecting! Jailed for: %d seconds.",
-    admin_only = "Admin only!", -- When doing /addjailpos
-    chief_or = "Chief or ",-- When doing /addjailpos
     frozen = "Frozen.",
-    recipient = "recipient",
     forbidden_name = "Forbidden name.",
     illegal_characters = "Illegal characters.",
     too_long = "Too long.",
     too_short = "Too short.",
-
-    dead_in_jail = "You now are dead until your jail time is up!",
-    died_in_jail = "%s has died in jail!",
 
     credits_for = "CREDITS FOR %s\n",
     credits_see_console = "DarkRP credits printed to console.",

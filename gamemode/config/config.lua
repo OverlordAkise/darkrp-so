@@ -45,8 +45,6 @@ GM.Config.babygod                       = true
 GM.Config.canforcedooropen              = true
 -- chatsounds - sounds are played when some things are said in chat.
 GM.Config.chatsounds                    = true
--- chiefjailpos - Allow the Chief to set the jail positions.
-GM.Config.chiefjailpos                  = true
 -- cit_propertytax - Enable/disable property tax that is exclusive only for citizens.
 GM.Config.cit_propertytax               = false
 -- copscanunfreeze - Enable/disable the ability of cops to unfreeze other people's props.
@@ -119,8 +117,6 @@ GM.Config.propspawning                  = true
 GM.Config.removeclassitems              = true
 -- removeondisconnect - Enable/disable shipments/microwaves/etc. removal when someone disconnects.
 GM.Config.removeondisconnect            = true
--- respawninjail - Enable/disable whether people can respawn in jail when they die.
-GM.Config.respawninjail                 = true
 -- restrictallteams - Enable/disable Players can only be citizen until an admin allows them.
 GM.Config.restrictallteams              = false
 -- restrictbuypistol - Enabling this feature makes /buy available only to Gun Dealers.
@@ -131,10 +127,6 @@ GM.Config.restrictdrop                  = false
 GM.Config.shouldResetLaws               = false
 -- strictsuicide - Whether or not players should spawn where they suicided.
 GM.Config.strictsuicide                 = false
--- telefromjail - Enable/disable teleporting from jail.
-GM.Config.telefromjail                  = true
--- teletojail - Enable/disable teleporting to jail.
-GM.Config.teletojail                    = true
 -- unlockdoorsonstart - Enable/Disable unlocking all doors on map start.
 GM.Config.unlockdoorsonstart            = false
 -- tax - Whether players pay taxes on their wallets.
@@ -174,8 +166,6 @@ GM.Config.demotetime                    = 120
 GM.Config.doorcost                      = 30
 -- entremovedelay - how long to wait before removing a bought entity after disconnect.
 GM.Config.entremovedelay                = 0
--- jailtimer - Sets the jailtimer (in seconds).
-GM.Config.jailtimer                     = 120
 -- lockdowndelay - The amount of time a mayor must wait before starting the next lockdown.
 GM.Config.lockdowndelay                 = 120
 -- maxadvertbillboards - The maximum number of /advert billboards a player can place.
