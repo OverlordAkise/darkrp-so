@@ -82,6 +82,9 @@ include("darkrp/gamemode/modules/base/cl_drawfunctions.lua")
 include("darkrp/gamemode/modules/animations/sh_animations.lua")
 --police stuff
 include("darkrp/gamemode/modules/police/sh_init.lua")
+--afk
+include("darkrp/gamemode/modules/afk/sh_commands.lua")
+include("darkrp/gamemode/modules/afk/cl_afk.lua")
 
 --Compatibility
 include("darkrp/gamemode/modules/allow_compatibility.lua")

@@ -105,6 +105,10 @@ AddCSLuaFile("darkrp/gamemode/modules/base/cl_fonts.lua")
 AddCSLuaFile("darkrp/gamemode/modules/base/cl_entityvars.lua")
 AddCSLuaFile("darkrp/gamemode/modules/base/cl_drawfunctions.lua")
 AddCSLuaFile("darkrp/gamemode/modules/animations/sh_animations.lua")
+--afk
+AddCSLuaFile("darkrp/gamemode/modules/afk/sh_commands.lua")
+AddCSLuaFile("darkrp/gamemode/modules/afk/cl_afk.lua")
+
 
 --Compatibility
 AddCSLuaFile("darkrp/gamemode/modules/allow_compatibility.lua")
@@ -173,6 +177,9 @@ include("darkrp/gamemode/modules/animations/sh_animations.lua")
 include("darkrp/gamemode/modules/police/sh_init.lua")
 include("darkrp/gamemode/modules/police/sv_init.lua")
 include("darkrp/gamemode/modules/police/sv_commands.lua")
+--afk
+include("darkrp/gamemode/modules/afk/sv_afk.lua")
+include("darkrp/gamemode/modules/afk/sh_commands.lua")
 
 --Compatibility
 include("darkrp/gamemode/modules/allow_compatibility.lua")
