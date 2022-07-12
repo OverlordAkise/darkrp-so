@@ -1,5 +1,6 @@
 --[[
     MySQLite - Abstraction mechanism for SQLite and MySQL
+    Docs: https://github.com/FPtje/DarkRP/blob/master/gamemode/libraries/mysqlite/mysqlite.lua
 --]]
 
 local debug = debug
