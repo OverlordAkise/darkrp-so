@@ -41,7 +41,7 @@ include("libraries/fn.lua")
 include("libraries/sh_cami.lua")
 include("libraries/simplerr.lua")
 include("libraries/modificationloader.lua")
-include("libraries/mysqlite/mysqlite.lua")
+include("libraries/mysqlite.lua")
 
 resource.AddFile("materials/vgui/entities/keys.vmt")
 resource.AddFile("materials/vgui/entities/lockpick.vmt")
