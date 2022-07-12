@@ -90,6 +90,9 @@ include("darkrp/gamemode/modules/animations/sh_animations.lua")
 --police stuff
 include("darkrp/gamemode/modules/police/sh_init.lua")
 
+--Compatibility
+include("darkrp/gamemode/modules/allow_compatibility.lua")
+
 DarkRP.DARKRP_LOADING = true
 include("config/jobrelated.lua")
 include("config/addentities.lua")

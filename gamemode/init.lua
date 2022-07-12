@@ -124,6 +124,9 @@ AddCSLuaFile("darkrp/gamemode/modules/base/cl_entityvars.lua")
 AddCSLuaFile("darkrp/gamemode/modules/base/cl_drawfunctions.lua")
 AddCSLuaFile("darkrp/gamemode/modules/animations/sh_animations.lua")
 
+--Compatibility
+AddCSLuaFile("darkrp/gamemode/modules/allow_compatibility.lua")
+
 
 --server modules to load
 --chat stuff
@@ -189,6 +192,9 @@ include("darkrp/gamemode/modules/animations/sh_animations.lua")
 include("darkrp/gamemode/modules/police/sh_init.lua")
 include("darkrp/gamemode/modules/police/sv_init.lua")
 include("darkrp/gamemode/modules/police/sv_commands.lua")
+
+--Compatibility
+include("darkrp/gamemode/modules/allow_compatibility.lua")
 
 DarkRP.DARKRP_LOADING = true
 include("config/jobrelated.lua")
