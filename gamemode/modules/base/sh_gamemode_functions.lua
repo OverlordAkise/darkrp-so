@@ -16,10 +16,6 @@ function GM:OnPlayerChangedTeam(ply, oldTeam, newTeam)
 end
 
 hook.Add("loadCustomDarkRPItems", "CAMI privs", function()
-    CAMI.RegisterPrivilege{
-        Name = "DarkRP_SeeEvents",
-        MinAccess = "admin"
-    }
 
     CAMI.RegisterPrivilege{
         Name = "DarkRP_GetAdminWeapons",
