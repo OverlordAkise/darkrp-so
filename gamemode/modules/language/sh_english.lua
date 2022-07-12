@@ -113,7 +113,6 @@ local my_language = {
     door_sold = "You have sold this for %s",
     door_already_owned = "This door is already owned by someone!",
     door_cannot_afford = "You can not afford this door!",
-    door_hobo_unable = "You can not buy a door if you are a hobo!",
     vehicle_cannot_afford = "You can not afford this vehicle!",
     door_bought = "You've bought this door for %s%s",
     vehicle_bought = "You've bought this vehicle for %s%s",
@@ -391,7 +390,6 @@ local my_language = {
     player_no_longer_afk = "%s is no longer AFK.",
 
     -- Vote Restrictions
-    hobos_no_rights = "Hobos have no voting rights!",
     gangsters_cant_vote_for_government = "Gangsters cannot vote for government things!",
     government_cant_vote_for_gangsters = "Government officials cannot vote for gangster things!",
 

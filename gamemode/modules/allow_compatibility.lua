@@ -56,4 +56,8 @@ DarkRP.registerDarkRPVar("wanted",        net.WriteBit, fc{tobool, net.ReadBit})
 DarkRP.registerDarkRPVar("wantedReason",  net.WriteString, net.ReadString)
 
 
+
+--Jobs
+TEAM_HOBO = -1
+
 print("[luctus_so] Loaded backwards compatibility")

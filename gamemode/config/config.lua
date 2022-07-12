@@ -342,7 +342,6 @@ GM.Config.DefaultWeapons = {
 GM.Config.CategoryOverride = {
     jobs = {
         ["Citizen"]                             = "Citizens",
-        ["Hobo"]                                = "Citizens",
         ["Gun Dealer"]                          = "Citizens",
         ["Medic"]                               = "Citizens",
         ["Civil Protection"]                    = "Civil Protection",

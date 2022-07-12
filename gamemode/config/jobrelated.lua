@@ -23,7 +23,7 @@ TEAM_CITIZEN = DarkRP.createJob("Citizen", {
         "models/player/Group01/Male_08.mdl",
         "models/player/Group01/Male_09.mdl"
     },
-    description = [[The Citizen is the most basic level of society you can hold besides being a hobo. You have no specific role in city life.]],
+    description = [[The Citizen is the most basic level of society. You have no specific role in city life.]],
     weapons = {},
     command = "citizen",
     max = 0,
@@ -172,26 +172,6 @@ TEAM_MAYOR = DarkRP.createJob("Mayor", {
     category = "Civil Protection",
 })
 
-TEAM_HOBO = DarkRP.createJob("Hobo", {
-    color = Color(80, 45, 0, 255),
-    model = "models/player/corpse1.mdl",
-    description = [[The lowest member of society. Everybody laughs at you.
-        You have no home.
-        Beg for your food and money
-        Sing for everyone who passes to get money
-        Make your own wooden home somewhere in a corner or outside someone else's door]],
-    weapons = {"weapon_bugbait"},
-    command = "hobo",
-    max = 5,
-    salary = 0,
-    admin = 0,
-    vote = false,
-    hasLicense = false,
-    candemote = false,
-    hobo = true,
-    category = "Citizens",
-})
-
 if not DarkRP.disabledDefaults["modules"]["hungermod"] then
     TEAM_COOK = DarkRP.createJob("Cook", {
         color = Color(238, 99, 99, 255),
@@ -219,7 +199,7 @@ TEAM_GUN     = TEAM_GUN      or -1
 TEAM_MEDIC   = TEAM_MEDIC    or -1
 TEAM_CHIEF   = TEAM_CHIEF    or -1
 TEAM_MAYOR   = TEAM_MAYOR    or -1
-TEAM_HOBO    = TEAM_HOBO     or -1
+TEAM_HOBO    = -1
 TEAM_COOK    = TEAM_COOK     or -1
 
 -- Door groups

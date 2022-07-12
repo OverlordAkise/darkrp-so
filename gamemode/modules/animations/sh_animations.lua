@@ -30,19 +30,6 @@ function DarkRP.removePlayerGesture(anim)
     Anims[anim] = nil
 end
 
-hook.Add("KeyPress", "darkrp_animations", function(ply, key)
-    if key == IN_ATTACK then
-        local weapon = ply:GetActiveWeapon()
-        -- Hobo throwing poop!
-        if weapon:IsValid() and weapon:GetClass() == "weapon_bugbait" then
-            local Team = ply:Team()
-            if RPExtraTeams[Team] and RPExtraTeams[Team].hobo then
-                ply:DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_THROW)
-            end
-        end
-    end
-end)
-
 if SERVER then
     local function CustomAnim(ply, cmd, args)
         if ply:EntIndex() == 0 then return end

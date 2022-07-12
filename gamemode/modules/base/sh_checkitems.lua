@@ -154,10 +154,6 @@ function DarkRP.isValidJob(tbl)
         return false, "The cook value must be either true or false."
     end
 
-    if tbl.hobo and not isbool(tbl.hobo) then
-        return false, "The hobo value must be either true or false."
-    end
-
     if tbl.playerClass and not isstring(tbl.playerClass) then
         return false, "The playerClass must be a valid string."
     end
