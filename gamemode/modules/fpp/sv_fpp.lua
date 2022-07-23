@@ -2,7 +2,6 @@ AddCSLuaFile("pp/sh_cppi.lua")
 AddCSLuaFile("pp/sh_settings.lua")
 AddCSLuaFile("pp/client/menu.lua")
 AddCSLuaFile("pp/client/hud.lua")
-AddCSLuaFile("pp/client/buddies.lua")
 AddCSLuaFile("pp/client/ownability.lua")
 
 include("pp/sh_settings.lua")
@@ -18,7 +17,6 @@ DarkRP blocked entities
 ---------------------------------------------------------------------------]]
 local blockTypes = {"Physgun1", "Spawning1", "Toolgun1"}
 
-FPP.AddDefaultBlocked(blockTypes, "chatindicator")
 FPP.AddDefaultBlocked(blockTypes, "food")
 FPP.AddDefaultBlocked(blockTypes, "microwave")
 FPP.AddDefaultBlocked(blockTypes, "spawned_ammo")

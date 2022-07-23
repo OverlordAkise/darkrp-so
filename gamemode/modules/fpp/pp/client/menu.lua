@@ -950,135 +950,6 @@ local function retrieveblocked(um)
 end
 usermessage.Hook("FPP_blockedlist", retrieveblocked)
 
-local BuddiesPanel
-function FPP.BuddiesMenu(Panel)
-    BuddiesPanel = BuddiesPanel or Panel
-    if not IsValid(BuddiesPanel) then return end
-
-    Panel:ClearControls()
-    BuddiesPanel:Clear()
-
-    Panel:AddControl("Label", {Text = "\nBuddies menu\nNote: Your buddies are saved and will work in all servers with FPP\nThe buddies list includes players that aren't here\n\nYour buddies:"})
-    local BuddiesList = vgui.Create("DListView")
-    BuddiesList:AddColumn("Steam ID")
-    BuddiesList:AddColumn("Name")
-    BuddiesList:SetTall(150)
-    BuddiesList:SetMultiSelect(false)
-    BuddiesPanel:AddPanel(BuddiesList)
-    for k, v in SortedPairsByMemberValue(FPP.Buddies, "name", false) do
-        BuddiesList:AddLine(k, v.name)
-    end
-    BuddiesList:SelectFirstItem()
-
-    local remove = vgui.Create("DButton")
-    remove:SetText("Remove selected buddy")
-    remove.DoClick = function()
-        local line = BuddiesList:GetLine(BuddiesList:GetSelectedLine()) -- Select the only selected line
-        if not line then return end
-        FPP.SaveBuddy(line.Columns[1]:GetValue(), line.Columns[2]:GetValue(), "remove")
-        FPP.BuddiesMenu(BuddiesPanel) -- Restart the entire menu
-    end
-    BuddiesPanel:AddPanel(remove)
-
-    local edit = vgui.Create("DButton")
-    edit:SetText("Edit selected buddy")
-    edit.DoClick = function()
-        local line = BuddiesList:GetLine(BuddiesList:GetSelectedLine()) -- Select the only selected line
-        if not line then return end
-        local tmp = FPP.Buddies[line.Columns[1]:GetValue()]
-        if not tmp then return end
-        local data = {tmp.physgun, tmp.gravgun, tmp.toolgun, tmp.playeruse, tmp.entitydamage}
-        FPP.SetBuddyMenu(line.Columns[1]:GetValue(), line.Columns[2]:GetValue(), data)
-    end
-    BuddiesPanel:AddPanel(edit)
-
-    local AddManual = vgui.Create("DButton")
-    AddManual:SetText("Add steamID manually")
-    AddManual.DoClick = function()
-        Derma_StringRequest("Add buddy manually",
-        "Please enter the SteamID of the player you want to add in your buddies list",
-        "",
-        function(ID)
-
-            Derma_StringRequest("Name of buddy",
-            "What is the name of this buddy? (You can enter any name, it will change the next time you meet in a server with FPP)",
-            "",
-            function(Name)
-                FPP.SetBuddyMenu(ID, Name)
-            end)
-        end)
-    end
-    BuddiesPanel:AddPanel(AddManual)
-
-    Panel:AddControl("Label", {Text = "\nAdd buddy:"})
-    local AvailablePlayers = false
-    for _, v in SortedPairs(player.GetAll(), function(a, b) return a:Nick() > b:Nick() end) do
-        if not IsValid(v) then continue end
-        local cantadd = false
-        if v == LocalPlayer() then cantadd = true end
-        for a in pairs(FPP.Buddies) do
-            if a == v:SteamID() then
-                cantadd = true
-                break
-            end
-        end
-
-        if not cantadd then
-            local add = vgui.Create("DButton")
-            add:SetText(v:Nick())
-            add.DoClick = function()
-                FPP.SetBuddyMenu(v:SteamID(), v:Nick())
-            end
-            BuddiesPanel:AddPanel(add)
-            AvailablePlayers = true
-        end
-    end
-    if not AvailablePlayers then
-        Panel:AddControl("Label", {Text = "<No players available>"})
-    end
-end
-
-function FPP.SetBuddyMenu(SteamID, Name, data)
-    local frame = vgui.Create("DFrame")
-    frame:SetTitle(Name)
-    frame:MakePopup()
-    frame:SetVisible( true )
-    frame:SetSize(150, 130)
-    frame:Center()
-
-    local count = 1.5
-    local function AddChk(name, Type, value)
-        local box = vgui.Create("DCheckBoxLabel", frame)
-        box:SetText(name .. " buddy")
-        box:SetDark(true)
-
-        box:SetPos(10, count * 20)
-        count = count + 1
-        box:SetValue(tobool(value))
-        box.Button.Toggle = function()
-            if box.Button:GetChecked() == nil or not box.Button:GetChecked() then
-                box.Button:SetValue( true )
-            else
-                box.Button:SetValue( false )
-            end
-            local tonum = {}
-            tonum[false] = 0
-            tonum[true] = 1
-
-            FPP.SaveBuddy(SteamID, Name, Type, tonum[box.Button:GetChecked()])
-            FPP.BuddiesMenu(BuddiesPanel) -- Restart the entire menu
-        end
-        box:SizeToContents()
-    end
-
-    data = data or {0,0,0,0,0}
-    AddChk("Physgun", "physgun", data[1])
-    AddChk("Gravgun", "gravgun", data[2])
-    AddChk("Toolgun", "toolgun", data[3])
-    AddChk("Use", "playeruse", data[4])
-    AddChk("Entity damage", "entitydamage", data[5])
-end
-
 local PrivateSettings = {
     ["touch my own entities"] = "OwnProps",
     ["touch world entities"] = "WorldProps",
@@ -1138,7 +1009,6 @@ end
 
 local function makeMenus()
     spawnmenu.AddToolMenuOption( "Utilities", "Falco's prop protection", "Falco's prop protection admin settings", "Admin settings", "", "", FPP.AdminMenu)
-    spawnmenu.AddToolMenuOption( "Utilities", "Falco's prop protection", "Falco's prop protection buddies", "Buddies", "", "", FPP.BuddiesMenu)
     spawnmenu.AddToolMenuOption( "Utilities", "Falco's prop protection", "Falco's prop protection Private settings", "Private Settings", "", "", FPP.PrivateSettings)
 end
 hook.Add("PopulateToolMenu", "FPPMenus", makeMenus)
@@ -1146,9 +1016,6 @@ hook.Add("PopulateToolMenu", "FPPMenus", makeMenus)
 local function UpdateMenus()
     if IsValid(AdminPanel) then
         FPP.AdminMenu(AdminPanel)
-    end
-    if IsValid(BuddiesPanel) then
-        FPP.BuddiesMenu(BuddiesPanel)
     end
     if IsValid(PrivateSettingsPanel) then
         FPP.PrivateSettings(PrivateSettingsPanel)

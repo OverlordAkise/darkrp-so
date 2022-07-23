@@ -39,7 +39,6 @@ local reasonNumbers = {
     ["disconnected"] = 3,
     ["blocked"] = 4,
     ["constrained"] = 5,
-    ["buddy"] = 6,
     ["shared"] = 7,
     ["player"] = 8,
 }
@@ -116,9 +115,6 @@ local function calculateCanTouchForType(ply, ent, touchType)
     if ent["Share" .. setting] then return not noTouchOtherPlayerProps, reasonNumbers.shared end
 
     if IsValid(owner) then
-        -- Player is buddies with the owner of the entity
-        if owner.Buddies and owner.Buddies[ply] and owner.Buddies[ply][touchType] then return not noTouchOtherPlayerProps, reasonNumbers.buddy end
-
         -- Someone else's prop
         local adminProps = FPPSettings.adminall ~= 0
         return isAdmin and adminProps and not noTouchOtherPlayerProps, reasonNumbers.owner

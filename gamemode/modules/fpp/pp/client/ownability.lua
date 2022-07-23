@@ -19,7 +19,6 @@ local reasons = {
     [3] = "disconnected",
     [4] = "blocked",
     [5] = "constrained",
-    [6] = "buddy",
     [7] = "shared",
     [8] = "player", -- you can't pick up players
 }
@@ -81,8 +80,6 @@ function FPP.entGetTouchReason(ent, touchType)
 
     if reasonNr == 1 then -- convert owner to the actual player
         return not isnumber(owner) and IsValid(owner) and owner:Nick() or "Unknown player"
-    elseif reasonNr == 6 then
-        return "Buddy (" .. (IsValid(owner) and owner:Nick() or "Unknown player") .. ")"
     end
 
     return reason
