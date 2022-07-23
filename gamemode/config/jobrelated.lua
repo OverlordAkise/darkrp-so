@@ -29,9 +29,7 @@ TEAM_CITIZEN = DarkRP.createJob("Citizen", {
     max = 0,
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
-    vote = false,
     hasLicense = false,
-    candemote = false,
     category = "Citizens",
 })
 
@@ -45,7 +43,6 @@ TEAM_POLICE = DarkRP.createJob("Civil Protection", {
     max = 4,
     salary = GAMEMODE.Config.normalsalary * 1.45,
     admin = 0,
-    vote = true,
     hasLicense = true,
     ammo = {
         ["pistol"] = 60,
@@ -65,7 +62,6 @@ TEAM_MEDIC = DarkRP.createJob("Medic", {
     max = 3,
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
-    vote = false,
     hasLicense = false,
     medic = true,
     category = "Citizens",
@@ -82,7 +78,6 @@ TEAM_CHIEF = DarkRP.createJob("Civil Protection Chief", {
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 1.67,
     admin = 0,
-    vote = false,
     hasLicense = true,
     chief = true,
     NeedToChangeFrom = TEAM_POLICE,
@@ -101,7 +96,6 @@ TEAM_MAYOR = DarkRP.createJob("Mayor", {
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 1.89,
     admin = 0,
-    vote = true,
     hasLicense = false,
     mayor = true,
     category = "Civil Protection",
@@ -119,7 +113,6 @@ if not DarkRP.disabledDefaults["modules"]["hungermod"] then
         max = 2,
         salary = 45,
         admin = 0,
-        vote = false,
         hasLicense = false,
         cook = true
     })
@@ -153,9 +146,6 @@ GAMEMODE.CivilProtection = {
     [TEAM_CHIEF] = true,
     [TEAM_MAYOR] = true,
 }
-
--- Demote groups
-DarkRP.createDemoteGroup("Cops", {TEAM_POLICE, TEAM_CHIEF})
 
 -- Default categories
 DarkRP.createCategory{

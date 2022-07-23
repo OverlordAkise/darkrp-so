@@ -32,14 +32,6 @@ function GM:CanChangeRPName(ply, RPname)
     if len < 3 then return false,  DarkRP.getPhrase("too_short") end
 end
 
-function GM:canDemote(ply, target, reason)
-
-end
-
-function GM:canVote(ply, vote)
-
-end
-
 function GM:playerWalletChanged(ply, amount)
 
 end
@@ -614,8 +606,6 @@ local function initPlayer(ply)
 
     ply.Ownedz = {}
 
-    ply.LastVoteCop = CurTime() - 61
-
     ply:SetTeam(GAMEMODE.DefaultTeam)
     ply.DarkRPInitialised = true
 
@@ -796,14 +786,6 @@ function GM:PlayerSpawn(ply)
         end
     end
 
-    if ply.demotedWhileDead then
-        ply.demotedWhileDead = nil
-
-        local demoteTeam = hook.Call("demoteTeam", nil, ply) or GAMEMODE.DefaultTeam
-        ply:changeTeam(demoteTeam, true)
-        ply:setDarkRPVar("job", team.GetName(demoteTeam))
-    end
-
     local jobTable = ply:getJobTable()
 
     player_manager.SetPlayerClass(ply, jobTable.playerClass or "player_darkrp")
@@ -924,9 +906,6 @@ function GM:PlayerDisconnected(ply)
 
     local remList = collectRemoveEntities(ply)
     removeDelayed(remList, ply)
-
-    DarkRP.destroyQuestionsWithEnt(ply)
-    DarkRP.destroyVotesWithEnt(ply)
 
     if IsValid(ply.SleepRagdoll) then
         ply.SleepRagdoll:Remove()

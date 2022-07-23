@@ -8,3 +8,9 @@ ENT.EatSound = "vo/sandwicheat09.mp3" -- Requires Team Fortress 2
 function ENT:SetupDataTables()
     self:NetworkVar("Entity", 1, "owning_ent")
 end
+
+print("-----------")
+print("-----------")
+print("loaded gm ent!")
+print("-----------")
+print("-----------")

@@ -32,8 +32,6 @@ include("darkrp/gamemode/modules/chat/cl_chatlisteners.lua")
 include("darkrp/gamemode/modules/chat/cl_chat.lua")
 --normal order from now on
 include("darkrp/gamemode/modules/workarounds/sh_workarounds.lua")
-include("darkrp/gamemode/modules/voting/sh_chatcommands.lua")
-include("darkrp/gamemode/modules/voting/cl_voting.lua")
 include("darkrp/gamemode/modules/sleep/sh_sleep.lua")
 include("darkrp/gamemode/modules/positions/sh_commands.lua")
 --police to last (fn.lua:53 not a function)

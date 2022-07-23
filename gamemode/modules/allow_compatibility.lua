@@ -77,6 +77,24 @@ function DarkRP.lockdown() end
 function DarkRP.getLaws() return {} end
 function DarkRP.resetLaws() end
 
+--voting
+concommand.Add("ans", print)
+function DarkRP.createQuestion() end
+function DarkRP.destroyQuestion() end
+function DarkRP.destroyQuestionsWithEnt() end
+concommand.Add("vote", print)
+function DarkRP.createVote() return nil end
+function DarkRP.destroyVotesWithEnt() end
+function DarkRP.destroyLastVote() end
+function GM:canDemote(ply, target, reason) end
+function GM:canVote(ply, vote) end
+
+--Demote
+function DarkRP.createDemoteGroup() end
+function DarkRP.removeDemoteGroup() end
+function DarkRP.getDemoteGroup(job) return job end
+function DarkRP.getDemoteGroups() return {} end
+DarkRP.registerDarkRPVar("AFKDemoted", net.WriteBit, fn.Compose{tobool, net.ReadBit})
 
 --Jobs
 TEAM_HOBO = -1

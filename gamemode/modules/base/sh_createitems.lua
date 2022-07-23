@@ -22,48 +22,16 @@ local function declareTeamCommands(CTeam)
         local numPlayers = team.NumPlayers(k)
         if CTeam.max ~= 0 and ((CTeam.max % 1 == 0 and numPlayers >= CTeam.max) or (CTeam.max % 1 ~= 0 and (numPlayers + 1) / player.GetCount() > CTeam.max)) then return false end
         if ply.LastJob and 10 - (CurTime() - ply.LastJob) >= 0 then return false end
-        if ply.LastVoteCop and CurTime() - ply.LastVoteCop < 80 then return false end
 
         return true
     end
 
-    if CTeam.vote or CTeam.RequiresVote then
-        DarkRP.declareChatCommand{
-            command = "vote" .. CTeam.command,
-            description = "Vote to become " .. CTeam.name .. ".",
-            delay = 1.5,
-            condition =
-                function(ply)
-                    if CTeam.RequiresVote and not CTeam.RequiresVote(ply, k) then return false end
-                    if CTeam.canStartVote and not CTeam.canStartVote(ply) then return false end
-
-                    return chatcommandCondition(ply)
-                end
-        }
-
-        DarkRP.declareChatCommand{
-            command = CTeam.command,
-            description = "Become " .. CTeam.name .. " and skip the vote.",
-            delay = 1.5,
-            condition =
-                function(ply)
-                    local requiresVote = CTeam.RequiresVote and CTeam.RequiresVote(ply, k)
-
-                    if requiresVote then return false end
-                    if requiresVote ~= false and CTeam.admin == 0 and not ply:IsAdmin() or CTeam.admin == 1 and not ply:IsSuperAdmin() then return false end
-                    if CTeam.canStartVote and not CTeam.canStartVote(ply) then return false end
-
-                    return chatcommandCondition(ply)
-                end
-        }
-    else
-        DarkRP.declareChatCommand{
-            command = CTeam.command,
-            description = "Become " .. CTeam.name .. ".",
-            delay = 1.5,
-            condition = chatcommandCondition
-        }
-    end
+    DarkRP.declareChatCommand{
+        command = CTeam.command,
+        description = "Become " .. CTeam.name .. ".",
+        delay = 1.5,
+        condition = chatcommandCondition
+    }
 end
 
 local function addTeamCommands(CTeam, max)
@@ -76,157 +44,24 @@ local function addTeamCommands(CTeam, max)
         end
     end
 
-    if CTeam.vote or CTeam.RequiresVote then
-        DarkRP.defineChatCommand("vote" .. CTeam.command, function(ply)
-            if CTeam.RequiresVote and not CTeam.RequiresVote(ply, k) then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("job_doesnt_require_vote_currently"))
 
-                return ""
-            end
-
-            if CTeam.canStartVote and not CTeam.canStartVote(ply) then
-                local reason = isfunction(CTeam.canStartVoteReason) and CTeam.canStartVoteReason(ply, CTeam) or CTeam.canStartVoteReason or ""
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", "/vote" .. CTeam.command, reason))
-
-                return ""
-            end
-
-            if CTeam.admin == 1 and not ply:IsAdmin() then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_admin", "/" .. "vote" .. CTeam.command))
-
-                return ""
-            elseif CTeam.admin > 1 and not ply:IsSuperAdmin() then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_sadmin", "/" .. "vote" .. CTeam.command))
-
-                return ""
-            end
-
-            if isnumber(CTeam.NeedToChangeFrom) and ply:Team() ~= CTeam.NeedToChangeFrom then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_to_be_before", team.GetName(CTeam.NeedToChangeFrom), CTeam.name))
-
-                return ""
-            elseif istable(CTeam.NeedToChangeFrom) and not table.HasValue(CTeam.NeedToChangeFrom, ply:Team()) then
-                local teamnames = ""
-
-                for _, b in pairs(CTeam.NeedToChangeFrom) do
-                    teamnames = teamnames .. " or " .. team.GetName(b)
-                end
-
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_to_be_before", string.sub(teamnames, 5), CTeam.name))
-
-                return ""
-            end
-
-            if CTeam.customCheck and not CTeam.customCheck(ply) then
-                local message = isfunction(CTeam.CustomCheckFailMsg) and CTeam.CustomCheckFailMsg(ply, CTeam) or CTeam.CustomCheckFailMsg or DarkRP.getPhrase("unable", team.GetName(t), "")
-                DarkRP.notify(ply, 1, 4, message)
-
-                return ""
-            end
-
-            local allowed, time = ply:changeAllowed(k)
-            if not allowed then
-                local notif = time and DarkRP.getPhrase("have_to_wait", math.ceil(time), "/job, " .. DarkRP.getPhrase("banned_or_demoted")) or DarkRP.getPhrase("unable", team.GetName(k), DarkRP.getPhrase("banned_or_demoted"))
-                DarkRP.notify(ply, 1, 4, notif)
-
-                return ""
-            end
-
-            if ply:Team() == k then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", CTeam.command, ""))
-
-                return ""
-            end
-
-            local numPlayers = team.NumPlayers(k)
-            if max ~= 0 and ((max % 1 == 0 and numPlayers >= max) or (max % 1 ~= 0 and (tnumPlayers + 1) / player.GetCount() > max)) then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("team_limit_reached", CTeam.name))
-
-                return ""
-            end
-
-            if ply.LastJob and 10 - (CurTime() - ply.LastJob) >= 0 then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("have_to_wait", math.ceil(10 - (CurTime() - ply.LastJob)), GAMEMODE.Config.chatCommandPrefix .. CTeam.command))
-
-                return ""
-            end
-
-            ply.LastVoteCop = ply.LastVoteCop or -80
-
-            if CurTime() - ply.LastVoteCop < 80 then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("have_to_wait", math.ceil(80 - (CurTime() - ply:GetTable().LastVoteCop)), GAMEMODE.Config.chatCommandPrefix .. CTeam.command))
-
-                return ""
-            end
-
-            DarkRP.createVote(DarkRP.getPhrase("wants_to_be", ply:Nick(), CTeam.name), "job", ply, 20, function(vote, choice)
-                local target = vote.target
-                if not IsValid(target) then return end
-
-                if choice >= 0 then
-                    target:changeTeam(k)
-                else
-                    DarkRP.notifyAll(1, 4, DarkRP.getPhrase("has_not_been_made_team", target:Nick(), CTeam.name))
-                end
-            end, nil, nil, {
-                targetTeam = k
-            })
-
-            ply.LastVoteCop = CurTime()
+    DarkRP.defineChatCommand(CTeam.command, function(ply)
+        if CTeam.admin == 1 and not ply:IsAdmin() then
+            DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_admin", "/" .. CTeam.command))
 
             return ""
-        end)
-
-        local function onJobCommand(ply, hasPriv)
-            if hasPriv then
-                ply:changeTeam(k)
-                return
-            end
-
-            local a = CTeam.admin
-            if a > 0 and not ply:IsAdmin()
-            or a > 1 and not ply:IsSuperAdmin()
-            then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_admin", CTeam.name))
-                return
-            end
-
-            if not CTeam.RequiresVote and
-                (a == 0 and not ply:IsAdmin()
-                or a == 1 and not ply:IsSuperAdmin()
-                or a == 2)
-            or CTeam.RequiresVote and CTeam.RequiresVote(ply, k)
-            then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_to_make_vote", CTeam.name))
-                return
-            end
-
-            ply:changeTeam(k)
         end
-        DarkRP.defineChatCommand(CTeam.command, function(ply)
-            CAMI.PlayerHasAccess(ply, "DarkRP_GetJob_" .. CTeam.command, fp{onJobCommand, ply})
+
+        if CTeam.admin > 1 and not ply:IsSuperAdmin() then
+            DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_sadmin", "/" .. CTeam.command))
 
             return ""
-        end)
-    else
-        DarkRP.defineChatCommand(CTeam.command, function(ply)
-            if CTeam.admin == 1 and not ply:IsAdmin() then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_admin", "/" .. CTeam.command))
+        end
 
-                return ""
-            end
+        ply:changeTeam(k)
 
-            if CTeam.admin > 1 and not ply:IsSuperAdmin() then
-                DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("need_sadmin", "/" .. CTeam.command))
-
-                return ""
-            end
-
-            ply:changeTeam(k)
-
-            return ""
-        end)
-    end
+        return ""
+    end)
 
     concommand.Add("rp_" .. CTeam.command, function(ply, cmd, args)
         if ply:EntIndex() ~= 0 and not ply:IsAdmin() then
@@ -237,16 +72,6 @@ local function addTeamCommands(CTeam, max)
         if CTeam.admin > 1 and not ply:IsSuperAdmin() and ply:EntIndex() ~= 0 then
             ply:PrintMessage(HUD_PRINTCONSOLE, DarkRP.getPhrase("need_sadmin", cmd))
             return
-        end
-
-        if CTeam.vote then
-            if CTeam.admin >= 1 and ply:EntIndex() ~= 0 and not ply:IsSuperAdmin() then
-                ply:PrintMessage(HUD_PRINTCONSOLE, DarkRP.getPhrase("need_sadmin", cmd))
-                return
-            elseif CTeam.admin > 1 and ply:IsSuperAdmin() and ply:EntIndex() ~= 0 then
-                ply:PrintMessage(HUD_PRINTCONSOLE, DarkRP.getPhrase("need_to_make_vote", CTeam.name))
-                return
-            end
         end
 
         if not args or not args[1] then
@@ -406,12 +231,12 @@ plyMeta.getJobTable = function(ply)
     return tbl
 end
 
-function DarkRP.createJob(Name, colorOrTable, model, Description, Weapons, command, maximum_amount_of_this_class, Salary, admin, Vote, NeedToChangeFrom, CustomCheck)
+function DarkRP.createJob(Name, colorOrTable, model, Description, Weapons, command, maximum_amount_of_this_class, Salary, admin, NeedToChangeFrom, CustomCheck)
     local tableSyntaxUsed = not IsColor(colorOrTable)
 
     local CustomTeam = tableSyntaxUsed and colorOrTable or
         {color = colorOrTable, model = model, description = Description, weapons = Weapons, command = command,
-            max = maximum_amount_of_this_class, salary = Salary, admin = admin or 0, vote = tobool(Vote),
+            max = maximum_amount_of_this_class, salary = Salary, admin = admin or 0,
             NeedToChangeFrom = NeedToChangeFrom, customCheck = CustomCheck
         }
     CustomTeam.name = Name
@@ -441,10 +266,8 @@ function DarkRP.createJob(Name, colorOrTable, model, Description, Weapons, comma
     CustomTeam.PlayerSetModel        = CustomTeam.PlayerSetModel        and CustomTeam.PlayerSetModel
     CustomTeam.PlayerSpawn           = CustomTeam.PlayerSpawn           and CustomTeam.PlayerSpawn
     CustomTeam.PlayerSpawnProp       = CustomTeam.PlayerSpawnProp       and CustomTeam.PlayerSpawnProp
-    CustomTeam.RequiresVote          = CustomTeam.RequiresVote          and CustomTeam.RequiresVote
     CustomTeam.ShowSpare1            = CustomTeam.ShowSpare1            and CustomTeam.ShowSpare1
     CustomTeam.ShowSpare2            = CustomTeam.ShowSpare2            and CustomTeam.ShowSpare2
-    CustomTeam.canStartVote          = CustomTeam.canStartVote          and CustomTeam.canStartVote
 
     jobByCmd[CustomTeam.command] = table.insert(RPExtraTeams, CustomTeam)
     DarkRP.addToCategory(CustomTeam, "jobs", CustomTeam.category)
@@ -478,8 +301,7 @@ end
 function DarkRP.removeJob(i)
     local job = RPExtraTeams[i]
     jobByCmd[job.command] = nil
-
-    DarkRP.removeChatCommand("vote" .. job.command)
+    
     removeCustomItem(RPExtraTeams, "jobs", "onJobRemoved", true, i)
 end
 
@@ -688,32 +510,6 @@ end
 GM.AddAmmoType = function(_, ...) DarkRP.createAmmoType(...) end
 
 DarkRP.removeAmmoType = fp{removeCustomItem, GM.AmmoTypes, "ammo", "onAmmoTypeRemoved", true}
-
-local demoteGroups = {}
-function DarkRP.createDemoteGroup(name, tbl)
-    if DarkRP.DARKRP_LOADING and DarkRP.disabledDefaults["demotegroups"][name] then return end
-    if not tbl or not tbl[1] then error("No members in the demote group!") end
-    demoteGroups[name] = {}
-    for k,v in pairs(tbl) do
-      demoteGroups[name][v] = true
-    end
-end
-
-function DarkRP.removeDemoteGroup(name)
-    demoteGroups[name] = nil
-    hook.Run("onDemoteGroupRemoved", name, name)
-end
-
-function DarkRP.getDemoteGroup(teamNr)
-    for k,v in pairs(demoteGroups) do
-      if v[teamNr] then return k end
-    end
-    return nil
-end
-
-function DarkRP.getDemoteGroups()
-  return demoteGroups
-end
 
 local categories = {
     jobs = {},

@@ -1,18 +1,5 @@
 -- How to use:
--- If a player uses /afk, they go into AFK mode, they will not be autodemoted and their salary is set to $0 (you can still be killed/vote demoted though!).
-
-local function AFKDemote(ply)
-    local shouldDemote, demoteTeam, suppressMsg, msg = hook.Call("playerAFKDemoted", nil, ply)
-    demoteTeam = demoteTeam or GAMEMODE.DefaultTeam
-
-    if ply:Team() ~= demoteTeam and shouldDemote ~= false then
-        local rpname = ply:getDarkRPVar("rpname")
-        ply:changeTeam(demoteTeam, true)
-        if not suppressMsg then DarkRP.notifyAll(0, 5, msg or DarkRP.getPhrase("hes_afk_demoted", rpname)) end
-    end
-    ply:setSelfDarkRPVar("AFKDemoted", true)
-    ply:setDarkRPVar("job", "AFK")
-end
+-- If a player uses /afk, they go into AFK mode, they will not be autodemoted and their salary is set to $0 (you can still be killed though!).
 
 local function SetAFK(ply)
     local rpname = ply:getDarkRPVar("rpname")
@@ -27,12 +14,12 @@ local function SetAFK(ply)
         ply.lastHealth = ply:Health()
         DarkRP.notifyAll(0, 5, DarkRP.getPhrase("player_now_afk", rpname))
 
-        ply.AFKDemote = math.huge
+        ply.AFK_Timer = math.huge
 
         ply:KillSilent()
         ply:Lock()
     else
-        ply.AFKDemote = CurTime() + GAMEMODE.Config.afkdemotetime
+        ply.AFK_Timer = CurTime() + GAMEMODE.Config.afkdemotetime
         DarkRP.notifyAll(1, 5, DarkRP.getPhrase("player_no_longer_afk", rpname))
         DarkRP.notify(ply, 0, 5, DarkRP.getPhrase("salary_restored"))
         ply:Spawn()
@@ -40,11 +27,6 @@ local function SetAFK(ply)
 
         ply:SetHealth(ply.lastHealth and ply.lastHealth > 0 and ply.lastHealth or 100)
         ply.lastHealth = nil
-    end
-
-    if not ply.demotedWhileDead then
-        ply:setDarkRPVar("job", ply:getDarkRPVar("AFK") and "AFK" or ply:getDarkRPVar("AFKDemoted") and team.GetName(ply:Team()) or ply.OldJob)
-        ply:setSelfDarkRPVar("salary", ply:getDarkRPVar("AFK") and 0 or ply.OldSalary or 0)
     end
 
     hook.Run("playerSetAFK", ply, ply:getDarkRPVar("AFK"))
@@ -67,25 +49,20 @@ DarkRP.defineChatCommand("afk", function(ply)
 end)
 
 local function StartAFKOnPlayer(ply)
-    ply.AFKDemote = CurTime() + GAMEMODE.Config.afkdemotetime
+    ply.AFK_Timer = CurTime() + GAMEMODE.Config.afkdemotetime
 end
 hook.Add("PlayerInitialSpawn", "StartAFKOnPlayer", StartAFKOnPlayer)
 
 local function AFKTimer(ply, key)
-    ply.AFKDemote = CurTime() + GAMEMODE.Config.afkdemotetime
-    if ply:getDarkRPVar("AFKDemoted") then
-        ply:setDarkRPVar("job", team.GetName(ply:Team()))
-        timer.Simple(3, function() if IsValid(ply) then ply:setSelfDarkRPVar("AFKDemoted", nil) end end)
-    end
+    ply.AFK_Timer = CurTime() + GAMEMODE.Config.afkdemotetime
 end
 hook.Add("KeyPress", "DarkRPKeyReleasedCheck", AFKTimer)
 
 local function KillAFKTimer()
     for _, ply in ipairs(player.GetAll()) do
-        if ply.AFKDemote and CurTime() > ply.AFKDemote and not ply:getDarkRPVar("AFK") and not ply:IsBot() then
+        if ply.AFK_Timer and CurTime() > ply.AFK_Timer and not ply:getDarkRPVar("AFK") and not ply:IsBot() then
             SetAFK(ply)
-            AFKDemote(ply)
-            ply.AFKDemote = math.huge
+            ply.AFK_Timer = math.huge
         end
     end
 end

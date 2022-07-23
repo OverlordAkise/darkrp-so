@@ -131,9 +131,6 @@ function DarkRP.isValidJob(tbl)
     if not tbl.admin or not isnumber(tbl.admin) or tbl.admin < 0 or tbl.admin > 2 then
         return false, "The admin value must be a number and it must be greater than or equal to zero and smaller than three."
     end
-    if tbl.vote and not isbool(tbl.vote) then
-        return false, "The vote must be either true or false."
-    end
     if tbl.ammo and not istable(tbl.ammo) then
         return false, "The ammo must be a table containing numbers.",{"See example on https://darkrp.miraheze.org/wiki/DarkRP:CustomJobFields"}
     end
@@ -190,20 +187,12 @@ function DarkRP.isValidJob(tbl)
         return false, "The PlayerSpawnProp must be a function."
     end
 
-    if tbl.RequiresVote and not isfunction(tbl.RequiresVote) then
-        return false, "The RequiresVote must be a function."
-    end
-
     if tbl.ShowSpare1 and not isfunction(tbl.ShowSpare1) then
         return false, "The ShowSpare1 must be a function."
     end
 
     if tbl.ShowSpare2 and not isfunction(tbl.ShowSpare2) then
         return false, "The ShowSpare2 must be a function."
-    end
-
-    if tbl.canStartVote and not isfunction(tbl.canStartVote) then
-        return false, "The canStartVote must be a function."
     end
     if tbl.modelScale and not isnumber(tbl.modelScale) then
         return false, "The modelScale must be a number."
@@ -213,12 +202,6 @@ function DarkRP.isValidJob(tbl)
     end
     if tbl.maps and not istable(tbl.maps) then
         return false, "The maps value must be a table of valid map names as strings."
-    end
-    if not tbl.candemote or not isbool(candemote) then
-        tbl.candemote = true
-    end
-    if tbl.canStartVoteReason and not (isstring(tbl.canStartVoteReason) or isfunction(tbl.canStartVoteReason)) then
-        return false, "The canStartVoteReason must be either a string or a function."
     end
     if tbl.NeedToChangeFrom and not (isnumber(tbl.NeedToChangeFrom) or istable(tbl.NeedToChangeFrom)) then
         return false, "The NeedToChangeFrom must be either an existing team or a table of existing teams",{"Is there a job here that doesn't exist (anymore)?"}

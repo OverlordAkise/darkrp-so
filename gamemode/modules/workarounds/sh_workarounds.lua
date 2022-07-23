@@ -295,7 +295,6 @@ if SERVER and not DarkRP.disabledDefaults["workarounds"]["Deprecated console com
         {command = "rp_teamban",            alternative = "teamban"                 },
         {command = "rp_setsalary",          alternative = "setmoney"                },
         {command = "rp_setmoney",           alternative = "setmoney"                },
-        {command = "rp_cancelvote",         alternative = "forcecancelvote"         },
     }
 
     local lastDeprecated = 0

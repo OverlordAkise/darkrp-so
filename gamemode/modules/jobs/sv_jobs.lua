@@ -19,16 +19,6 @@ function meta:changeTeam(t, force, suppressNotification, ignoreMaxMembers)
         return false
     end
 
-    if self.IsBeingDemoted then
-        self:teamBan()
-        self.IsBeingDemoted = false
-        self:changeTeam(GAMEMODE.DefaultTeam, true)
-        DarkRP.destroyVotesWithEnt(self)
-        notify(self, 1, 4, DarkRP.getPhrase("tried_to_avoid_demotion"))
-
-        return false
-    end
-
 
     if prevTeam == t then
         notify(self, 1, 4, DarkRP.getPhrase("unable", team.GetName(t), ""))
@@ -173,41 +163,37 @@ end
 
 function meta:teamUnBan(Team)
     self.bannedfrom = self.bannedfrom or {}
-
-    local group = DarkRP.getDemoteGroup(Team)
-    self.bannedfrom[group] = nil
+    self.bannedfrom[Team] = nil
 end
 
 function meta:teamBan(t, time)
     if not self.bannedfrom then self.bannedfrom = {} end
     t = t or self:Team()
+    
+    self.bannedfrom[t] = true
 
-    local group = DarkRP.getDemoteGroup(t)
-    self.bannedfrom[group] = true
-
-    local timerid = "teamban" .. self:UserID() .. "," .. group
+    local timerid = "teamban" .. self:UserID() .. "," .. t
 
     timer.Remove(timerid)
 
     if time == 0 then return end
 
-    timer.Create(timerid, time or GAMEMODE.Config.demotetime, 1, function()
+    timer.Create(timerid, time or 300, 1, function()
         if not IsValid(self) then return end
         self:teamUnBan(t)
     end)
 end
 
 function meta:teamBanTimeLeft(t)
-    local group = DarkRP.getDemoteGroup(t or self:Team())
-    if not group then
-      group = ""
+    local team = t or self:Team()
+    if not team then
+      team = ""
     end
-    return timer.TimeLeft("teamban" .. self:UserID() .. "," .. group)
+    return timer.TimeLeft("teamban" .. self:UserID() .. "," .. team)
 end
 
 function meta:changeAllowed(t)
-    local group = DarkRP.getDemoteGroup(t)
-    if self.bannedfrom and self.bannedfrom[group] then return false, self:teamBanTimeLeft(t) end
+    if self.bannedfrom and self.bannedfrom[t] then return false, self:teamBanTimeLeft(t) end
 
     return true
 end
@@ -250,147 +236,6 @@ local function ChangeJob(ply, args)
     return ""
 end
 DarkRP.defineChatCommand("job", ChangeJob)
-
-local function FinishDemote(vote, choice)
-    local target = vote.target
-
-    target.IsBeingDemoted = nil
-    if choice == 1 then
-        target:teamBan()
-        if target:Alive() then
-            local demoteTeam = hook.Call("demoteTeam", nil, target) or GAMEMODE.DefaultTeam
-            target:changeTeam(demoteTeam, true)
-        else
-            target.demotedWhileDead = true
-        end
-
-        hook.Call("onPlayerDemoted", nil, vote.info.source, target, vote.info.reason)
-        DarkRP.notifyAll(0, 4, DarkRP.getPhrase("demoted", target:Nick()))
-    else
-        DarkRP.notifyAll(1, 4, DarkRP.getPhrase("demoted_not", target:Nick()))
-    end
-end
-
-local function Demote(ply, args)
-    if #args == 0 then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", "/demote", ""))
-        return ""
-    end
-    if #args == 1 then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("vote_specify_reason"))
-        return ""
-    end
-    local reason = table.concat(args, ' ', 2)
-
-    if string.len(reason) > 99 then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", "/demote", "<100"))
-        return ""
-    end
-    local p = DarkRP.findPlayer(args[1])
-    if p == ply then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("cant_demote_self"))
-        return ""
-    end
-
-    local canDemote, message = hook.Call("canDemote", GAMEMODE, ply, p, reason)
-    if canDemote == false then
-        DarkRP.notify(ply, 1, 4, message or DarkRP.getPhrase("unable", "/demote", ""))
-        return ""
-    end
-
-    if not p then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("could_not_find", args and args[1]))
-        return ""
-    end
-
-    if CurTime() - ply.LastVoteCop < 80 then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("have_to_wait", math.ceil(80 - (CurTime() - ply:GetTable().LastVoteCop)), "/demote"))
-        return ""
-    end
-
-    local Team = p:Team()
-    if not RPExtraTeams[Team] or RPExtraTeams[Team].candemote == false then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", "/demote", ""))
-    else
-        DarkRP.talkToPerson(p, team.GetColor(ply:Team()), DarkRP.getPhrase("demote") .. " " .. ply:Nick(), Color(255, 0, 0, 255), DarkRP.getPhrase("i_want_to_demote_you", reason), p)
-
-        local voteInfo = DarkRP.createVote(p:Nick() .. ":\n" .. DarkRP.getPhrase("demote_vote_text", reason), DarkRP.getPhrase("demote_vote"), p, 20, FinishDemote, {
-            [p] = true,
-            [ply] = true
-        }, function(vote)
-            if not IsValid(vote.target) then return end
-            vote.target.IsBeingDemoted = nil
-        end, {
-            source = ply,
-            reason = reason
-        })
-
-        if voteInfo then
-            -- Vote has started
-            DarkRP.notifyAll(0, 4, DarkRP.getPhrase("demote_vote_started", ply:Nick(), p:Nick()))
-            DarkRP.log(DarkRP.getPhrase("demote_vote_started", string.format("%s(%s)[%s]", ply:Nick(), ply:SteamID(), team.GetName(ply:Team())), string.format("%s(%s)[%s] for %s", p:Nick(), p:SteamID(), team.GetName(p:Team()), reason)), Color(255, 128, 255, 255))
-            p.IsBeingDemoted = true
-        end
-        ply.LastVoteCop = CurTime()
-    end
-    return ""
-end
-DarkRP.defineChatCommand("demote", Demote)
-
-local function ExecSwitchJob(answer, ent, ply, target)
-    if not IsValid(ply) or not IsValid(target) then return end
-
-    ply.RequestedJobSwitch = nil
-    if not tobool(answer) then return end
-    local Pteam = ply:Team()
-    local Tteam = target:Team()
-
-    if not ply:changeTeam(Tteam, nil, nil, true) then return end
-    if not target:changeTeam(Pteam, nil, nil, true) then
-        ply:changeTeam(Pteam, true) -- revert job change
-        return
-    end
-    DarkRP.notify(ply, 2, 4, DarkRP.getPhrase("job_switch"))
-    DarkRP.notify(target, 2, 4, DarkRP.getPhrase("job_switch"))
-end
-
-local function SwitchJob(ply) --Idea by Godness.
-    if not GAMEMODE.Config.allowjobswitch then return "" end
-
-    if ply.RequestedJobSwitch then return end
-
-    local eyetrace = ply:GetEyeTrace()
-    local ent = eyetrace.Entity
-
-    if not IsValid(ent) or not ent:IsPlayer() then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", DarkRP.getPhrase("switch_jobs"), ""))
-        return ""
-    end
-
-    local team1 = RPExtraTeams[ply:Team()]
-    local team2 = RPExtraTeams[ent:Team()]
-
-    if not team1 or not team2 then return "" end
-    if team1 == team2 then
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", DarkRP.getPhrase("switch_jobs"), ""))
-        return ""
-    end
-    if team1.customCheck and not team1.customCheck(ent) or team2.customCheck and not team2.customCheck(ply) then
-        -- notify only the player trying to switch
-        DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", DarkRP.getPhrase("switch_jobs"), ""))
-        return ""
-    end
-
-    ply.RequestedJobSwitch = true
-    DarkRP.createQuestion(DarkRP.getPhrase("job_switch_question", ply:Nick()), "switchjob" .. tostring(ply:EntIndex()), ent, 30, ExecSwitchJob, ply, ent)
-    DarkRP.notify(ply, 0, 4, DarkRP.getPhrase("job_switch_requested"))
-
-    return ""
-end
-DarkRP.defineChatCommand("switchjob", SwitchJob)
-DarkRP.defineChatCommand("switchjobs", SwitchJob)
-DarkRP.defineChatCommand("jobswitch", SwitchJob)
-
 
 local function DoTeamBan(ply, args)
     local ent = args[1]

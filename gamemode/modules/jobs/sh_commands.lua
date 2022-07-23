@@ -7,14 +7,6 @@ DarkRP.declareChatCommand{
 }
 
 DarkRP.declareChatCommand{
-    command = "demote",
-    description = "Demote a player from their job",
-    delay = 1.5,
-    condition = fn.Compose{fn.Curry(fn.Flip(fn.Gt), 2)(1), fn.Length, player.GetAll},
-    tableArgs = true
-}
-
-DarkRP.declareChatCommand{
     command = "switchjob",
     description = "Switch jobs with the player you're looking at",
     delay = 1.5,

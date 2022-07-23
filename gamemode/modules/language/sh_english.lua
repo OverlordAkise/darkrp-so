@@ -76,19 +76,10 @@ local my_language = {
 
     -- Teams
     need_to_be_before = "You need to be %s first in order to be able to become %s",
-    need_to_make_vote = "You need to make a vote to become a %s!",
     team_limit_reached = "Can not become %s as the limit is reached",
     wants_to_be = "%s\nwants to be\n%s",
     has_not_been_made_team = "%s has not been made %s!",
     job_has_become = "%s has been made a %s!",
-
-    -- Disasters
-    meteor_approaching = "<REMOVED>",
-    meteor_passing = "<REMOVED>",
-    meteor_enabled = "<REMOVED>",
-    meteor_disabled = "<REMOVED>",
-    earthquake_report = "<REMOVED>",
-    earthtremor_report = "<REMOVED>",
 
     -- Keys, vehicles and doors
     keys_allowed_to_coown = "You are allowed to co-own this\n(Press Reload with keys or press F2 to co-own)\n",
@@ -144,19 +135,6 @@ local my_language = {
     switched_fully_auto = "Switched to fully automatic fire mode.",
     switched_semi_auto = "Switched to semi-automatic fire mode.",
 
-    keypad_checker_shoot_keypad = "Shoot a keypad to see what it controls.",
-    keypad_checker_shoot_entity = "Shoot an entity to see which keypads are connected to it",
-    keypad_checker_click_to_clear = "Right click to clear.",
-    keypad_checker_entering_right_pass = "Entering the right password",
-    keypad_checker_entering_wrong_pass = "Entering the wrong password",
-    keypad_checker_after_right_pass = "after having entered the right password",
-    keypad_checker_after_wrong_pass = "after having entered the wrong password",
-    keypad_checker_right_pass_entered = "Right password entered",
-    keypad_checker_wrong_pass_entered = "Wrong password entered",
-    keypad_checker_controls_x_entities = "This keypad controls %d entities",
-    keypad_checker_controlled_by_x_keypads = "This entity is controlled by %d keypads",
-    keypad_on = "ON",
-    keypad_off = "OFF",
     seconds = "seconds",
 
     persons_weapons = "%s's illegal weapons:",
@@ -182,7 +160,6 @@ local my_language = {
     radio = "radio",
     request = "(REQUEST!)",
     group = "(group)",
-    demote = "(DEMOTE)",
     ooc = "OOC",
     radio_x = "Radio %d",
 
@@ -221,10 +198,6 @@ local my_language = {
     remove_spawnpos = "You have removed all spawn positions for %s.",
     do_not_own_ent = "You do not own this entity!",
     cannot_drop_weapon = "Can't drop this weapon!",
-    job_switch = "Jobs switched successfully!",
-    job_switch_question = "Switch jobs with %s?",
-    job_switch_requested = "Job switch requested.",
-    switch_jobs = "switch jobs",
 
     cooks_only = "Cooks only.",
 
@@ -245,26 +218,11 @@ local my_language = {
     banned_or_demoted = "Banned/demoted",
     wait_with_that = "Wait with that.",
     could_not_find = "Could not find %s",
-    f3tovote = "Hit F3 to vote",
     listen_up = "Listen up:", -- In rp_tell or rp_tellall
     nlr = "New Life Rule: Do Not Revenge Arrest/Kill.",
     reset_settings = "You have reset all settings!",
     must_be_x = "You must be a %s in order to be able to %s.",
     job_set = "%s has set his/her job to '%s'",
-    demote_vote = "demote",
-    demoted = "%s has been demoted",
-    demoted_not = "%s has not been demoted",
-    demote_vote_started = "%s has started a vote for the demotion of %s",
-    demote_vote_text = "Demotion nominee:\n%s", -- '%s' is the reason here
-    cant_demote_self = "You cannot demote yourself.",
-    i_want_to_demote_you = "I want to demote you. Reason: %s",
-    tried_to_avoid_demotion = "You tried to escape demotion. You failed and have been demoted.", -- naughty boy!
-    vote_specify_reason = "You need to specify a reason!",
-    vote_started = "The vote has been created",
-    vote_alone = "You have won the vote since you are alone in the server.",
-    you_cannot_vote = "You cannot vote!",
-    x_cancelled_vote = "%s cancelled the last vote.",
-    cant_cancel_vote = "Could not cancel the last vote as there was no last vote to cancel!",
     frozen = "Frozen.",
     forbidden_name = "Forbidden name.",
     illegal_characters = "Illegal characters.",
@@ -285,19 +243,9 @@ local my_language = {
 
     not_allowed_to_purchase = "You are not allowed to purchase this item.",
 
-    rp_teamban_hint = "rp_teamban [player name/ID] [team name/id]. Use this to ban a player from a certain team.",
-    rp_teamunban_hint = "rp_teamunban [player name/ID] [team name/id]. Use this to unban a player from a certain team.",
     x_teambanned_y_for_z = "%s has banned %s from being a %s for %s minutes.",
     x_teamunbanned_y = "%s has unbanned %s from being a %s.",
 
-    -- Backwards compatibility:
-    you_set_x_salary_to_y = "You set %s's salary to %s%d.",
-    x_set_your_salary_to_y = "%s set your salary to %s%d.",
-    you_set_x_money_to_y = "You set %s's money to %s%d.",
-    x_set_your_money_to_y = "%s set your money to %s%d.",
-
-    you_set_x_salary = "You set %s's salary to %s.",
-    x_set_your_salary = "%s set your salary to %s.",
     you_set_x_money = "You set %s's money to %s.",
     x_set_your_money = "%s set your money to %s.",
     you_set_x_name = "You set %s's name to %s",
@@ -305,8 +253,6 @@ local my_language = {
 
     someone_stole_steam_name = "Someone is already using your Steam name as their RP name so we gave you a '1' after your name.", -- Uh oh
     already_taken = "Already taken.",
-
-    job_doesnt_require_vote_currently = "This job does not require a vote at the moment!",
 
     x_made_you_a_y = "%s has made you a %s!",
 
@@ -332,15 +278,11 @@ local my_language = {
     unable_afk_spam_prevention = "Please wait before going AFK again.",
     salary_frozen = "Your salary has been frozen.",
     salary_restored = "Welcome back, your salary has now been restored.",
-    no_auto_demote = "You will not be auto-demoted.",
-    youre_afk_demoted = "You were demoted for being AFK for too long. Next time use /afk.",
-    hes_afk_demoted = "%s has been demoted for being AFK for too long.",
     afk_cmd_to_exit = "Type /afk to exit AFK mode.",
     player_now_afk = "%s is now AFK.",
     player_no_longer_afk = "%s is no longer AFK.",
 
     -- VGUI and some more doors/vehicles
-    vote = "Vote",
     time = "Time: %d",
     yes = "Yes",
     no = "No",
@@ -362,7 +304,6 @@ local my_language = {
     weapon_ = "weapon",
     no_extra_weapons = "This job has no extra weapons.",
     become_job = "Become job",
-    create_vote_for_job = "Create vote",
     shipment = "shipment",
     Shipments = "Shipments",
     shipments = "shipments",
@@ -378,7 +319,6 @@ local my_language = {
     go_to_sleep = "Go to sleep/wake up",
     drop_weapon = "Drop current weapon",
     buy_health = "Buy health(%s)",
-    demote_player_menu = "Demote a player",
 
     noone_available = "No one available",
 

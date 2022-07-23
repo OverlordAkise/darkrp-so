@@ -6,12 +6,6 @@ local function AFKHUDPaint()
     draw.DrawNonParsedSimpleText(DarkRP.getPhrase("afk_mode"), "DarkRPHUD2", scrw, scrh - 100, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     draw.DrawNonParsedSimpleText(DarkRP.getPhrase("salary_frozen"), "DarkRPHUD2", scrw, scrh - 60, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-    if not LocalPlayer():getDarkRPVar("AFKDemoted") then
-        draw.DrawNonParsedSimpleText(DarkRP.getPhrase("no_auto_demote"), "DarkRPHUD2", scrw, scrh - 20, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    else
-        draw.DrawNonParsedSimpleText(DarkRP.getPhrase("youre_afk_demoted"), "DarkRPHUD2", scrw, scrh - 20, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end
-
     draw.DrawNonParsedSimpleText(DarkRP.getPhrase("afk_cmd_to_exit"), "DarkRPHUD2", scrw, scrh + 20, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 

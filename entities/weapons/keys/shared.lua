@@ -1,5 +1,11 @@
 AddCSLuaFile()
 
+print("-----------")
+print("-----------")
+print("loaded gm swep!")
+print("-----------")
+print("-----------")
+
 if SERVER then
     AddCSLuaFile("cl_menu.lua")
     util.AddNetworkString("anim_keys")
