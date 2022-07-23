@@ -164,32 +164,9 @@ function FPP.Protect.PhysgunPickup(ply, ent)
 end
 hook.Add("PhysgunPickup", "FPP.Protect.PhysgunPickup", FPP.Protect.PhysgunPickup)
 
---Physgun reload
+--Fuck Physgun reload
 function FPP.Protect.PhysgunReload(weapon, ply)
-    if not tobool(FPP.Settings.FPP_PHYSGUN1.reloadprotection) then return end
-
-    local ent = ply:GetEyeTrace().Entity
-
-    if not IsValid(ent) then return end
-
-    local cantouch
-    local skipReturn = false
-
-    if isfunction(ent.OnPhysgunReload) then
-        cantouch = ent:OnPhysgunReload(ply, ent)
-        -- Do not return the value, the gamemode will do this
-        -- Allows other hooks to run
-        skipReturn = true
-    elseif ent.OnPhysgunReload ~= nil then
-        cantouch = ent.OnPhysgunReload
-    else
-        cantouch = not ent:IsPlayer() and FPP.plyCanTouchEnt(ply, ent, "Physgun")
-    end
-
-    if cantouch and FPP.UnGhost then FPP.UnGhost(ply, ent) end
-    if not cantouch and not skipReturn then return false end
-
-    -- Double reload breaks when returning true here
+    return false
 end
 hook.Add("OnPhysgunReload", "FPP.Protect.PhysgunReload", FPP.Protect.PhysgunReload)
 
@@ -561,14 +538,6 @@ function FPP.Protect.CanProperty(ply, property, ent)
     if not cantouch then return false end
 end
 hook.Add("CanProperty", "FPP.Protect.CanProperty", FPP.Protect.CanProperty)
-
-function FPP.Protect.CanDrive(ply, ent)
-    -- Use Toolgun because I'm way too lazy to make a new type
-    local cantouch = FPP.plyCanTouchEnt(ply, ent, "Toolgun")
-
-    if not cantouch then return false end
-end
-hook.Add("CanDrive", "FPP.Protect.CanDrive", FPP.Protect.CanDrive)
 
 local function freezeDisconnected(ply)
     local SteamID = ply:SteamID()
