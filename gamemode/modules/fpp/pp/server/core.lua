@@ -159,7 +159,7 @@ function FPP.Protect.PhysgunPickup(ply, ent)
         skipReturn = ent:IsPlayer()
     end
 
-    if cantouch and FPP.UnGhost then FPP.UnGhost(ply, ent) end
+    if cantouch and FPP.AntiSpam.GhostFreeze then FPP.AntiSpam.GhostFreeze(ent,ent:GetPhysicsObject()) end
     if not cantouch and not skipReturn then return false end
 end
 hook.Add("PhysgunPickup", "FPP.Protect.PhysgunPickup", FPP.Protect.PhysgunPickup)
@@ -171,6 +171,7 @@ end
 hook.Add("OnPhysgunReload", "FPP.Protect.PhysgunReload", FPP.Protect.PhysgunReload)
 
 function FPP.PhysgunFreeze(weapon, phys, ent, ply)
+    if FPP.UnGhost then FPP.UnGhost(ply, ent) end
     if isfunction(ent.OnPhysgunFreeze) then
         local val = ent:OnPhysgunFreeze(weapon, phys, ent, ply)
         -- Do not return the value, the gamemode will do this
