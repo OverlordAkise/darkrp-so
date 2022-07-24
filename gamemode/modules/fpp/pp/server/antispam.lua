@@ -52,32 +52,6 @@ function FPP.AntiSpam.CreateEntity(ply, ent, IsDuplicate)
     if shouldRegister == false then return end
 
     local class = ent:GetClass()
-    -- I power by ten because the volume of a prop can vary between 65 and like a few billion
-    if tobool(FPP.Settings.FPP_ANTISPAM1.bigpropantispam) and phys:GetVolume() and phys:GetVolume() > math.pow(10, FPP.Settings.FPP_ANTISPAM1.bigpropsize) and not string.find(class, "constraint") and not string.find(class, "hinge")
-    and not string.find(class, "magnet") and not string.find(class, "collision") and not blacklist[class] then
-        if not IsDuplicate then
-            ply.FPPAntispamBigProp = (ply.FPPAntispamBigProp or 0) + 1
-            timer.Simple(10 * FPP.Settings.FPP_ANTISPAM1.bigpropwait, function()
-                if not ply:IsValid() then return end
-                ply.FPPAntispamBigProp = ply.FPPAntispamBigProp or 0
-                ply.FPPAntispamBigProp = math.Max(ply.FPPAntispamBigProp - 1, 0)
-            end)
-        end
-
-        if ply.FPPAntiSpamLastBigProp and ply.FPPAntiSpamLastBigProp > (CurTime() - (FPP.Settings.FPP_ANTISPAM1.bigpropwait * ply.FPPAntispamBigProp)) then
-            FPP.Notify(ply, "Please wait " .. FPP.Settings.FPP_ANTISPAM1.bigpropwait * ply.FPPAntispamBigProp .. " Seconds before spawning a big prop again", false)
-            ply.FPPAntiSpamLastBigProp = CurTime()
-            ent:Remove()
-            return
-        end
-
-        if not IsDuplicate then
-            ply.FPPAntiSpamLastBigProp = CurTime()
-        end
-        FPP.AntiSpam.GhostFreeze(ent, phys)
-        FPP.Notify(ply, "Your prop is ghosted because it is too big. Interract with it to unghost it.", true)
-        return
-    end
 
     if not IsDuplicate and not blacklist[class] then
         ply.FPPAntiSpamCount = (ply.FPPAntiSpamCount or 0) + 1
@@ -88,12 +62,7 @@ function FPP.AntiSpam.CreateEntity(ply, ent, IsDuplicate)
             end
         end)
 
-        if ply.FPPAntiSpamCount >= FPP.Settings.FPP_ANTISPAM1.smallpropghostlimit and ply.FPPAntiSpamCount <= FPP.Settings.FPP_ANTISPAM1.smallpropdenylimit
-            and not ent:IsVehicle() --[[Vehicles don't like being ghosted, they tend to crash the server]] then
-            FPP.AntiSpam.GhostFreeze(ent, phys)
-            FPP.Notify(ply, "Your prop is ghosted for antispam, interract with it to unghost it.", true)
-            return
-        elseif ply.FPPAntiSpamCount > FPP.Settings.FPP_ANTISPAM1.smallpropdenylimit then
+        if ply.FPPAntiSpamCount > FPP.Settings.FPP_ANTISPAM1.smallpropdenylimit then
             ent:Remove()
             FPP.Notify(ply, "Prop removed due to spam", false)
             return
