@@ -164,6 +164,10 @@ function FPP.Protect.PhysgunPickup(ply, ent)
 end
 hook.Add("PhysgunPickup", "FPP.Protect.PhysgunPickup", FPP.Protect.PhysgunPickup)
 
+hook.Add("PhysgunDrop", "so_FPP.Protect.PhysgunDrop", function(ply,ent)
+    if FPP.AntiSpam.GhostFreeze then FPP.AntiSpam.GhostFreeze(ent,ent:GetPhysicsObject()) end
+end)
+
 --Fuck Physgun reload
 function FPP.Protect.PhysgunReload(weapon, ply)
     return false
@@ -171,7 +175,12 @@ end
 hook.Add("OnPhysgunReload", "FPP.Protect.PhysgunReload", FPP.Protect.PhysgunReload)
 
 function FPP.PhysgunFreeze(weapon, phys, ent, ply)
-    if FPP.UnGhost then FPP.UnGhost(ply, ent) end
+    if FPP.UnGhost then 
+        timer.Simple(0.2,function()
+            if not IsValid(ent) then return end
+            FPP.UnGhost(ply, ent)
+        end)
+    end
     if isfunction(ent.OnPhysgunFreeze) then
         local val = ent:OnPhysgunFreeze(weapon, phys, ent, ply)
         -- Do not return the value, the gamemode will do this
