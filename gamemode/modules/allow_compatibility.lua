@@ -105,4 +105,9 @@ DarkRP.registerDarkRPVar("AFKDemoted", net.WriteBit, fn.Compose{tobool, net.Read
 TEAM_HOBO = -1
 TEAM_GUN = -1
 
+--fonts
+if CLIENT then
+    surface.CreateFont("TabLarge", {size = 17,weight = 700,antialias = true,shadow = false,font = "Trebuchet MS"})
+end
+
 print("[luctus_so] Loaded backwards compatibility")
