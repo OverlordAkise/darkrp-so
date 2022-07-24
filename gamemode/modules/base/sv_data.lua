@@ -118,8 +118,9 @@ function DarkRP.initDatabase()
             end
         end)
 
-    MySQLite.commit(fp{updateDBSchema, -- Migrate the database
-        function() -- Initialize the data after all the tables have been created
+    MySQLite.commit(function()
+        updateDBSchema(function() -- Migrate the database, afterwards as callback the stuff below
+            -- Initialize the data after all the tables have been created
             setUpNonOwnableDoors()
             setUpTeamOwnableDoors()
             setUpGroupDoors()
@@ -139,7 +140,8 @@ function DarkRP.initDatabase()
             end
 
             hook.Call("DarkRPDBInitialized")
-        end})
+        end)
+    end)
 end
 
 --[[---------------------------------------------------------------------------
@@ -164,11 +166,9 @@ function updateDBSchema(callback)
 
             MySQLite.queueQuery([[REPLACE INTO darkrp_dbversion VALUES(20211228)]])
         MySQLite.commit()
-
-        return
-        -- All migrations finished
-        callback()
     end
+    -- All migrations finished
+    callback()
 end
 
 --[[---------------------------------------------------------
@@ -378,7 +378,19 @@ function DarkRP.storeDoorData(ent)
     MySQLite.query([[REPLACE INTO darkrp_door VALUES(]] .. ent:doorIndex() .. [[, ]] .. MySQLite.SQLStr(map) .. [[, ]] .. (title and MySQLite.SQLStr(title) or "NULL") .. [[, ]] .. "NULL" .. [[, ]] .. (nonOwnable and 1 or 0) .. [[);]])
 end
 
+local ownableDoors = {
+    ["func_door"] = true,
+    ["func_door_rotating"] = true,
+    ["prop_door_rotating"] = true
+}
+
 function setUpNonOwnableDoors()
+    for k,v in pairs(ents.GetAll()) do
+        if ownableDoors[v:GetClass()] then
+            v:setKeysNonOwnable(true)
+            --print("Set door unownable for",v)
+        end
+    end
     MySQLite.query("SELECT idx, title, isLocked, isDisabled FROM darkrp_door WHERE map = " .. MySQLite.SQLStr(string.lower(game.GetMap())) .. ";", function(r)
         if not r then return end
 
@@ -387,9 +399,7 @@ function setUpNonOwnableDoors()
 
             if not IsValid(e) then continue end
             if e:isKeysOwnable() then
-                if tobool(row.isDisabled) then
-                    e:setKeysNonOwnable(tobool(row.isDisabled))
-                end
+                e:setKeysNonOwnable(tobool(row.isDisabled))
                 if row.isLocked and row.isLocked ~= "NULL" then
                     e:Fire((tobool(row.isLocked) and "" or "un") .. "lock", "", 0)
                 end
