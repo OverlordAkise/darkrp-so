@@ -47,7 +47,6 @@ include("darkrp/gamemode/modules/fspectate/cl_init.lua")
 include("darkrp/gamemode/modules/fpp/cl_fpp.lua")
 include("darkrp/gamemode/modules/doorsystem/sh_doors.lua")
 include("darkrp/gamemode/modules/doorsystem/cl_doors.lua")
-include("darkrp/gamemode/modules/deathpov/cl_init.lua")
 include("darkrp/gamemode/modules/cppi/sh_cppi.lua")
 --Chat to the top
 include("darkrp/gamemode/modules/base/sh_util.lua")
