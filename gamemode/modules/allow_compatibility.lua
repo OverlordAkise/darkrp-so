@@ -77,6 +77,11 @@ function DarkRP.lockdown() end
 function DarkRP.getLaws() return {} end
 function DarkRP.resetLaws() end
 
+--Police
+function plymeta:isCP() return GAMEMODE.CivilProtection and GAMEMODE.CivilProtection[self:Team()] or false end
+function plymeta:isMayor() return self:getJobTable().mayor end
+function plymeta:isChief() return self:getJobTable().chief end
+
 --voting
 concommand.Add("ans", print)
 function DarkRP.createQuestion() end

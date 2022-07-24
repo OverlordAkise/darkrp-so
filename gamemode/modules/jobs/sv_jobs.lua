@@ -73,8 +73,6 @@ function meta:changeTeam(t, force, suppressNotification, ignoreMaxMembers)
         end
         return false
     end
-
-    local isMayor = RPExtraTeams[prevTeam] and RPExtraTeams[prevTeam].mayor
     
     self:updateJob(TEAM.name)
     self:setSelfDarkRPVar("salary", TEAM.salary)
