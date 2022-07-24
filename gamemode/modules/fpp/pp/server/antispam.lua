@@ -130,12 +130,6 @@ hook.Add("InitPostEntity", "FPP.InitializeAntiMinge", function()
     local backupPropSpawn = DoPlayerEntitySpawn
     function DoPlayerEntitySpawn(ply, ...)
         local ent = backupPropSpawn(ply, ...)
-        if not tobool(FPP.Settings.FPP_ANTISPAM1.antispawninprop) then return ent end
-
-        local PropInProp = IsEmpty(ent)
-        if not IsValid(PropInProp) then return ent end
-        local pos = PropInProp:NearestPoint(ply:EyePos()) + ply:GetAimVector() * -1 * ent:BoundingRadius()
-        ent:SetPos(pos)
         return ent
     end
 

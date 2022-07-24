@@ -93,9 +93,8 @@ local function calculateCanTouchForType(ply, ent, touchType)
 
     if isBlocked then
         local adminsCanTouchBlocked = FPPSettings.admincanblocked ~= 0
-        local playersCanBlocked = FPPSettings.canblocked ~= 0
 
-        return (playersCanBlocked or isAdmin and adminsCanTouchBlocked) and not getPlySetting(ply, "FPP_PrivateSettings_BlockedProps"),
+        return (isAdmin and adminsCanTouchBlocked) and not getPlySetting(ply, "FPP_PrivateSettings_BlockedProps"),
                reasonNumbers.blocked
     end
 
@@ -125,7 +124,7 @@ local function calculateCanTouchForType(ply, ent, touchType)
     local peopleWorldProps = FPPSettings.worldprops ~= 0
     local restrictWorld = getPlySetting(ply, "FPP_PrivateSettings_WorldProps")
 
-    return not restrictWorld and (peopleWorldProps or (isAdmin and adminWorldProps)),
+    return not restrictWorld and (isAdmin and adminWorldProps),
            owner == nil and reasonNumbers.world or reasonNumbers.disconnected
 end
 

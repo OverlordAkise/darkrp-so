@@ -567,9 +567,7 @@ function FPP.PlayerDisconnect(ply)
     local SteamID = ply:SteamID()
     FPP.DisconnectedPlayers[SteamID] = true
 
-    if tobool(FPP.Settings.FPP_GLOBALSETTINGS1.freezedisconnected) then
-        freezeDisconnected(ply)
-    end
+    freezeDisconnected(ply)
 
     if ply.FPPFallbackOwner then
         -- FPP.DisconnectedOriginalOwners = FPP.DisconnectedOriginalOwners or {}
