@@ -598,8 +598,6 @@ end
 
 local function initPlayer(ply)
 
-    ply:initiateTax()
-
     ply:updateJob(team.GetName(GAMEMODE.DefaultTeam))
     ply:setSelfDarkRPVar("salary", DarkRP.retrieveSalary(ply))
     ply.LastJob = nil -- so players don't have to wait to get a job after joining
@@ -900,7 +898,6 @@ end
 function GM:PlayerDisconnected(ply)
     self.Sandbox.PlayerDisconnected(self, ply)
     timer.Remove(ply:SteamID64() .. "jobtimer")
-    timer.Remove(ply:SteamID64() .. "propertytax")
 
     local isMayor = ply:isMayor()
 

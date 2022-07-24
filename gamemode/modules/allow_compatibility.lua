@@ -101,6 +101,11 @@ function DarkRP.getDemoteGroup(job) return job end
 function DarkRP.getDemoteGroups() return {} end
 DarkRP.registerDarkRPVar("AFKDemoted", net.WriteBit, fn.Compose{tobool, net.ReadBit})
 
+--Doors
+function plymeta:doPropertyTax() end
+function plymeta:initiateTax() end
+function GM:canTax() return false end
+
 --Jobs
 TEAM_HOBO = -1
 TEAM_GUN = -1

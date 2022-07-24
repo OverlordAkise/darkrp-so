@@ -45,8 +45,6 @@ GM.Config.babygod                       = true
 GM.Config.canforcedooropen              = true
 -- chatsounds - sounds are played when some things are said in chat.
 GM.Config.chatsounds                    = true
--- cit_propertytax - Enable/disable property tax that is exclusive only for citizens.
-GM.Config.cit_propertytax               = false
 -- copscanunfreeze - Enable/disable the ability of cops to unfreeze other people's props.
 GM.Config.copscanunfreeze               = true
 -- copscanunweld - Enable/disable the ability of cops to unweld other people's props.
@@ -204,12 +202,6 @@ GM.Config.startingmoney                 = 500
 GM.Config.stunstickdamage               = 1000
 -- vehiclecost - Sets the cost of a vehicle (To own it).
 GM.Config.vehiclecost                   = 40
--- wallettaxmax - Maximum percentage of tax to be paid.
-GM.Config.wallettaxmax                  = 5
--- wallettaxmin - Minimum percentage of tax to be paid.
-GM.Config.wallettaxmin                  = 1
--- wallettaxtime - Time in seconds between taxing players. Requires server restart.
-GM.Config.wallettaxtime                 = 600
 -- walkspeed - Sets the max walking speed.
 GM.Config.walkspeed                     = 160
 -- falldamagedamper - The damper on realistic fall damage. Default is 15. Decrease this for more damage.

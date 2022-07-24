@@ -75,10 +75,6 @@ function meta:keysOwn(ply)
     end
 
     ply.OwnedNumz = ply.OwnedNumz or 0
-    if ply.OwnedNumz == 0 and GAMEMODE.Config.propertytax then
-        timer.Create(ply:SteamID64() .. "propertytax", 270, 0, function() ply.doPropertyTax(ply) end)
-    end
-
     ply.OwnedNumz = ply.OwnedNumz + 1
 
     ply.Ownedz[self:EntIndex()] = self
@@ -125,116 +121,6 @@ function pmeta:keysUnOwnAll()
     end
 
     self.OwnedNumz = 0
-end
-
-local function taxesUnOwnAll(ply, taxables)
-    for _, ent in pairs(taxables) do
-        if ent:isMasterOwner(ply) then
-            ent:Fire("unlock", "", 0.6)
-        end
-
-        ent:keysUnOwn(ply)
-    end
-end
-
-function pmeta:doPropertyTax()
-    if not GAMEMODE.Config.propertytax then return end
-    if self:isCP() and GAMEMODE.Config.cit_propertytax then return end
-
-    local taxables = {}
-
-    for entIndex, ent in pairs(self.Ownedz or {}) do
-        if not IsValid(ent) or not ent:isKeysOwnable() then self.Ownedz[entIndex] = nil continue end
-        local isAllowed = hook.Call("canTaxEntity", nil, self, ent)
-        if isAllowed == false then continue end
-
-        table.insert(taxables, ent)
-    end
-
-    -- co-owned doors
-    for _, ply in ipairs(player.GetAll()) do
-        if ply == self then continue end
-
-        for _, ent in pairs(ply.Ownedz or {}) do
-            if not IsValid(ent) or not ent:isKeysOwnedBy(self) then continue end
-
-            local isAllowed = hook.Call("canTaxEntity", nil, self, ent)
-            if isAllowed == false then continue end
-
-            table.insert(taxables, ent)
-        end
-    end
-
-    local numowned = #taxables
-
-    if numowned <= 0 then return end
-
-    local price = 10
-    local tax = price * numowned + math.random(-5, 5)
-
-    local shouldTax, taxOverride = hook.Call("canPropertyTax", nil, self, tax)
-
-    if shouldTax == false then return end
-
-    tax = taxOverride or tax
-    if tax == 0 then return end
-
-    local canAfford = self:canAfford(tax)
-
-    if canAfford then
-        self:addMoney(-tax)
-        DarkRP.notify(self, 0, 5, DarkRP.getPhrase("property_tax", DarkRP.formatMoney(tax)))
-    else
-        taxesUnOwnAll(self, taxables)
-        DarkRP.notify(self, 1, 8, DarkRP.getPhrase("property_tax_cant_afford"))
-    end
-
-    hook.Call("onPropertyTax", nil, self, tax, canAfford)
-end
-
-function pmeta:initiateTax()
-    local taxtime = GAMEMODE.Config.wallettaxtime
-    local uid = self:SteamID64() -- so we can destroy the timer if the player leaves
-    timer.Create("rp_tax_" .. uid, taxtime or 600, 0, function()
-        if not IsValid(self) then
-            timer.Remove("rp_tax_" .. uid)
-
-            return
-        end
-
-        if not GAMEMODE.Config.wallettax then
-            return -- Don't remove the hook in case it's turned on afterwards.
-        end
-
-        local money = self:getDarkRPVar("money")
-        local mintax = GAMEMODE.Config.wallettaxmin / 100
-        local maxtax = GAMEMODE.Config.wallettaxmax / 100 -- convert to decimals for percentage calculations
-        local startMoney = GAMEMODE.Config.startingmoney
-
-
-        -- Variate the taxes between twice the starting money ($1000 by default) and 200 - 2 times the starting money (100.000 by default)
-        local tax = (money - (startMoney * 2)) / (startMoney * 198)
-        tax = math.Min(maxtax, mintax + (maxtax - mintax) * tax)
-
-        local taxAmount = tax * money
-
-        local shouldTax, amount = hook.Call("canTax", GAMEMODE, self, taxAmount)
-
-        if shouldTax == false then return end
-
-        taxAmount = amount or taxAmount
-        taxAmount = math.Max(0, taxAmount)
-
-        self:addMoney(-taxAmount)
-        DarkRP.notify(self, 3, 7, DarkRP.getPhrase("taxday", math.Round(taxAmount / money * 100, 3)))
-
-        hook.Call("onPaidTax", DarkRP.hooks, self, tax, money)
-    end)
-end
-
-function GM:canTax(ply)
-    -- Don't tax players if they have less than twice the starting amount
-    if ply:getDarkRPVar("money") < (GAMEMODE.Config.startingmoney * 2) then return false end
 end
 
 --[[---------------------------------------------------------------------------
@@ -365,25 +251,15 @@ local function OwnDoor(ply)
 
         ent:keysUnOwn(ply)
         ent:setKeysTitle(nil)
-        local GiveMoneyBack = math.floor((hook.Call("get" .. (ent:IsVehicle() and "Vehicle" or "Door") .. "Cost", GAMEMODE, ply, ent) * 0.666) + 0.5)
-        hook.Call("playerKeysSold", GAMEMODE, ply, ent, GiveMoneyBack)
-        ply:addMoney(GiveMoneyBack)
-        local bSuppress = hook.Call("hideSellDoorMessage", GAMEMODE, ply, ent)
-        if not bSuppress then
-            DarkRP.notify(ply, 0, 4, DarkRP.getPhrase("door_sold", DarkRP.formatMoney(GiveMoneyBack)))
-        end
-
+        hook.Call("playerKeysSold", GAMEMODE, ply, ent, 0)
+        hook.Call("hideSellDoorMessage", GAMEMODE, ply, ent)
     else
         if ent:isKeysOwned() and not ent:isKeysAllowedToOwn(ply) then
             DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("door_already_owned"))
             return ""
         end
 
-        local iCost = hook.Call("get" .. (ent:IsVehicle() and "Vehicle" or "Door") .. "Cost", GAMEMODE, ply, ent)
-        if not ply:canAfford(iCost) then
-            DarkRP.notify(ply, 1, 4, ent:IsVehicle() and DarkRP.getPhrase("vehicle_cannot_afford") or DarkRP.getPhrase("door_cannot_afford"))
-            return ""
-        end
+        hook.Call("get" .. (ent:IsVehicle() and "Vehicle" or "Door") .. "Cost", GAMEMODE, ply, ent)
 
         local bAllowed, strReason, bSuppress = hook.Call("playerBuy" .. (ent:IsVehicle() and "Vehicle" or "Door"), GAMEMODE, ply, ent)
         if bAllowed == false then
@@ -406,13 +282,12 @@ local function OwnDoor(ply)
             return ""
         end
 
-        ply:addMoney(-iCost)
         if not bSuppress then
-            DarkRP.notify(ply, 0, 4, bVehicle and DarkRP.getPhrase("vehicle_bought", DarkRP.formatMoney(iCost), "") or DarkRP.getPhrase("door_bought", DarkRP.formatMoney(iCost), ""))
+            DarkRP.notify(ply, 0, 4, bVehicle and DarkRP.getPhrase("vehicle_bought", DarkRP.formatMoney(0), "") or DarkRP.getPhrase("door_bought", DarkRP.formatMoney(0), ""))
         end
 
         ent:keysOwn(ply)
-        hook.Call("playerBought" .. (bVehicle and "Vehicle" or "Door"), GAMEMODE, ply, ent, iCost)
+        hook.Call("playerBought" .. (bVehicle and "Vehicle" or "Door"), GAMEMODE, ply, ent, 0)
     end
 
     return ""
@@ -421,7 +296,6 @@ DarkRP.defineChatCommand("toggleown", OwnDoor)
 
 local function UnOwnAll(ply, cmd, args)
     local amount = 0
-    local cost = 0
 
     local unownables = {}
     for entIndex, ent in pairs(ply.Ownedz or {}) do
@@ -451,16 +325,12 @@ local function UnOwnAll(ply, cmd, args)
         ent:keysUnOwn(ply)
         amount = amount + 1
 
-        local GiveMoneyBack = math.floor((hook.Call("get" .. (ent:IsVehicle() and "Vehicle" or "Door") .. "Cost", GAMEMODE, ply, ent) * 0.666) + 0.5)
-        hook.Call("playerKeysSold", GAMEMODE, ply, ent, GiveMoneyBack)
-        cost = cost + GiveMoneyBack
+        hook.Call("playerKeysSold", GAMEMODE, ply, ent, 0)
     end
 
     if amount == 0 then return "" end
 
-    ply:addMoney(math.floor(cost))
-
-    DarkRP.notify(ply, 2, 4, DarkRP.getPhrase("sold_x_doors", amount, DarkRP.formatMoney(math.floor(cost))))
+    DarkRP.notify(ply, 2, 4, DarkRP.getPhrase("sold_x_doors", amount, DarkRP.formatMoney(math.floor(0))))
     return ""
 end
 DarkRP.defineChatCommand("unownalldoors", UnOwnAll)
