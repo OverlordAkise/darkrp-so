@@ -44,7 +44,7 @@ timer.Simple(3, function()
 
     -- Malicious addons that kicks players this one person doesn't like.
     if not istable(Skid) then return end
-    Skid.Check = fn.Id
+    Skid.Check = fnothing
     hook.Remove("CheckPassword", "Skid.CheckPassword")
 
     MsgC(Color(0, 255, 0), "SkidCheck", Color(255, 255, 255), " has been ", Color(255, 0, 0), "DISABLED\n", Color(255, 255, 255), [[

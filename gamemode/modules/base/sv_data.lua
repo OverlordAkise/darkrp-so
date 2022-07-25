@@ -166,8 +166,6 @@ function updateDBSchema(callback)
 
             MySQLite.queueQuery([[REPLACE INTO darkrp_dbversion VALUES(20211228)]])
         MySQLite.commit()
-        
-        
     end
     -- All migrations finished
     callback()

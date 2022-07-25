@@ -147,7 +147,7 @@ function plyMeta:sendDoorData()
         end
     net.Send(self)
 end
-concommand.Add("_sendAllDoorData", fn.Id) -- Backwards compatibility
+concommand.Add("_sendAllDoorData", fnothing) -- Backwards compatibility
 
 hook.Add("PlayerInitialSpawn", "DarkRP_DoorData", plyMeta.sendDoorData)
 

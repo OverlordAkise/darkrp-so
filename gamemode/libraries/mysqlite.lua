@@ -77,7 +77,7 @@ function initialize(config)
         connectToMySQL(MySQLite_config.Host, MySQLite_config.Username, MySQLite_config.Password, MySQLite_config.Database_name, MySQLite_config.Database_port)
     else
         timer.Simple(0, function()
-            _G.GAMEMODE.DatabaseInitialized = _G.GAMEMODE.DatabaseInitialized or function() end
+            _G.GAMEMODE.DatabaseInitialized = _G.GAMEMODE.DatabaseInitialized or fnothing
             hook.Call("DatabaseInitialized", _G.GAMEMODE)
         end)
     end
@@ -286,7 +286,7 @@ end
 
 function connectToMySQL(host, username, password, database_name, database_port)
     database_port = database_port or 3306
-    local func = mysqlOO and msOOConnect or TMySQL and tmsqlConnect or function() end
+    local func = mysqlOO and msOOConnect or TMySQL and tmsqlConnect or fnothing
     func(host, username, password, database_name, database_port)
 end
 

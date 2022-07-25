@@ -482,7 +482,7 @@ GM.AddGroupChat = function(_, ...) DarkRP.createGroupChat(...) end
 
 DarkRP.removeGroupChat = fp{removeCustomItem, GM.DarkRPGroupChats, nil, "onGroupChatRemoved", false}
 
-DarkRP.getGroupChats = fp{fn.Id, GM.DarkRPGroupChats}
+function DarkRP.getGroupChats() return GM.DarkRPGroupChats end
 
 GM.AmmoTypes = {}
 
@@ -521,7 +521,9 @@ local categories = {
 }
 local categoriesMerged = false -- whether categories and custom items are merged.
 
-DarkRP.getCategories = fp{fn.Id, categories}
+function DarkRP.getCategories()
+    return categories
+end
 
 local categoryOrder = function(a, b)
     local aso = a.sortOrder or 100

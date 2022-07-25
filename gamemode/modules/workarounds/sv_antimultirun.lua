@@ -15,7 +15,7 @@ local function insertSteamid64(steamid64, userid)
     MySQLite.query(
         query,
         -- Ignore result of successful insertion
-        function() end,
+        fnothing,
         -- Attempt to kick the user when insertion fails, as it means that
         -- the row already exists in the database.
         function(err)

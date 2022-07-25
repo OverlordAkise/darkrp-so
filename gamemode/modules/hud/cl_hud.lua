@@ -39,7 +39,7 @@ local function DrawVoiceChat()
     end
 end
 
-local AdminTell = function() end
+local AdminTell = fnothing
 
 usermessage.Hook("AdminTell", function(msg)
     timer.Remove("DarkRP_AdminTell")
@@ -52,7 +52,7 @@ usermessage.Hook("AdminTell", function(msg)
     end
 
     timer.Create("DarkRP_AdminTell", 10, 1, function()
-        AdminTell = function() end
+        AdminTell = fnothing
     end)
 end)
 

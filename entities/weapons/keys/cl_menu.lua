@@ -71,7 +71,7 @@ local function openMenu(setDoorOwnerAccess, doorSettingsAccess)
                 end
             end
             if not menu.found then
-                menu:AddOption(DarkRP.getPhrase("noone_available"), function() end)
+                menu:AddOption(DarkRP.getPhrase("noone_available"), fnothing)
             end
             menu:Open()
         end
@@ -88,7 +88,7 @@ local function openMenu(setDoorOwnerAccess, doorSettingsAccess)
                 end
             end
             if not menu.found then
-                menu:AddOption(DarkRP.getPhrase("noone_available"), function() end)
+                menu:AddOption(DarkRP.getPhrase("noone_available"), fnothing)
             end
             menu:Open()
         end
@@ -113,7 +113,7 @@ local function openMenu(setDoorOwnerAccess, doorSettingsAccess)
                     Frame:Close()
                 end
             end,
-            function() end, DarkRP.getPhrase("ok"), DarkRP.getPhrase("cancel"))
+            fnothing, DarkRP.getPhrase("ok"), DarkRP.getPhrase("cancel"))
         end
     end
 

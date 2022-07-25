@@ -4,8 +4,8 @@ Functions
 local meta = FindMetaTable("Player")
 function meta:changeTeam(t, force, suppressNotification, ignoreMaxMembers)
     local prevTeam = self:Team()
-    local notify = suppressNotification and fn.Id or DarkRP.notify
-    local notifyAll = suppressNotification and fn.Id or DarkRP.notifyAll
+    local notify = suppressNotification and fnothing or DarkRP.notify
+    local notifyAll = suppressNotification and fnothing or DarkRP.notifyAll
 
     local allowed, time = self:changeAllowed(t)
     if t ~= GAMEMODE.DefaultTeam and not allowed and not force then

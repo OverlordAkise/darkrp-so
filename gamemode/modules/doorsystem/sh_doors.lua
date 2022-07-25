@@ -136,8 +136,8 @@ end
 local netDoorVars = {}
 local netDoorVarsByName = {}
 
-DarkRP.getDoorVars = fp{fn.Id, netDoorVars}
-DarkRP.getDoorVarsByName = fp{fn.Id, netDoorVarsByName}
+function DarkRP.getDoorVars() return netDoorVars end
+function DarkRP.getDoorVarsByName() return netDoorVarsByName end
 
 function DarkRP.registerDoorVar(name, writeFn, readFn)
     netDoorVarsByName[name] = {name = name, write = writeFn, read = readFn}

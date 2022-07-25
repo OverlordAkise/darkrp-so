@@ -8,7 +8,7 @@ Variables
 local receivers
 local currentChatText = {}
 local receiverConfigs = {}
-local currentConfig = {text = "", hearFunc = fn.Id} -- Default config is not loaded yet
+local currentConfig = {text = "", hearFunc = fnothing} -- Default config is not loaded yet
 
 --[[---------------------------------------------------------------------------
 addChatReceiver

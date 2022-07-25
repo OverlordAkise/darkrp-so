@@ -181,7 +181,7 @@ local function applyHookTable(tab, priority)
     local mt
     local oldMetatable = getmetatable(tab)
     if istable(oldMetatable) then
-        local oldNI = oldMetatable.__newindex or function() end
+        local oldNI = oldMetatable.__newindex or fnothing
 
         mt = oldMetatable
         if priority then

@@ -160,7 +160,7 @@ function FPP.AdminMenu(Panel)
             Derma_StringRequest("Enter entity manually", "Enter the classname of the entity you would like to add.", nil,
             function(a)
             RunConsoleCommand("FPP_AddBlocked", Type, a)
-            end, function() end )
+            end, fnothing )
         end
     end
 
