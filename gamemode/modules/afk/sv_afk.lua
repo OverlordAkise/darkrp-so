@@ -42,8 +42,22 @@ DarkRP.defineChatCommand("afk", function(ply)
 
     if canAFK == false then return "" end
 
-    ply.DarkRPLastAFK = CurTime()
-    SetAFK(ply)
+    if not ply:getDarkRPVar("AFK") then
+        DarkRP.notify(ply,1,5,"[AFK] Please stand still for 5s to be moved AFK!")
+        ply.cAFKPos = ply:GetPos()
+        timer.Simple(5,function()
+            if not IsValid(ply) then return end
+            if ply.cAFKPos == ply:GetPos() then
+                ply.DarkRPLastAFK = CurTime()
+                SetAFK(ply)
+            else
+                DarkRP.notify(ply,1,5,"[AFK] Error: You moved!")
+            end
+        end)
+    else
+        ply.DarkRPLastAFK = CurTime()
+        SetAFK(ply)
+    end
 
     return ""
 end)
