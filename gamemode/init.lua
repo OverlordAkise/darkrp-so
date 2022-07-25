@@ -39,6 +39,7 @@ end
 include("config/_MySQL.lua")
 include("config/config.lua")
 include("config/licenseweapons.lua")
+include("config/sh_customconfig.lua")
 
 include("libraries/fn.lua")
 include("libraries/sh_cami.lua")
@@ -57,6 +58,7 @@ hook.Call("DarkRPPreLoadModules", GM)
 
 
 --Modules for client
+AddCSLuaFile("config/sh_customconfig.lua")
 AddCSLuaFile("darkrp/gamemode/modules/workarounds/sh_workarounds.lua")
 AddCSLuaFile("darkrp/gamemode/modules/sleep/sh_sleep.lua")
 AddCSLuaFile("darkrp/gamemode/modules/positions/sh_commands.lua")
@@ -169,4 +171,5 @@ DarkRP.DARKRP_LOADING = nil
 
 hook.Call("DarkRPFinishedLoading", GM)
 MySQLite.initialize()
+
 print("Loaded SV in "..(SysTime()-ss).."s")

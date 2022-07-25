@@ -16,6 +16,7 @@ include("shared.lua")
 include("config/config.lua")
 include("libraries/sh_cami.lua")
 include("libraries/fn.lua")
+include("config/sh_customconfig.lua")
 
 --interfaceloader.lua start
 DarkRP = {}

@@ -105,3 +105,20 @@ function input.KeyNameToNumber(str)
 
     return keyNames[str]
 end
+
+
+-- SCPRP Extras
+
+hook.Add("ContextMenuOpen", "so_hide_contextmenu", function()
+	if GAMEMODE.Config.disableContextmenu and not IsTeam(LocalPlayer()) then
+		return false
+	end
+end)
+
+hook.Add("SpawnMenuOpen", "so_hide_spawnmenu", function()
+	if GAMEMODE.Config.disableSpawnmenu and not IsTeam(LocalPlayer()) then
+		return false
+	end
+end)
+
+

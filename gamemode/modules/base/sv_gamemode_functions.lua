@@ -95,10 +95,17 @@ end
  ---------------------------------------------------------]]
 
 function GM:PlayerSpawnProp(ply, model)
-    -- No prop spawning means no prop spawning.
-    local allowed = GAMEMODE.Config.propspawning
-
-    if not allowed then return false end
+    --if not allowed by job
+    if not ALLOWED_PROP_SPAWNING_JOBS or not ALLOWED_PROP_SPAWNING_JOBS[ply:getJobTable().name] then
+        --if not staff then dont spawn props
+        if not IsTeam(ply) then
+            return false
+        end
+        --if not admin and spawnprops for staff is disabled: dont spawn props
+        if not ply:IsAdmin() and IsTeam(ply) and not GM.Config.canStaffSpawnProps then
+            return false
+        end
+    end
 
     model = string.gsub(tostring(model), "\\", "/")
     model = string.gsub(tostring(model), "//", "/")
@@ -136,23 +143,20 @@ end
 
 local function checkAdminSpawn(ply, configVar, errorStr)
     local config = GAMEMODE.Config[configVar]
-
-    if (config == true or config == 1) and ply:EntIndex() ~= 0 and not ply:IsAdmin() then
-        DarkRP.notify(ply, 1, 5, DarkRP.getPhrase("need_admin", DarkRP.getPhrase(errorStr) or errorStr))
-        return false
-    elseif config == 2 and ply:EntIndex() ~= 0 and not ply:IsSuperAdmin() then
-        DarkRP.notify(ply, 1, 5, DarkRP.getPhrase("need_sadmin", DarkRP.getPhrase(errorStr) or errorStr))
-        return false
-    elseif config == 3 and ply:EntIndex() ~= 0 then
-        DarkRP.notify(ply, 1, 5, DarkRP.getPhrase("disabled", DarkRP.getPhrase(errorStr) or errorStr, DarkRP.getPhrase("see_settings")))
-        return false
+    --staff can spawn if allowed
+    if config and IsTeam(ply) then
+        return true
     end
-
-    return true
+    --admins can always spawn
+    if not config and ply:IsAdmin() then
+        return true
+    end
+    DarkRP.notify(ply, 1, 5, DarkRP.getPhrase("need_admin", DarkRP.getPhrase(errorStr) or errorStr))
+    return false
 end
 
 function GM:PlayerSpawnSENT(ply, class)
-    return checkAdminSpawn(ply, "adminsents", "gm_spawnsent") and self.Sandbox.PlayerSpawnSENT(self, ply, class)
+    return checkAdminSpawn(ply, "canStaffSpawnEntities", "gm_spawnsent") and self.Sandbox.PlayerSpawnSENT(self, ply, class)
 end
 
 function GM:PlayerSpawnedSENT(ply, ent)
@@ -161,10 +165,12 @@ function GM:PlayerSpawnedSENT(ply, ent)
 end
 
 local function canSpawnWeapon(ply)
-    if (GAMEMODE.Config.adminweapons == 0 and ply:IsAdmin()) or
-    (GAMEMODE.Config.adminweapons == 1 and ply:IsSuperAdmin()) or
-    -- Can't use 2 to maintain compatibility
-    (GAMEMODE.Config.adminweapons == 3) then
+    --staff can spawn if allowed
+    if GAMEMODE.Config.canStaffSpawnWeapons and IsTeam(ply) then
+        return true
+    end
+    --admins can always spawn
+    if not GAMEMODE.Config.canStaffSpawnWeapons and ply:IsAdmin() then
         return true
     end
     DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("cant_spawn_weapons"))
@@ -185,7 +191,7 @@ function GM:PlayerSpawnEffect(ply, model)
 end
 
 function GM:PlayerSpawnVehicle(ply, model, class, info)
-    return checkAdminSpawn(ply, "adminvehicles", "gm_spawnvehicle") and self.Sandbox.PlayerSpawnVehicle(self, ply, model, class, info)
+    return checkAdminSpawn(ply, "canStaffSpawnVehicles", "gm_spawnvehicle") and self.Sandbox.PlayerSpawnVehicle(self, ply, model, class, info)
 end
 
 function GM:PlayerSpawnedVehicle(ply, ent)
@@ -195,7 +201,7 @@ function GM:PlayerSpawnedVehicle(ply, ent)
 end
 
 function GM:PlayerSpawnNPC(ply, type, weapon)
-    return checkAdminSpawn(ply, "adminnpcs", "gm_spawnnpc") and self.Sandbox.PlayerSpawnNPC(self, ply, type, weapon)
+    return checkAdminSpawn(ply, "canStaffSpawnNpc", "gm_spawnnpc") and self.Sandbox.PlayerSpawnNPC(self, ply, type, weapon)
 end
 
 function GM:PlayerSpawnedNPC(ply, ent)
@@ -285,7 +291,6 @@ local function IsInRoom(listenerShootPos, talkerShootPos, talker)
     return not roomTrResult.HitWorld
 end
 
-local threed = GM.Config.voice3D
 local dynv = GM.Config.dynamicvoice
 local deadv = GM.Config.deadvoice
 local voiceDistance = GM.Config.voiceDistance * GM.Config.voiceDistance
@@ -404,7 +409,7 @@ end)
 function GM:PlayerCanHearPlayersVoice(listener, talker)
     if not deadv and not talker:Alive() then return false end
 
-    return DrpCanHear[listener][talker] == true, threed
+    return DrpCanHear[listener][talker] == true, true
 end
 
 function GM:CanTool(ply, trace, mode)
