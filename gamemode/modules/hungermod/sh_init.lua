@@ -1,5 +1,3 @@
-local isnil = fn.Curry(fn.Eq, 2)(nil)
-local validFood = {"name", model = isstring, "energy", "price", onEaten = fn.FOr{isnil, isfunction}}
 
 FoodItems = {}
 function DarkRP.createFood(name, mdl, energy, price)
@@ -7,20 +5,28 @@ function DarkRP.createFood(name, mdl, energy, price)
     foodItem.name = name
 
     if DarkRP.DARKRP_LOADING and DarkRP.disabledDefaults["food"][name] then return end
-
-    for k, v in pairs(validFood) do
-        local isFunction = isfunction(v)
-
-        if (isFunction and not v(foodItem[k])) or (not isFunction and foodItem[v] == nil) then
-            ErrorNoHalt("Corrupt food \"" .. (name or "") .. "\": element " .. (isFunction and k or v) .. " is corrupt.\n")
-        end
+    
+    if not isstring(foodItem.model) then
+        ErrorNoHalt("Corrupt food: ",name or ""," has no string model!")
+    end
+    if foodItem.name == nil then
+        ErrorNoHalt("Corrupt food: ",name or ""," has no name!")
+    end
+    if foodItem.energy == nil then
+        ErrorNoHalt("Corrupt food: ",name or ""," has no energy!")
+    end
+    if foodItem.price == nil then
+        ErrorNoHalt("Corrupt food: ",name or ""," has no price!")
+    end
+    if foodItem.onEaten ~= nil and not isfunction(foodItem) then
+        ErrorNoHalt("Corrupt food: ",name or ""," needs to have a function for onEaten!")
     end
 
     table.insert(FoodItems, foodItem)
 end
 AddFoodItem = DarkRP.createFood
 
-DarkRP.getFoodItems = fp{fn.Id, FoodItems}
+function DarkRP.getFoodItems() return FoodItems end
 
 function DarkRP.removeFoodItem(i)
     local food = FoodItems[i]
@@ -29,8 +35,7 @@ function DarkRP.removeFoodItem(i)
 end
 
 local plyMeta = FindMetaTable("Player")
-plyMeta.isCook = fn.Compose{fn.Curry(fn.GetValue, 2)("cook"), plyMeta.getJobTable}
-
+function plyMeta:isCook() return self:getJobTable().cook end
 --[[
 Valid members:
     model = string, -- the model of the food item
