@@ -353,3 +353,33 @@ if SERVER and not DarkRP.disabledDefaults["workarounds"]["disable CAC"] then
         MsgC(Color(0, 255, 0), "Cake Anticheat (CAC)", Color(255, 255, 255), " has been ", Color(255, 0, 0), "DISABLED\n", Color(253, 151, 31), disableCacMsg)
     end)
 end
+
+-- Custom Workarounds from SCP-Optimized
+-- Made by OverlordAkise
+
+-- Dont allow to drop SCP weapons
+hook.Add("canDropWeapon","so_dontdropscpweps",function(ply, weapon)
+    if not IsValid(weapon) then return false end
+    local class = string.lower(weapon:GetClass())
+    if string.StartWith(class,"weapon_scp") then return false end
+end)
+
+-- Disable Thirdperson wallhack exploit
+hook.Add("PlayerInitialSpawn", "so_fix_thirdperson_whak", function(ply)
+  RunConsoleCommand("simple_thirdperson_forcecollide",1)
+  hook.Remove("PlayerInitialSpawn", "so_fix_thirdperson_whak")
+end)
+
+-- Allow sitting players to be shot
+hook.Add("PlayerInitialSpawn", "so_fix_sit_nodamage", function(ply)
+  RunConsoleCommand("sitting_can_damage_players_sitting",1)
+  hook.Remove("PlayerInitialSpawn", "so_fix_sit_nodamage")
+end)
+
+-- Slow down people who bhop
+hook.Add( "OnPlayerHitGround", "so_slow_jump", function(ply, inWater, onFloater, speed)
+	local vel = ply:GetVelocity()
+	if vel.x > 600 or vel.x < -600 or vel.y > 600 or vel.y < -600 then
+		ply:SetVelocity( Vector( -( vel.x / 2 ), -( vel.y / 2 ), 0 ) )
+	end
+end)
