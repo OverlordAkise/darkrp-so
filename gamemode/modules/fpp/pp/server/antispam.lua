@@ -47,7 +47,7 @@ function FPP.AntiSpam.CreateEntity(ply, ent, IsDuplicate)
     if not tobool(FPP.Settings.FPP_ANTISPAM1.toggle) then return end
     local phys = ent:GetPhysicsObject()
     if not phys:IsValid() then return end
-    FPP.AntiSpam.GhostFreeze(ent, phys)
+    if ent:GetClass() == "prop_physics" then FPP.AntiSpam.GhostFreeze(ent, phys) end
     local shouldRegister = hook.Call("FPP_ShouldRegisterAntiSpam", nil, ply, ent, IsDuplicate)
     if shouldRegister == false then return end
 

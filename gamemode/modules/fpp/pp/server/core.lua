@@ -159,13 +159,13 @@ function FPP.Protect.PhysgunPickup(ply, ent)
         skipReturn = ent:IsPlayer()
     end
 
-    if cantouch and FPP.AntiSpam.GhostFreeze then FPP.AntiSpam.GhostFreeze(ent,ent:GetPhysicsObject()) end
+    if cantouch and ent:GetClass() == "prop_physics" and FPP.AntiSpam.GhostFreeze then FPP.AntiSpam.GhostFreeze(ent,ent:GetPhysicsObject()) end
     if not cantouch and not skipReturn then return false end
 end
 hook.Add("PhysgunPickup", "FPP.Protect.PhysgunPickup", FPP.Protect.PhysgunPickup)
 
 hook.Add("PhysgunDrop", "so_FPP.Protect.PhysgunDrop", function(ply,ent)
-    if FPP.AntiSpam.GhostFreeze then FPP.AntiSpam.GhostFreeze(ent,ent:GetPhysicsObject()) end
+    if ent:GetClass() == "prop_physics" and FPP.AntiSpam.GhostFreeze then FPP.AntiSpam.GhostFreeze(ent,ent:GetPhysicsObject()) end
 end)
 
 --Fuck Physgun reload
@@ -178,7 +178,7 @@ function FPP.PhysgunFreeze(weapon, phys, ent, ply)
     if FPP.UnGhost then 
         timer.Simple(0.2,function()
             if not IsValid(ent) then return end
-            FPP.UnGhost(ply, ent)
+            if ent:GetClass() == "prop_physics" then FPP.UnGhost(ply, ent) end
         end)
     end
     if isfunction(ent.OnPhysgunFreeze) then
