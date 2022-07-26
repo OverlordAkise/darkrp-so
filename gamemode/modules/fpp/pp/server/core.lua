@@ -7,7 +7,8 @@ local ENTITY = FindMetaTable("Entity")
 --[[-------------------------------------------------------------------------
 Checks if a model is blocked
 ---------------------------------------------------------------------------]]
-function FPP.IsBlockedModel(model)
+function FPP.IsBlockedModel(model,ply)
+    --TODO: If ply and IsValid(ply) and RescueModeActive(ply) then return true end
     if model == "" or not FPP.Settings or not FPP.Settings.FPP_BLOCKMODELSETTINGS1 or
         not tobool(FPP.Settings.FPP_BLOCKMODELSETTINGS1.toggle)
         or not FPP.BlockedModels or not model then return end
@@ -35,7 +36,7 @@ end
 Prevents spawning a prop or effect when its model is blocked
 ---------------------------------------------------------------------------]]
 local function propSpawn(ply, model)
-    local blocked, msg = FPP.IsBlockedModel(model)
+    local blocked, msg = FPP.IsBlockedModel(model,ply)
     if blocked then
         FPP.Notify(ply, msg, false)
         return false
@@ -142,6 +143,7 @@ FPP.Protect = {}
 
 --Physgun Pickup
 function FPP.Protect.PhysgunPickup(ply, ent)
+    --TODO: If ply and IsValid(ply) and RescueModeActive(ply) then return true end
     if not tobool(FPP.Settings.FPP_PHYSGUN1.toggle) then if FPP.UnGhost then FPP.UnGhost(ply, ent) end return end
     if not ent:IsValid() then return end
     local cantouch
@@ -165,6 +167,7 @@ end
 hook.Add("PhysgunPickup", "FPP.Protect.PhysgunPickup", FPP.Protect.PhysgunPickup)
 
 hook.Add("PhysgunDrop", "so_FPP.Protect.PhysgunDrop", function(ply,ent)
+    --TODO: If ply and IsValid(ply) and RescueModeActive(ply) then return end
     if ent:GetClass() == "prop_physics" and FPP.AntiSpam.GhostFreeze then FPP.AntiSpam.GhostFreeze(ent,ent:GetPhysicsObject()) end
 end)
 

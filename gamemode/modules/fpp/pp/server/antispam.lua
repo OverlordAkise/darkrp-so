@@ -44,7 +44,6 @@ local blacklist = {
     ["phys_constraint"] = true
 }
 function FPP.AntiSpam.CreateEntity(ply, ent, IsDuplicate)
-    if not tobool(FPP.Settings.FPP_ANTISPAM1.toggle) then return end
     local phys = ent:GetPhysicsObject()
     if not phys:IsValid() then return end
     if ent:GetClass() == "prop_physics" then FPP.AntiSpam.GhostFreeze(ent, phys) end
@@ -71,7 +70,6 @@ function FPP.AntiSpam.CreateEntity(ply, ent, IsDuplicate)
 end
 
 function FPP.AntiSpam.DuplicatorSpam(ply)
-    if not tobool(FPP.Settings.FPP_ANTISPAM1.toggle) then return true end
     if FPP.Settings.FPP_ANTISPAM1.duplicatorlimit == 0 then return true end
 
     ply.FPPAntiSpamLastDuplicate = ply.FPPAntiSpamLastDuplicate or 0
@@ -84,18 +82,6 @@ function FPP.AntiSpam.DuplicatorSpam(ply)
         return false
     end
     return true
-end
-
-local function IsEmpty(ent)
-    local mins, maxs = ent:LocalToWorld(ent:OBBMins( )), ent:LocalToWorld(ent:OBBMaxs( ))
-    local tr = {}
-    tr.start = mins
-    tr.endpos = maxs
-    local ignore = player.GetAll()
-    table.insert(ignore, ent)
-    tr.filter = ignore
-    local trace = util.TraceLine(tr)
-    return trace.Entity
 end
 
 local function e2AntiMinge()
@@ -127,17 +113,11 @@ local function e2AntiMinge()
 end
 
 hook.Add("InitPostEntity", "FPP.InitializeAntiMinge", function()
-    local backupPropSpawn = DoPlayerEntitySpawn
-    function DoPlayerEntitySpawn(ply, ...)
-        local ent = backupPropSpawn(ply, ...)
-        return ent
-    end
-
     e2AntiMinge()
 end)
 
 --More crash preventing:
-local function antiragdollcrash(ply)
+hook.Add("PlayerSpawnRagdoll", "FPP.AntiSpam.AntiCrash",function(ply)
     local pos = ply:GetEyeTraceNoCursor().HitPos
     for _, v in ipairs(ents.FindInSphere(pos, 30)) do
         if v:GetClass() == "func_door" then
@@ -145,5 +125,4 @@ local function antiragdollcrash(ply)
             return false
         end
     end
-end
-hook.Add("PlayerSpawnRagdoll", "FPP.AntiSpam.AntiCrash", antiragdollcrash)
+end)

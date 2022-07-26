@@ -1,15 +1,13 @@
 FPP = FPP or {}
 
-hook.Add("CanTool", "FPP_CL_CanTool", function(ply, trace, tool) -- Prevent client from SEEING his toolgun shoot while it doesn't shoot serverside.
-    if IsValid(trace.Entity) and not FPP.canTouchEnt(trace.Entity, "Toolgun") then
+hook.Add("CanTool", "FPP_CL_CanTool", function(ply, trace, tool)--fixes graphical glitches
+    if IsValid(trace.Entity) and not FPP.plyCanTouchEnt(LocalPlayer(), trace.Entity, "Toolgun") then
         return false
     end
 end)
 
--- This looks weird, but whenever a client touches an ent he can't touch, without the code it'll look like he picked it up. WITH the code it really looks like he can't
--- besides, when the client CAN pick up a prop, it also looks like he can.
-hook.Add("PhysgunPickup", "FPP_CL_PhysgunPickup", function(ply, ent)
-    if not FPP.canTouchEnt(ent, "Physgun") then
+hook.Add("PhysgunPickup", "FPP_CL_PhysgunPickup", function(ply, ent)--fixes graphical glitches
+    if not FPP.plyCanTouchEnt(LocalPlayer(), ent, "Physgun") then
         return false
     end
 end)
@@ -17,19 +15,11 @@ end)
 -- Makes sure the client doesn't think they can punt props
 hook.Add("GravGunPunt", "FPP_CL_GravGunPunt", function(ply, ent)
     if tobool(FPP.Settings.FPP_GRAVGUN1.noshooting) then return false end
-    if IsValid(ent) and not FPP.canTouchEnt(ent, "Gravgun") then
+    if IsValid(ent) and not FPP.plyCanTouchEnt(LocalPlayer(), ent, "Gravgun") then
         return false
     end
 end)
 
-local surface_SetFont = surface.SetFont
-local surface_GetTextSize = surface.GetTextSize
-local surface_SetDrawColor = surface.SetDrawColor
-
-local draw_DrawText = draw.DrawText
-local draw_RoundedBox = draw.RoundedBox
-
---Notify ripped off the Sandbox notify, changed to my likings
 function FPP.AddNotify( str, isGreen )
     notification.AddLegacy(str, isGreen and 0 or 1, 5)
     LocalPlayer():EmitSound("npc/turret_floor/click1.wav", 10, 100)
@@ -63,12 +53,12 @@ hook.Add("HUDPaint", "FPP_HUDPaint", function()
     originalOwner = originalOwner ~= "" and (" (previous owner: %s)"):format(originalOwner) or ""
     reason = reason .. originalOwner
 
-    surface_SetFont("Default")
-    local w,h = surface_GetTextSize(reason)
-    local col = FPP.canTouchEnt(LAEnt, touchType) and canTouchTextColor or cannotTouchTextColor
+    surface.SetFont("Default")
+    local w,h = surface.GetTextSize(reason)
+    local col = FPP.plyCanTouchEnt(LocalPlayer(), LAEnt, touchType) and canTouchTextColor or cannotTouchTextColor
     local scrH = ScrH()
 
-    draw_RoundedBox(4, 0, scrH / 2 - h - 2, w + 10, 20, boxBackground)
-    draw_DrawText(reason, "Default", 5, scrH / 2 - h, col, 0)
-    surface_SetDrawColor(255, 255, 255, 255)
+    draw.RoundedBox(4, 0, scrH / 2 - h - 2, w + 10, 20, boxBackground)
+    draw.DrawText(reason, "Default", 5, scrH / 2 - h, col, 0)
+    surface.SetDrawColor(255, 255, 255, 255)
 end)

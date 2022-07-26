@@ -42,12 +42,8 @@ if SERVER then
 
         if canSetOwner == false then return false end
         ply = canSetOwner ~= nil and canSetOwner ~= true and canSetOwner or ply
-        self.FPPOwner = ply
-        self.FPPOwnerID = steamId
-
-        self.FPPOwnerChanged = true
-        FPP.recalculateCanTouch(player.GetAll(), {self})
-        self.FPPOwnerChanged = nil
+        self:SetNWEntity("fppOwner",ply)
+        self:SetNWString("fppOwnerSteamID",steamId)
 
         return true
     end

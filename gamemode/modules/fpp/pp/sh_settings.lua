@@ -39,7 +39,6 @@ FPP.Settings.FPP_TOOLGUN1 = {
     shownocross = 1,
     checkconstrained = 1,
     iswhitelist = 0,
-
     duplicatorprotect = 1,
     duplicatenoweapons = 1,
     spawniswhitelist = 0,

@@ -243,56 +243,6 @@ local function RemoveBlockedModel(ply, cmd, args)
 end
 concommand.Add("FPP_RemoveBlockedModel", runIfAccess("FPP_Settings", RemoveBlockedModel))
 
-local allowedShares = {
-    SharePhysgun1 = true,
-    ShareGravgun1 = true,
-    SharePlayerUse1 = true,
-    ShareEntityDamage1 = true,
-    ShareToolgun1 = true
-}
-local function ShareProp(ply, cmd, args)
-    if not args[1]                  then FPP.Notify(ply, "FPP_ShareProp: Entity not given", false) return end
-    if not IsValid(Entity(args[1])) then FPP.Notify(ply, "FPP_ShareProp: Entity not valid", false) return end
-    if not args[2]                  then FPP.Notify(ply, "FPP_ShareProp: Player to share with not given", false) return end
-
-    local ent = Entity(args[1])
-
-    if ent:CPPIGetOwner() ~= ply then
-        FPP.Notify(ply, "You do not have the right to share this entity.", false)
-        return
-    end
-
-    if not tonumber(args[2]) or not IsValid(Player(tonumber(args[2]))) then -- This is for sharing prop per utility
-        if not allowedShares[args[2]] then
-            FPP.Notify(ply, "FPP_ShareProp: Player to share with doesn't exist", false)
-            return
-        end
-        ent[args[2]] = tobool(args[3])
-    else -- This is for sharing prop per player
-        local target = Player(tonumber(args[2]))
-        local toggle = tobool(args[3])
-        -- Make the table if it isn't there
-        if not ent.AllowedPlayers and toggle then
-            ent.AllowedPlayers = {target}
-        else
-            if toggle and not table.HasValue(ent.AllowedPlayers, target) then
-                table.insert(ent.AllowedPlayers, target)
-                FPP.Notify(target, ply:Nick() .. " shared an entity with you!", true)
-            elseif not toggle then
-                for k, v in pairs(ent.AllowedPlayers or {}) do
-                    if v == target then
-                        table.remove(ent.AllowedPlayers, k)
-                        FPP.Notify(target, ply:Nick() .. " unshared an entity with you!", false)
-                    end
-                end
-            end
-        end
-    end
-
-    FPP.recalculateCanTouch(player.GetAll(), {ent})
-end
-concommand.Add("FPP_ShareProp", ShareProp)
-
 local function RetrieveSettings()
     MySQLite.begin()
     for k in pairs(FPP.Settings) do
@@ -850,42 +800,6 @@ local function RestrictToolPerson(ply, cmd, args)
 end
 concommand.Add("FPP_restricttoolplayer", runIfAccess("FPP_Settings", RestrictToolPerson))
 
-local function resetAllSetting(ply)
-    MySQLite.begin()
-    MySQLite.queueQuery("DELETE FROM FPP_PHYSGUN1")
-    MySQLite.queueQuery("DELETE FROM FPP_GRAVGUN1")
-    MySQLite.queueQuery("DELETE FROM FPP_TOOLGUN1")
-    MySQLite.queueQuery("DELETE FROM FPP_PLAYERUSE1")
-    MySQLite.queueQuery("DELETE FROM FPP_ENTITYDAMAGE1")
-    MySQLite.queueQuery("DELETE FROM FPP_GLOBALSETTINGS1")
-    MySQLite.queueQuery("DELETE FROM FPP_ANTISPAM1")
-    MySQLite.queueQuery("DELETE FROM FPP_BLOCKMODELSETTINGS1")
-    MySQLite.commit(function()
-        FPP.Settings = nil
-        FPP.Settings = table.Copy(FPP.InitialSettings)
-        SendSettings(player.GetAll())
-
-        if not IsValid(ply) then return end
-        FPP.Notify(ply, "Settings successfully reset.", true)
-    end)
-end
-concommand.Add("FPP_ResetAllSettings", runIfAccess("FPP_Settings", resetAllSetting))
-
-local function resetBlockedModels(ply)
-    FPP.BlockedModels = {}
-
-    MySQLite.query("DELETE FROM FPP_BLOCKEDMODELS1", FPP.AddDefaultBlockedModels)
-    FPP.Notify(ply, "Settings successfully reset.", true)
-end
-concommand.Add("FPP_ResetBlockedModels", runIfAccess("FPP_Settings", resetBlockedModels))
-
-local function refreshPrivatePlayerSettings(ply)
-    timer.Remove("FPP_RefreshPrivatePlayerSettings" .. ply:EntIndex())
-
-    timer.Create("FPP_RefreshPrivatePlayerSettings" .. ply:EntIndex(), 4, 1, function() FPP.recalculateCanTouch({ply}, ents.GetAll()) end)
-end
-concommand.Add("_FPP_RefreshPrivatePlayerSettings", refreshPrivatePlayerSettings)
-
 --[[-------------------------------------------------------------------------
 Load all FPP settings
 ---------------------------------------------------------------------------]]
@@ -928,12 +842,5 @@ function FPP.Init(callback)
     end)
 end
 
-local assbackup = ASS_RegisterPlugin -- Suddenly after witing this code, ASS spamprotection and propprotection broke. I have no clue why. I guess you should use FPP then
-if assbackup then
-    function ASS_RegisterPlugin(plugin, ...)
-        if plugin.Name == "Sandbox Spam Protection" or plugin.Name == "Sandbox Prop Protection" then
-            return
-        end
-        return assbackup(plugin, ...)
-    end
-end
+--fix some old, broken propprotection
+ASS_RegisterPlugin = fnothing
