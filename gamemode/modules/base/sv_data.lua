@@ -378,12 +378,6 @@ function DarkRP.storeDoorData(ent)
     MySQLite.query([[REPLACE INTO darkrp_door VALUES(]] .. ent:doorIndex() .. [[, ]] .. MySQLite.SQLStr(map) .. [[, ]] .. (title and MySQLite.SQLStr(title) or "NULL") .. [[, ]] .. "NULL" .. [[, ]] .. (nonOwnable and 1 or 0) .. [[);]])
 end
 
-local ownableDoors = {
-    ["func_door"] = true,
-    ["func_door_rotating"] = true,
-    ["prop_door_rotating"] = true
-}
-
 function setUpNonOwnableDoors()
     for k,v in pairs(ents.GetAll()) do
         if ownableDoors[v:GetClass()] then

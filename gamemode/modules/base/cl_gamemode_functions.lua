@@ -25,8 +25,10 @@ function GM:ShowSpare2()
     if jobTable and jobTable.ShowSpare2 then
         return jobTable.ShowSpare2(LocalPlayer())
     end
-
-    DarkRP.toggleF4Menu()
+    
+    if DarkRP.toggleF4Menu then
+        DarkRP.toggleF4Menu()
+    end
 end
 
 function GM:PlayerStartVoice(ply)

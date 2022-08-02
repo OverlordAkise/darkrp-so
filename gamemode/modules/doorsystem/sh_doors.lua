@@ -1,12 +1,12 @@
 local meta = FindMetaTable("Entity")
 local plyMeta = FindMetaTable("Player")
 
-local ownableDoors = {
+ownableDoors = {
     ["func_door"] = true,
     ["func_door_rotating"] = true,
     ["prop_door_rotating"] = true
 }
-local unOwnableDoors = {
+unOwnableDoors = {
     ["func_door"] = true,
     ["func_door_rotating"] = true,
     ["prop_door_rotating"] = true,

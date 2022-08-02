@@ -1,9 +1,4 @@
 FPP = FPP or {}
---TODO:
--- Add RescueMode with !rescue , possible if ply:IsAdmin - he can then do all (return true in first line of everything)
--- add toolgun restrictions for players with staff/job check if they even are able to use a toolgun
--- add check for gravun if staff/job are able to gravgunpickup / gravgunpunt
-
 
 local function isConstraint(ent)
     return ent:IsConstraint() or ent:GetClass() == "phys_spring" or false
@@ -87,12 +82,22 @@ end
 -- Compatibility
 --
 
-if SERVER then
-    function FPP.RecalculateConstrainedEntities() end
-    function FPP.calculateCanTouch() return false end
-    function FPP.recalculateCanTouch() end
-    function FPP.plySendTouchData() end
-end
+
+function FPP.RecalculateConstrainedEntities() end
+function FPP.calculateCanTouch() return false end
+function FPP.recalculateCanTouch() end
+function FPP.plySendTouchData() end
+function FPP.FillDefaultBlocked() end
+function FPP.AddDefaultBlocked() end
+
+FPP.Blocked = FPP.Blocked or {}
+FPP.Blocked.PlayerUse1 = {}
+FPP.Blocked.EntityDamage1 = {}
+FPP.RestrictedTools = {}
+FPP.RestrictedToolsPlayers = {}
+FPP.Groups = {}
+FPP.GroupMembers = {}
+FPP.DisconnectedPlayers = FPP.DisconnectedPlayers or {}
 
 if CLIENT then
     function FPP.canTouchEnt(ent, touchType)

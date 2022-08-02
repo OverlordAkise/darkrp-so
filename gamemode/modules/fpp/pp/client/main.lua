@@ -37,7 +37,6 @@ local canTouchTextColor = Color(0, 255, 0, 255)
 local cannotTouchTextColor = Color(255, 0, 0, 255)
 
 hook.Add("HUDPaint", "FPP_HUDPaint", function()
-    if FPP.getPrivateSetting("HideOwner") then return end
     --Show the owner:
     local ply = LocalPlayer()
     local eyetrace = ply:GetEyeTrace()
@@ -62,3 +61,31 @@ hook.Add("HUDPaint", "FPP_HUDPaint", function()
     draw.DrawText(reason, "Default", 5, scrH / 2 - h, col, 0)
     surface.SetDrawColor(255, 255, 255, 255)
 end)
+
+properties.Add("addFPPBlocked",{
+    MenuLabel   =   "Add to FPP blocked models",
+    Order       =   2001,
+    MenuIcon    =   "icon16/cross.png",
+    Filter      =   function(self, ent, ply)
+                        if not IsValid(ent) or ent:IsPlayer() then return false end
+                        return ply:IsSuperAdmin()
+                    end,
+    Action      =   function(self, ent)
+                        if not IsValid(ent) then return end
+                        RunConsoleCommand("FPP_AddBlockedModel", ent:GetModel(), ent:EntIndex())
+                    end
+})
+
+properties.Add("removeFPPBlocked",{
+    MenuLabel   =   "Remove from FPP blocked models",
+    Order       =   2002,
+    MenuIcon    =   "icon16/tick.png",
+    Filter      =   function(self, ent, ply)
+                        if not IsValid(ent) or ent:IsPlayer() then return false end
+                        return ply:IsSuperAdmin()
+                    end,
+    Action      =   function(self, ent)
+                        if not IsValid(ent) then return end
+                        RunConsoleCommand("FPP_RemoveBlockedModel", ent:GetModel(), ent:EntIndex())
+                    end
+})

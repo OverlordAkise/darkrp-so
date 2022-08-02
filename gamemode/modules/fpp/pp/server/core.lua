@@ -1,5 +1,4 @@
 FPP = FPP or {}
-FPP.DisconnectedPlayers = FPP.DisconnectedPlayers or {}
 
 local PLAYER = FindMetaTable("Player")
 local ENTITY = FindMetaTable("Entity")
@@ -22,11 +21,8 @@ function FPP.IsBlockedModel(model,ply)
     end
 
     local found = FPP.BlockedModels[model]
-    if tobool(FPP.Settings.FPP_BLOCKMODELSETTINGS1.iswhitelist) and not found then
-        -- Prop is not in the white list
-        return true, "The model of this entity is not in the white list!"
-    elseif not tobool(FPP.Settings.FPP_BLOCKMODELSETTINGS1.iswhitelist) and found then
-        -- prop is in the black list
+    --To create a whitelist instead: Change the following code to "if not found then"
+    if found then
         return true, "The model of this entity is in the black list!"
     end
     return false
@@ -143,7 +139,6 @@ FPP.Protect = {}
 
 --Physgun Pickup
 function FPP.Protect.PhysgunPickup(ply, ent)
-    --TODO: If ply and IsValid(ply) and RescueModeActive(ply) then return true end
     if not tobool(FPP.Settings.FPP_PHYSGUN1.toggle) then if FPP.UnGhost then FPP.UnGhost(ply, ent) end return end
     if not ent:IsValid() then return end
     local cantouch
@@ -167,7 +162,6 @@ end
 hook.Add("PhysgunPickup", "FPP.Protect.PhysgunPickup", FPP.Protect.PhysgunPickup)
 
 hook.Add("PhysgunDrop", "so_FPP.Protect.PhysgunDrop", function(ply,ent)
-    --TODO: If ply and IsValid(ply) and RescueModeActive(ply) then return end
     if ent:GetClass() == "prop_physics" and FPP.AntiSpam.GhostFreeze then FPP.AntiSpam.GhostFreeze(ent,ent:GetPhysicsObject()) end
 end)
 
@@ -193,159 +187,6 @@ function FPP.PhysgunFreeze(weapon, phys, ent, ply)
     end
 end
 hook.Add("OnPhysgunFreeze", "FPP.Protect.PhysgunFreeze", FPP.PhysgunFreeze)
-
---Gravgun pickup
-function FPP.Protect.GravGunPickup(ply, ent)
-    if not tobool(FPP.Settings.FPP_GRAVGUN1.toggle) then return end
-
-    if not IsValid(ent) then return end -- You don't want a cross when looking at the floor while holding right mouse
-
-    if ent:IsPlayer() then return end
-
-    local cantouch
-
-    if isfunction(ent.GravGunPickup) then
-        cantouch = ent:GravGunPickup(ply, ent)
-    elseif ent.GravGunPickup ~= nil then
-        cantouch = ent.GravGunPickup
-    else
-        cantouch = not ent:IsPlayer() and FPP.plyCanTouchEnt(ply, ent, "Gravgun")
-    end
-
-    if cantouch and FPP.UnGhost then FPP.UnGhost(ply, ent) end
-    if cantouch == false then DropEntityIfHeld(ent) end
-end
-hook.Add("GravGunOnPickedUp", "FPP.Protect.GravGunPickup", FPP.Protect.GravGunPickup)
-
-function FPP.Protect.CanGravGunPickup(ply, ent)
-    if not tobool(FPP.Settings.FPP_GRAVGUN1.toggle) or not IsValid(ent) then return end
-
-    if isfunction(ent.GravGunPickup) then
-        -- Function name different than gamemode's (GravGunPickup vs GravGunPickupAllowed)
-        -- Override FPP's behavior when implemented
-        local val = ent:GravGunPickup(ply, ent)
-        if val ~= nil then
-            if val == false then return false end
-            return
-        end
-    elseif ent.GravGunPickup ~= nil then
-        if ent.GravGunPickup == false then return false end
-        return
-    end
-
-    local cantouch = FPP.plyCanTouchEnt(ply, ent, "Gravgun")
-
-    if cantouch == false then return false end
-end
-hook.Add("GravGunPickupAllowed", "FPP.Protect.CanGravGunPickup", FPP.Protect.CanGravGunPickup)
-
---Gravgun punting
-function FPP.Protect.GravGunPunt(ply, ent)
-    if tobool(FPP.Settings.FPP_GRAVGUN1.noshooting) then DropEntityIfHeld(ent) return false end
-    -- Do not reason further if gravgun protection is disabled.
-    if not tobool(FPP.Settings.FPP_GRAVGUN1.toggle) then return end
-
-    if not IsValid(ent) then DropEntityIfHeld(ent) return end
-
-    local cantouch
-    local skipReturn = false
-
-    if isfunction(ent.GravGunPunt) then
-        cantouch = ent:GravGunPunt(ply, ent)
-        -- Do not return the value, the gamemode will do this
-        -- Allows other hooks to run
-        skipReturn = true
-    elseif ent.GravGunPunt ~= nil then
-        cantouch = ent.GravGunPunt
-    else
-        cantouch = not ent:IsPlayer() and FPP.plyCanTouchEnt(ply, ent, "Gravgun")
-    end
-
-    if cantouch and FPP.UnGhost then FPP.UnGhost(ply, ent) end
-    if not cantouch then DropEntityIfHeld(ent) end
-    if not cantouch and not skipReturn then return false end
-end
-hook.Add("GravGunPunt", "FPP.Protect.GravGunPunt", FPP.Protect.GravGunPunt)
-
---PlayerUse
-function FPP.Protect.PlayerUse(ply, ent)
-    if not tobool(FPP.Settings.FPP_PLAYERUSE1.toggle) then return end
-
-    if not IsValid(ent) then return end
-
-    local cantouch
-    local skipReturn = false
-
-    if isfunction(ent.PlayerUse) then
-        cantouch = ent:PlayerUse(ply, ent)
-        -- Do not return the value, the gamemode will do this
-        -- Allows other hooks to run
-        skipReturn = true
-    elseif ent.PlayerUse ~= nil then
-        cantouch = ent.PlayerUse
-    else
-        cantouch = not ent:IsPlayer() and FPP.plyCanTouchEnt(ply, ent, "PlayerUse")
-    end
-
-    if cantouch and FPP.UnGhost then FPP.UnGhost(ply, ent) end
-    if not cantouch and not skipReturn then return false end
-end
-hook.Add("PlayerUse", "FPP.Protect.PlayerUse", FPP.Protect.PlayerUse)
-
---EntityDamage
-function FPP.Protect.EntityDamage(ent, dmginfo)
-    if not IsValid(ent) then return end
-
-    local inflictor = dmginfo:GetInflictor()
-    local attacker = dmginfo:GetAttacker()
-    local amount = dmginfo:GetDamage()
-
-    if isfunction(ent.EntityDamage) then
-        local val = ent:EntityDamage(ent, inflictor, attacker, amount, dmginfo)
-        -- Do not return the value, the gamemode will do this
-        if val ~= nil then return end
-    elseif ent.EntityDamage ~= nil then
-        return ent.EntityDamage
-    end
-
-    if not tobool(FPP.Settings.FPP_ENTITYDAMAGE1.toggle) then return end
-
-    -- Don't do anything about players
-    if ent:IsPlayer() then return end
-
-    if not attacker:IsPlayer() then
-        if not tobool(FPP.Settings.FPP_ENTITYDAMAGE1.protectpropdamage) then return end
-        local attackerOwner = attacker:CPPIGetOwner()
-        local entOwner = ent:CPPIGetOwner()
-        if IsValid(attackerOwner) and IsValid(entOwner) then
-            local cantouch = FPP.plyCanTouchEnt(attackerOwner, ent, "EntityDamage")
-
-            if not cantouch then
-                dmginfo:SetDamage(0)
-                ent.FPPAntiDamageWorld = ent.FPPAntiDamageWorld or 0
-                ent.FPPAntiDamageWorld = ent.FPPAntiDamageWorld + 1
-                timer.Simple(1, function()
-                    if not ent.FPPAntiDamageWorld then return end
-                    ent.FPPAntiDamageWorld = ent.FPPAntiDamageWorld - 1
-                    if ent.FPPAntiDamageWorld == 0 then
-                        ent.FPPAntiDamageWorld = nil
-                    end
-                end)
-            end
-            return
-        end
-
-        if attacker == game.GetWorld() and ent.FPPAntiDamageWorld then
-            dmginfo:SetDamage(0)
-        end
-        return
-    end
-
-    local cantouch = FPP.plyCanTouchEnt(attacker, ent, "EntityDamage")
-
-    if not cantouch then dmginfo:SetDamage(0) end
-end
-hook.Add("EntityTakeDamage", "FPP.Protect.EntityTakeDamage", FPP.Protect.EntityDamage)
 
 --Toolgun
 --for advanced duplicator, you can't use the IsWeapon function
@@ -409,52 +250,7 @@ invalidToolData.override = invalidToolData.material
 invalidToolData.rope_material = invalidToolData.material
 
 function FPP.Protect.CanTool(ply, trace, tool, ENT)
-    local ignoreGeneralRestrictTool = false
-    local SteamID = ply:SteamID()
-
-    FPP.RestrictedToolsPlayers = FPP.RestrictedToolsPlayers or {}
-    if FPP.RestrictedToolsPlayers[tool] and FPP.RestrictedToolsPlayers[tool][SteamID] ~= nil then--Player specific
-        if FPP.RestrictedToolsPlayers[tool][SteamID] == false then
-            FPP.Notify(ply, "Toolgun restricted for you!", false)
-            return false
-        elseif FPP.RestrictedToolsPlayers[tool][SteamID] == true then
-            ignoreGeneralRestrictTool = true --If someone is allowed, then he's allowed even though he's not admin, so don't check for further restrictions
-        end
-    end
-
-
-    if not ignoreGeneralRestrictTool then
-        local Group = FPP.Groups[FPP.GroupMembers[SteamID]] or FPP.Groups[ply:GetUserGroup()] or FPP.Groups.default  -- What group is the player in. If not in a special group, then he's in default group
-
-        local CanGroup = true
-        if Group and ((Group.allowdefault and table.HasValue(Group.tools, tool)) or -- If the tool is on the BLACKLIST or
-            (not Group.allowdefault and not table.HasValue(Group.tools, tool))) then -- If the tool is NOT on the WHITELIST
-            CanGroup = false
-        end
-
-        if FPP.RestrictedTools[tool] then
-            if tonumber(FPP.RestrictedTools[tool].admin) == 1 and not ply:IsAdmin() then
-                FPP.Notify(ply, "Toolgun restricted! Admin only!", false)
-                return false
-            elseif tonumber(FPP.RestrictedTools[tool].admin) == 2 and not ply:IsSuperAdmin() then
-                FPP.Notify(ply, "Toolgun restricted! Superadmin only!", false)
-                return false
-            elseif (tonumber(FPP.RestrictedTools[tool].admin) == 1 and ply:IsAdmin()) or (tonumber(FPP.RestrictedTools[tool].admin) == 2 and ply:IsSuperAdmin()) then
-                CanGroup = true -- If the person is not in the BUT has admin access, he should be able to use the tool
-            end
-
-            if FPP.RestrictedTools[tool]["team"] and #FPP.RestrictedTools[tool]["team"] > 0 and not table.HasValue(FPP.RestrictedTools[tool]["team"], ply:Team()) then
-                FPP.Notify(ply, "Toolgun restricted! incorrect team!", false)
-                return false
-            end
-        end
-
-        if not CanGroup then
-            FPP.Notify(ply, "Toolgun restricted! incorrect group!", false)
-            return false
-        end
-    end
-
+    if FPP.Blocked.Toolgun1[trace.Entity:GetClass()] then return false end
     -- Anti server crash
     if IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon().GetToolObject and ply:GetActiveWeapon():GetToolObject() then
         local toolObj = ply:GetActiveWeapon():GetToolObject()
@@ -478,25 +274,11 @@ function FPP.Protect.CanTool(ply, trace, tool, ENT)
             end
         end
     end
-
-    local ent = IsEntity(ENT) and ENT or trace and trace.Entity
-
-    if IsEntity(ent) and isfunction(ent.CanTool) and ent:GetClass() ~= "gmod_cameraprop" and ent:GetClass() ~= "gmod_rtcameraprop" then
-        local val = ent:CanTool(ply, trace, tool, ENT)
-        -- Do not return the value, the gamemode will do this
-        if val ~= nil then return end
-    elseif IsEntity(ent) and ent.CanTool ~= nil and ent:GetClass() ~= "gmod_cameraprop" and ent:GetClass() ~= "gmod_rtcameraprop" then
-        return ent.CanTool
-    end
-
-    if tobool(FPP.Settings.FPP_TOOLGUN1.toggle) and IsValid(ent) then
-        local cantouch = FPP.plyCanTouchEnt(ply, ent, "Toolgun")
-
-        if not cantouch then return false end
-    end
-
+    if not IsTeam(ply) and not ply:IsAdmin() and not ALLOWED_TOOLS[tool] then return false end
+    if ply:IsAdmin() then return true end
+    
     if tool ~= "adv_duplicator" and tool ~= "duplicator" and tool ~= "advdupe2" then return end
-    if not ENT and not FPP.AntiSpam.DuplicatorSpam(ply) then return false end
+    if not ENT then return false end
 
     local EntTable =
         (tool == "adv_duplicator" and ply:GetActiveWeapon():GetToolObject().Entities) or
@@ -505,33 +287,22 @@ function FPP.Protect.CanTool(ply, trace, tool, ENT)
 
     if not EntTable then return end
 
-
     for k, v in pairs(EntTable) do
         local lowerClass = string.lower(v.Class)
-
-        if tobool(FPP.Settings.FPP_TOOLGUN1.duplicatenoweapons) and
-          (not ply:IsAdmin() or (ply:IsAdmin() and not tobool(FPP.Settings.FPP_TOOLGUN1.spawnadmincanweapon))) and
-          (allweapons[lowerClass] or string.find(lowerClass, "ai_") == 1 or string.find(lowerClass, "item_ammo_") == 1) then
+        if IsTeam(ply) then continue end
+        if allweapons[lowerClass] or string.find(lowerClass, "ai_") == 1 or string.find(lowerClass, "item_ammo_") == 1 then
             FPP.Notify(ply, "Duplicating blocked entity " .. lowerClass, false)
             EntTable[k] = nil
         end
-        if tobool(FPP.Settings.FPP_TOOLGUN1.duplicatorprotect) and (not ply:IsAdmin() or (ply:IsAdmin() and not tobool(FPP.Settings.FPP_TOOLGUN1.spawnadmincanblocked))) then
-            local setspawning = tobool(FPP.Settings.FPP_TOOLGUN1.spawniswhitelist)
+        
+        if FPP.Blocked.Spawning1[lowerClass] then
+            FPP.Notify(ply, "Duplicating blocked entity " .. lowerClass, false)
+            EntTable[k] = nil
+        end
 
-            if not tobool(FPP.Settings.FPP_TOOLGUN1.spawniswhitelist) and FPP.Blocked.Spawning1[lowerClass] then
-                FPP.Notify(ply, "Duplicating blocked entity " .. lowerClass, false)
-                EntTable[k] = nil
-            end
-
-            -- if the whitelist is on you can't spawn it unless it's found
-            if tobool(FPP.Settings.FPP_TOOLGUN1.spawniswhitelist) and FPP.Blocked.Spawning1[lowerClass] then
-                setspawning = false
-            end
-
-            if setspawning then
-                FPP.Notify(ply, "Duplicating blocked entity " .. lowerClass, false)
-                EntTable[k] = nil
-            end
+        if v and IsValid(v) and v.Model and FPP.BlockedModels[v.Model] then
+            FPP.Notify(ply, "Duplicating blocked model " .. lowerClass, false)
+            EntTable[k] = nil
         end
     end
     return
@@ -539,130 +310,37 @@ end
 hook.Add("CanTool", "FPP.Protect.CanTool", FPP.Protect.CanTool)
 
 function FPP.Protect.CanEditVariable(ent, ply, key, varVal, editTbl)
+    if ply:IsAdmin() then return true end
     local val = FPP.Protect.CanProperty(ply, "editentity", ent)
     if val ~= nil then return val end
 end
 hook.Add("CanEditVariable", "FPP.Protect.CanEditVariable", FPP.Protect.CanEditVariable)
 
 function FPP.Protect.CanProperty(ply, property, ent)
-    -- Use Toolgun because I'm way too lazy to make a new type
+    if ply:IsAdmin() then return true end
     local cantouch = FPP.plyCanTouchEnt(ply, ent, "Toolgun")
 
     if not cantouch then return false end
 end
 hook.Add("CanProperty", "FPP.Protect.CanProperty", FPP.Protect.CanProperty)
 
-local function freezeDisconnected(ply)
-    local SteamID = ply:SteamID()
-
-    for _, ent in ipairs(ents.GetAll()) do
-        local physObj = ent:GetPhysicsObject()
-        if ent.FPPOwnerID ~= SteamID or ent:GetPersistent() or not physObj:IsValid() then continue end
-
-        physObj:EnableMotion(false)
-    end
-end
-
 --Player disconnect, not part of the Protect table.
 function FPP.PlayerDisconnect(ply)
     if not IsValid(ply) then return end
 
     local SteamID = ply:SteamID()
-    FPP.DisconnectedPlayers[SteamID] = true
 
-    freezeDisconnected(ply)
-
-    if ply.FPPFallbackOwner then
-        -- FPP.DisconnectedOriginalOwners = FPP.DisconnectedOriginalOwners or {}
-        -- FPP.DisconnectedOriginalOwners[SteamID] = {props = {}}
-
-
-        local fallback = player.GetBySteamID(ply.FPPFallbackOwner)
-        for _, v in ipairs(ents.GetAll()) do
-            if v.FPPOwnerID ~= SteamID or v:GetPersistent() then continue end
-
-            v.FPPFallbackOwner = ply.FPPFallbackOwner
-
-            if IsValid(fallback) then
-                v:CPPISetOwner(fallback)
-            end
-
-            -- table.insert(FPP.DisconnectedOriginalOwners[SteamID].props, v)
-
-            -- Only set when not set already
-            -- this prevents the original owner being set again
-            -- when the fallback hands their props over to a second
-            -- (or third, or nth) fallback
-            if v:GetNW2String("FPP_OriginalOwner", "") == "" then
-                v:SetNW2String("FPP_OriginalOwner", SteamID)
-            end
-        end
-
-        -- Create disconnect timer if fallback is not in server
-        -- ownership is transferred immediately when fallback is in server
-        if IsValid(fallback) then
+    for _, v in ipairs(player.GetAll()) do
+        if v:SteamID() == SteamID then
             return
         end
     end
-
-    if not tobool(FPP.Settings.FPP_GLOBALSETTINGS1.cleanupdisconnected) or
-    not FPP.Settings.FPP_GLOBALSETTINGS1.cleanupdisconnectedtime then
-        return
+    for _, v in ipairs(ents.GetAll()) do
+        if v.FPPOwnerID ~= SteamID or v:GetPersistent() then continue end
+        v:Remove()
     end
-
-    if ply:IsAdmin() and not tobool(FPP.Settings.FPP_GLOBALSETTINGS1.cleanupadmin) then return end
-
-    timer.Simple(FPP.Settings.FPP_GLOBALSETTINGS1.cleanupdisconnectedtime, function()
-        if not tobool(FPP.Settings.FPP_GLOBALSETTINGS1.cleanupdisconnected) then return end -- Settings can change in time.
-
-        for _, v in ipairs(player.GetAll()) do
-            if v:SteamID() == SteamID then
-                return
-            end
-        end
-        for _, v in ipairs(ents.GetAll()) do
-            if v.FPPOwnerID ~= SteamID or v:GetPersistent() then continue end
-            v:Remove()
-        end
-        FPP.DisconnectedPlayers[SteamID] = nil -- Player out of the Disconnect table
-    end)
 end
 hook.Add("PlayerDisconnected", "FPP.PlayerDisconnect", FPP.PlayerDisconnect)
-
--- PlayerInitialspawn, the props he had left before will now be theirs again
-function FPP.PlayerInitialSpawn(ply)
-    local RP = RecipientFilter()
-    local SteamID = ply:SteamID()
-
-    timer.Simple(5, function()
-        if not IsValid(ply) then return end
-        RP:AddAllPlayers()
-        RP:RemovePlayer(ply)
-    end)
-
-    local entities = {}
-    if FPP.DisconnectedPlayers[SteamID] then -- Check if the player has rejoined within the auto remove time
-        for _, v in ipairs(ents.GetAll()) do
-            if (v.FPPOwnerID == SteamID or v.FPPFallbackOwner == SteamID or v:GetNW2String("FPP_OriginalOwner") == SteamID) then
-                v.FPPFallbackOwner = nil
-                v:CPPISetOwner(ply)
-                table.insert(entities, v)
-
-                if v:GetNW2String("FPP_OriginalOwner", "") ~= "" then
-                    v:SetNW2String("FPP_OriginalOwner", "")
-                end
-            end
-        end
-    end
-
-    local plys = {}
-    for _, v in ipairs(player.GetAll()) do if v ~= ply then table.insert(plys, v) end end
-
-    timer.Create("FPP_recalculate_cantouch_" .. ply:UserID(), 0, 1, function()
-        FPP.recalculateCanTouch({ply}, ents.GetAll())
-    end)
-end
-hook.Add("PlayerInitialSpawn", "FPP.PlayerInitialSpawn", FPP.PlayerInitialSpawn)
 
 local backup = ENTITY.FireBullets
 local blockedEffects = {"particleeffect", "smoke", "vortdispel", "helicoptermegabomb"}

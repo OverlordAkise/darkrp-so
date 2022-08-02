@@ -12,7 +12,7 @@ ALLOWED_PROP_SPAWNING_JOBS = {
     ["O5"] = true,
 }
 
---Disable the Q-Menu for players
+--Disable the Q-Menu for players, except if they are allowed to spawn props
 GM.Config.disableSpawnmenu = true
 --Disable the C-Menu for players
 GM.Config.disableContextmenu = true

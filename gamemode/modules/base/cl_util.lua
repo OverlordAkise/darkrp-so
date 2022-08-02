@@ -116,8 +116,10 @@ hook.Add("ContextMenuOpen", "so_hide_contextmenu", function()
 end)
 
 hook.Add("SpawnMenuOpen", "so_hide_spawnmenu", function()
-	if GAMEMODE.Config.disableSpawnmenu and not IsTeam(LocalPlayer()) then
-		return false
+	if GAMEMODE.Config.disableSpawnmenu and not IsTeam(LocalPlayer()) then --disabled and not in team
+        if not ALLOWED_PROP_SPAWNING_JOBS[LocalPlayer():getJobTable().name] then --if not allowed to spawn props
+            return false
+        end
 	end
 end)
 

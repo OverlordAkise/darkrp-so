@@ -347,12 +347,12 @@ GM.Config.preventClassItemRemoval = {
 GM.Config.allowedProperties = {
     remover = true,
     ignite = false,
-    extinguish = true,
-    keepupright = true,
-    gravity = true,
+    extinguish = false,
+    keepupright = false,
+    gravity = false,
     collision = false,
-    skin = true,
-    bodygroups = true,
+    skin = false,
+    bodygroups = false,
 }
 
 --[[---------------------------------------------------------------------------

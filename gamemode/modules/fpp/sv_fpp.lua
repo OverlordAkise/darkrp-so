@@ -1,7 +1,6 @@
 AddCSLuaFile("pp/sh_cppi.lua")
 AddCSLuaFile("pp/sh_settings.lua")
-AddCSLuaFile("pp/client/menu.lua")
-AddCSLuaFile("pp/client/hud.lua")
+AddCSLuaFile("pp/client/main.lua")
 
 include("pp/sh_settings.lua")
 include("pp/sh_cppi.lua")
@@ -22,7 +21,3 @@ FPP.AddDefaultBlocked(blockTypes, "spawned_food")
 FPP.AddDefaultBlocked(blockTypes, "spawned_money")
 FPP.AddDefaultBlocked(blockTypes, "spawned_shipment")
 FPP.AddDefaultBlocked(blockTypes, "spawned_weapon")
-
-hook.Add("DarkRPDBInitialized", "FPPInit", function()
-	FPP.Init()
-end)
