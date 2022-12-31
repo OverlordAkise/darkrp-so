@@ -12,9 +12,11 @@ Compatibility is provided via the "allow_compatibility.lua" file. This means not
 
 # Major changes
 
+ - Removed the darkrp hud, scoreboard, f4menu, etc. (nearly all UIs)
  - Removed Hitman, Police, Mayor, Laws, Voting, Demotes, DoorTax, GunDealer, Shipments, VoteOnlyJobs
  - Removed the disjointset, simplerr and tablecheck libraries (recoded these parts)
  - Removed mayor's lockdown command
  - Removed wanted/warrants, jails, jailpositions arrest-baton
  - FPP has been minified, if you need your users to spawn props this could be a problem
+ - Rewritten umsg to net messages
 
