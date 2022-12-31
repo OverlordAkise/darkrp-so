@@ -3,8 +3,7 @@ local TextColor = Color(255, 0, 0, 255)
 local function AFKHUDPaint()
     local scrw = ScrW()/2
     local scrh = ScrH()/2
-    draw.DrawNonParsedSimpleText(DarkRP.getPhrase("afk_mode"), "DarkRPHUD2", scrw, scrh - 100, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.DrawNonParsedSimpleText(DarkRP.getPhrase("salary_frozen"), "DarkRPHUD2", scrw, scrh - 60, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.DrawNonParsedSimpleText("AFK", "DarkRPHUD2", scrw, scrh - 100, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     draw.DrawNonParsedSimpleText(DarkRP.getPhrase("afk_cmd_to_exit"), "DarkRPHUD2", scrw, scrh + 20, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end

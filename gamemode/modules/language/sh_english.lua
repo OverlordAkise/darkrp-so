@@ -270,11 +270,8 @@ local my_language = {
     starving = "Starving!",
 
     -- AFK
-    afk_mode = "AFK Mode",
     unable_afk_spam_prevention = "Please wait before going AFK again.",
-    salary_frozen = "Your salary has been frozen.",
-    salary_restored = "Welcome back, your salary has now been restored.",
-    afk_cmd_to_exit = "Type /afk to exit AFK mode.",
+    afk_cmd_to_exit = "Type /afk to resume",
     player_now_afk = "%s is now AFK.",
     player_no_longer_afk = "%s is no longer AFK.",
 
