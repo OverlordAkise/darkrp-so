@@ -1,31 +1,20 @@
-# DarkRP ![run-glualint](https://github.com/FPtje/DarkRP/workflows/run-glualint/badge.svg?branch=master)
-A roleplay gamemode for Garry's Mod.
+# DarkRP-SO
 
-## Getting DarkRP
-Please use either git or the workshop.
-Manually downloading DarkRP or using SVN is possible, but not recommended.
+## DarkRP - SCPRP Optimized
 
-The workshop version of DarkRP can be found here:
+This is the darkrp gamemode but without a lot of the features. It removes everything that is not needed for SCPRP, which means that nearly half of the codebase is missing.
 
-https://steamcommunity.com/sharedfiles/filedetails/?id=248302805
+For the "real" darkrp gamemode please visit https://github.com/FPtje/DarkRP
 
-## Modifying DarkRP
-Check out the wiki!
+This addon should be installed *AFTER* you set up a running SCPRP server because many checks and fancy "error" prints have been removed.
 
-https://darkrp.miraheze.org/wiki/Main_Page
+Compatibility is provided via the "allow_compatibility.lua" file. This means nothing should break if an addon needs something that got removed.
 
-Make sure to download the DarkRPMod:
+# Major changes
 
-https://github.com/FPtje/darkrpmodification
+ - Removed Hitman, Police, Mayor, Laws, Voting, Demotes, DoorTax, GunDealer, Shipments, VoteOnlyJobs
+ - Removed the disjointset, simplerr and tablecheck libraries (recoded these parts)
+ - Removed mayor's lockdown command
+ - Removed wanted/warrants, jails, jailpositions arrest-baton
+ - FPP has been minified, if you need your users to spawn props this could be a problem
 
-Do you want to create a gamemode based on DarkRP?
-You probably shouldn't. If you insist, use the derived gamemode that can be downloaded here:
-
-https://github.com/FPtje/DarkRP/releases/tag/derived
-
-Just whatever you do, don't touch DarkRP's core files.
-
-## Getting help
-Please head to the official Discord!
-
-https://darkrp.page.link/discord
