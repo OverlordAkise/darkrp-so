@@ -18,15 +18,10 @@ hook.Add("loadCustomDarkRPItems", "loadAnimations", function()
 end)
 
 function DarkRP.addPlayerGesture(anim, text)
-    if not anim then DarkRP.error("Argument #1 of DarkRP.addPlayerGesture (animation/gesture) does not exist.", 2) end
-    if not text then DarkRP.error("Argument #2 of DarkRP.addPlayerGesture (text) does not exist.", 2) end
-
     Anims[anim] = text
 end
 
 function DarkRP.removePlayerGesture(anim)
-    if not anim then DarkRP.error("Argument #1 of DarkRP.removePlayerGesture (animation/gesture) does not exist.", 2) end
-
     Anims[anim] = nil
 end
 

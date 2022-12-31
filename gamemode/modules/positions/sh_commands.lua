@@ -1,5 +1,3 @@
-local plyMeta = FindMetaTable("Player")
-
 DarkRP.declareChatCommand{
     command = "setspawn",
     description = "Reset the spawn position for some job and place a new one at your position (use the command name of the job as argument)",
