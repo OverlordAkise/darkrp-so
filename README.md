@@ -4,13 +4,15 @@
 
 This is the darkrp gamemode but without a lot of the features. It removes everything that is not needed for SCPRP, which means that nearly half of the codebase is missing.
 
-For the "real" darkrp gamemode please visit https://github.com/FPtje/DarkRP
+For the real, original darkrp gamemode please visit https://github.com/FPtje/DarkRP
 
-This addon should be installed *AFTER* you set up a running SCPRP server because many checks and fancy "error" prints have been removed.
+This addon should be installed *AFTER* you set up a running SCPRP server because many checks and fancy error prints have been removed.
 
 Compatibility is provided via the "allow_compatibility.lua" file. This means nothing should break if an addon needs something that got removed.
 
 # Major changes
+
+Do NOT install this if you need any of the following that have been removed:
 
  - Removed the darkrp hud, scoreboard, f4menu, etc. (nearly all UIs)
  - Removed Hitman, Police, Mayor, Laws, Voting, Demotes, DoorTax, GunDealer, Shipments, VoteOnlyJobs
