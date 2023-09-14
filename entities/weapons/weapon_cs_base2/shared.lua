@@ -507,10 +507,3 @@ if CLIENT then
         end
     end
 end
-
-hook.Add("SetupMove", "DarkRP_WeaponSpeed", function(ply, mv)
-    local wep = ply:GetActiveWeapon()
-    if not wep:IsValid() or not wep.DarkRPBased or not wep.GetIronsights or not wep:GetIronsights() then return end
-
-    mv:SetMaxClientSpeed(mv:GetMaxClientSpeed() / 3)
-end)
