@@ -52,6 +52,12 @@ function SWEP:Initialize()
     self:SetHoldType("normal")
 end
 
+function SWEP:OnRemove()
+    if self:GetIsLockpicking() then
+        hook.Call("onLockpickCompleted", nil, self:GetOwner(), false, self)
+    end
+end
+
 function SWEP:PrimaryAttack()
     self:SetNextPrimaryFire(CurTime() + 0.5)
     if self:GetIsLockpicking() then return end
@@ -96,14 +102,6 @@ function SWEP:PrimaryAttack()
         self.NextDotsTime = SysTime() + 0.5
         return
     end
-
-    local onFail = function(ply) if ply == Owner then hook.Call("onLockpickCompleted", nil, ply, false, ent) end end
-
-    -- Lockpick fails when dying or disconnecting
-    hook.Add("PlayerDeath", self, fc{onFail, fn.Flip(fn.Const)})
-    hook.Add("PlayerDisconnected", self, fc{onFail, fn.Flip(fn.Const)})
-    -- Remove hooks when finished
-    hook.Add("onLockpickCompleted", self, fc{fp{hook.Remove, "PlayerDisconnected", self}, fp{hook.Remove, "PlayerDeath", self}})
 end
 
 function SWEP:Holster()

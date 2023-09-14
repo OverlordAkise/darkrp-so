@@ -61,6 +61,6 @@ function ENT:StartTouch(ent)
     ent:Remove()
     self:Setamount(self:Getamount() + ent:Getamount())
     if GAMEMODE.Config.moneyRemoveTime and GAMEMODE.Config.moneyRemoveTime ~= 0 then
-        timer.Adjust("RemoveEnt" .. self:EntIndex(), GAMEMODE.Config.moneyRemoveTime, 1, fn.Partial(SafeRemoveEntity, self))
+        timer.Adjust("RemoveEnt" .. self:EntIndex(), GAMEMODE.Config.moneyRemoveTime, 1, function() SafeRemoveEntity(self) end)
     end
 end
