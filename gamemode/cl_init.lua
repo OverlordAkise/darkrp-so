@@ -29,7 +29,6 @@ hook.Call("DarkRPPreLoadModules", GM)
 
 --Chat stuff
 include("modules/chat/sh_chatcommands.lua")
-include("modules/chat/cl_chatlisteners.lua")
 include("modules/chat/cl_chat.lua")
 
 include("modules/workarounds/sh_workarounds.lua")

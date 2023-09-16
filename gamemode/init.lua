@@ -33,7 +33,7 @@ DarkRP.hooks = {}
 --interfaceloader.lua end
 
 function DarkRP.log(text)
-    print("[darkrpso_log] "..text)
+    print("[darkrplog] "..text)
 end
 
 include("config/_MySQL.lua")
@@ -78,7 +78,6 @@ AddCSLuaFile("modules/doorsystem/sh_doors.lua")
 AddCSLuaFile("modules/doorsystem/cl_doors.lua")
 AddCSLuaFile("modules/cppi/sh_cppi.lua")
 AddCSLuaFile("modules/chat/sh_chatcommands.lua")
-AddCSLuaFile("modules/chat/cl_chatlisteners.lua")
 AddCSLuaFile("modules/chat/cl_chat.lua")
 AddCSLuaFile("modules/base/sh_util.lua")
 AddCSLuaFile("modules/base/sh_simplerr.lua")
