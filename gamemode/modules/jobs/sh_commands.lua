@@ -1,32 +1,3 @@
-local plyMeta = FindMetaTable("Player")
-
-DarkRP.declareChatCommand{
-    command = "job",
-    description = "Change your job name",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "switchjob",
-    description = "Switch jobs with the player you're looking at",
-    delay = 1.5,
-    condition = fn.Compose{fn.Curry(fn.GetValue, 2)("allowjobswitch"), fn.Curry(fn.GetValue, 2)("Config"), gmod.GetGamemode}
-}
-
-DarkRP.declareChatCommand{
-    command = "switchjobs",
-    description = "Switch jobs with the player you're looking at",
-    delay = 1.5,
-    condition = fn.Compose{fn.Curry(fn.GetValue, 2)("allowjobswitch"), fn.Curry(fn.GetValue, 2)("Config"), gmod.GetGamemode}
-}
-
-DarkRP.declareChatCommand{
-    command = "jobswitch",
-    description = "Switch jobs with the player you're looking at",
-    delay = 1.5,
-    condition = fn.Compose{fn.Curry(fn.GetValue, 2)("allowjobswitch"), fn.Curry(fn.GetValue, 2)("Config"), gmod.GetGamemode}
-}
-
 DarkRP.declareChatCommand{
     command = "teamban",
     description = "Ban someone from getting a certain job",

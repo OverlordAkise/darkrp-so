@@ -4,9 +4,9 @@ DarkRP.chatCommands = DarkRP.chatCommands or {}
 local validChatCommand = {
     command = isstring,
     description = isstring,
-    condition = fn.FOr{fn.Curry(fn.Eq, 2)(nil), isfunction},
+    condition = function(input) return input == nil or isfunction(input) end,
     delay = isnumber,
-    tableArgs = fn.FOr{fn.Curry(fn.Eq, 2)(nil), isbool},
+    tableArgs = function(input) return input == nil or isbool(input) end,
 }
 
 local checkChatCommand = function(tbl)
@@ -63,80 +63,4 @@ function DarkRP.getSortedChatCommands()
 end
 
 -- chat commands that have been defined, but not declared
-DarkRP.getIncompleteChatCommands = fn.Curry(fn.Filter, 3)(fn.Compose{fn.Not, checkChatCommand})(DarkRP.chatCommands)
-
---[[---------------------------------------------------------------------------
-Chat commands
----------------------------------------------------------------------------]]
-DarkRP.declareChatCommand{
-    command = "pm",
-    description = "Send a private message to someone.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "w",
-    description = "Say something in whisper voice.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "y",
-    description = "Yell something out loud.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "me",
-    description = "Chat roleplay to say you're doing things that you can't show otherwise.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "/",
-    description = "Global server chat.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "a",
-    description = "Global server chat.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "ooc",
-    description = "Global server chat.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "broadcast",
-    description = "Broadcast something as a mayor.",
-    delay = 1.5,
-    condition = plyMeta.isMayor
-}
-
-DarkRP.declareChatCommand{
-    command = "channel",
-    description = "Tune into a radio channel.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "radio",
-    description = "Say something through the radio.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "g",
-    description = "Group chat.",
-    delay = 1.5
-}
-
-DarkRP.declareChatCommand{
-    command = "credits",
-    description = "Send the DarkRP credits to someone.",
-    delay = 1.5
-}
+DarkRP.getIncompleteChatCommands = function() return {} end

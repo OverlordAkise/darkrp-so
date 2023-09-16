@@ -8,8 +8,6 @@ local function AFKHUDPaint()
     draw.DrawNonParsedSimpleText(DarkRP.getPhrase("afk_cmd_to_exit"), "DarkRPHUD2", scrw, scrh + 20, TextColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
-
-
 hook.Add("DarkRPVarChanged","luctus_so_optimized_afk",function(ply, varname, oldValue, newvalue)
     if varname == "AFK" then
         if newvalue then

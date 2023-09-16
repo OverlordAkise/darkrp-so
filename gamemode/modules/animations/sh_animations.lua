@@ -1,7 +1,7 @@
 local Anims = {}
 
 if SERVER then
-  util.AddNetworkString("_DarkRP_CustomAnim")
+    util.AddNetworkString("_DarkRP_CustomAnim")
 end
 
 -- Load animations after the languages for translation purposes
@@ -35,8 +35,8 @@ if SERVER then
         RP:AddAllPlayers()
 
         net.Start("_DarkRP_CustomAnim", RP)
-          net.WriteEntity(ply)
-          net.WriteInt(Gesture,32)
+            net.WriteEntity(ply)
+            net.WriteInt(Gesture,32)
         net.Send(RP)
     end
     concommand.Add("_DarkRP_DoAnimation", CustomAnim)

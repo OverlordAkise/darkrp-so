@@ -56,13 +56,10 @@ local function RP_PlayerChat(ply, text, teamonly)
     local callback = ""
     local DoSayFunc
     local groupSay = DarkRP.getChatCommand("g")
-    local tblCmd = fn.Compose{ -- Extract the chat command
-        DarkRP.getChatCommand,
-        string.lower,
-        fn.Curry(fn.Flip(string.sub), 2)(2), -- extract prefix
-        fn.Curry(fn.GetValue, 2)(1), -- Get the first word
-        fn.Curry(string.Explode, 2)(' ') -- split by spaces
-    }(text)
+    --DarkRP's fn.Curry stuff here was way slower than the current oneliner:
+    --darkrp 	5.5293399997026e-05
+    --default	4.8998000061147e-06
+    local tblCmd = DarkRP.getChatCommand(string.Split(string.sub(text,2)," ")[1])
 
     if string.sub(text, 1, 1) == GAMEMODE.Config.chatCommandPrefix and tblCmd then
         local args = string.sub(text, string.len(tblCmd.command) + 3, string.len(text))
@@ -263,10 +260,6 @@ end
 -- nicely with its chat rules.
 local function ReplaceChatHooks()
     local hookTbl = hook.GetTable()
-
-    -- give warnings for undeclared chat commands
-    local warning = fn.Compose{ErrorNoHalt, fn.Curry(string.format, 2)("Chat command \"%s\" is defined but not declared!\n")}
-    fn.ForEach(warning, DarkRP.getIncompleteChatCommands())
 
     if ULib then
         local ulibTbl = hook.GetULibTable()

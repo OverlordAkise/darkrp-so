@@ -25,13 +25,6 @@ local function declareTeamCommands(CTeam)
 
         return true
     end
-
-    DarkRP.declareChatCommand{
-        command = CTeam.command,
-        description = "Become " .. CTeam.name .. ".",
-        delay = 1.5,
-        condition = chatcommandCondition
-    }
 end
 
 local function addTeamCommands(CTeam, max)
@@ -98,21 +91,6 @@ local function addTeamCommands(CTeam, max)
 end
 
 local function addEntityCommands(tblEnt)
-    DarkRP.declareChatCommand{
-        command = tblEnt.cmd,
-        description = "Purchase a " .. tblEnt.name,
-        delay = tblEnt.delay or 2,
-        condition =
-            function(ply)
-                if not tblEnt.allowPurchaseWhileDead and not ply:Alive() then return false end
-                if istable(tblEnt.allowed) and not table.HasValue(tblEnt.allowed, ply:Team()) then return false end
-                if not ply:canAfford(tblEnt.price) then return false end
-                if tblEnt.customCheck and tblEnt.customCheck(ply) == false then return false end
-
-                return true
-            end
-    }
-
     if CLIENT then return end
 
     -- Default spawning function of an entity
