@@ -21,6 +21,7 @@ if SERVER then
     function plymeta:requestHit() end
     function plymeta:placeHit() end
     function plymeta:getHitCustomer() return nil end
+    function plymeta:newHungerData() end
 end
 --cl
 if CLIENT then

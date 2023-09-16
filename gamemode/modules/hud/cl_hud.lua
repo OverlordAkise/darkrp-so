@@ -144,7 +144,7 @@ local noDraw = {
     ["CHUDQuickInfo"] = true
 }
 function GM:HUDShouldDraw(name)
-    if noDraw[name] or (HelpToggled and name == "CHudChat") then
+    if noDraw[name] then
         return false
     else
         return self.Sandbox.HUDShouldDraw(self, name)

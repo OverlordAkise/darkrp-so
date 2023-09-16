@@ -1,30 +1,26 @@
-local function HMPlayerSpawn(ply)
+hook.Add("PlayerSpawn", "HMPlayerSpawn", function(ply)
     ply:setSelfDarkRPVar("Energy", 100)
-end
-hook.Add("PlayerSpawn", "HMPlayerSpawn", HMPlayerSpawn)
+end)
 
-local function HMThink()
+timer.Create("HMThink", 10, 0, function()
     for _, v in ipairs(player.GetAll()) do
         if not v:Alive() then continue end
         v:hungerUpdate()
     end
-end
-timer.Create("HMThink", 10, 0, HMThink)
+end)
 
-local function HMPlayerInitialSpawn(ply)
-    ply:newHungerData()
-end
-hook.Add("PlayerInitialSpawn", "HMPlayerInitialSpawn", HMPlayerInitialSpawn)
+hook.Add("PlayerInitialSpawn", "HMPlayerInitialSpawn", function(ply)
+    self:setSelfDarkRPVar("Energy", 100)
+end)
 
-local function HMAFKHook(ply, afk)
+hook.Add("playerSetAFK", "Hungermod", function(ply, afk)
     if afk then
         ply.preAFKHunger = ply:getDarkRPVar("Energy")
     else
         ply:setSelfDarkRPVar("Energy", ply.preAFKHunger or 100)
         ply.preAFKHunger = nil
     end
-end
-hook.Add("playerSetAFK", "Hungermod", HMAFKHook)
+end)
 
 local function BuyFood(ply, args)
     if args == "" then
