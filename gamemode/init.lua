@@ -1,14 +1,6 @@
 local ss = SysTime()
-hook.Run("DarkRPStartedLoading")
 
-GM.Version = "2.7.0"
-GM.Name = "DarkRP"
-GM.Author = "By FPtje Falco et al."
-
-DeriveGamemode("sandbox")
-DEFINE_BASECLASS("gamemode_sandbox")
-
-GM.Sandbox = BaseClass
+include("shared.lua")
 
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("libraries/sh_cami.lua")
@@ -22,15 +14,6 @@ AddCSLuaFile("config/ammotypes.lua")
 
 AddCSLuaFile("cl_init.lua")
 
-GM.Config = GM.Config or {}
-GM.NoLicense = GM.NoLicense or {}
-
-include("shared.lua")
-
---interfaceloader.lua start
-DarkRP = {}
-DarkRP.hooks = {}
---interfaceloader.lua end
 
 function DarkRP.log(text)
     print("[darkrplog] "..text)
