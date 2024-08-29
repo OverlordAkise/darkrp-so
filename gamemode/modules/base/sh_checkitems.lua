@@ -1,7 +1,4 @@
---[[
-The base elements are shared by every custom item
-]]
-
+--The base elements are shared by every custom item
 function verifyBaseSchema(tbl)
     if tbl.buttonColor and not IsColor(tbl.buttonColor) then
         return false, "The buttonColor must be a Color value!"
@@ -24,10 +21,7 @@ function verifyBaseSchema(tbl)
     return true,"",""
 end
 
---[[
-Properties shared by anything buyable
-]]
-
+--Properties shared by anything buyable
 function verifyBuySchema(tbl)
     local isCorrect, err, hint = verifyBaseSchema(tbl)
     if not isCorrect then
@@ -86,10 +80,7 @@ local uniqueJob = function(v, tbl)
         }
 end
 
---[[
-Validate jobs
-]]
-
+--Validate jobs
 function DarkRP.isValidJob(tbl)
     local isCorrect, perr, phint = verifyBaseSchema(tbl)
     if not isCorrect then
@@ -209,9 +200,7 @@ function DarkRP.isValidJob(tbl)
     return true,"",""
 end
 
---[[
-Validate shipments
-]]
+--Validate shipments
 function DarkRP.isValidShipment(tbl)
     local isCorrect, perr, phint = verifyBuySchema(tbl)
     if not isCorrect then
@@ -259,9 +248,7 @@ function DarkRP.isValidShipment(tbl)
     return true,"",""
 end
 
---[[
-Validate vehicles
-]]
+--Validate vehicles
 function DarkRP.isValidVehicle(tbl)
     local isCorrect, perr, phint = verifyBuySchema(tbl)
     if not isCorrect then
@@ -279,10 +266,7 @@ function DarkRP.isValidVehicle(tbl)
     return true,"",""
 end
 
---[[
-Validate Entities
-]]
-
+--Validate Entities
 function DarkRP.isValidEntity(tbl)
     local isCorrect, perr, phint = verifyBuySchema(tbl)
     if not isCorrect then
@@ -318,10 +302,7 @@ function DarkRP.isValidEntity(tbl)
     return true,"",""
 end
 
---[[
-Validate Categories
-]]
-
+--Validate Categories
 local validCategories = {
   ["jobs"] = true,
   ["entities"] = true,

@@ -1,26 +1,16 @@
---[[---------------------------------------------------------------------------
-Functions and variables
----------------------------------------------------------------------------]]
+
 local setUpNonOwnableDoors,
     setUpTeamOwnableDoors,
     setUpGroupDoors,
     updateDBSchema
 
---[[---------------------------------------------------------
- Database initialize
- ---------------------------------------------------------]]
+--Database initialize
 function DarkRP.initDatabase()
     MySQLite.begin()
-        -- Gotta love the difference between SQLite and MySQL
         local is_mysql = MySQLite.isMySQL()
         local AUTOINCREMENT = is_mysql and "AUTO_INCREMENT" or "AUTOINCREMENT"
-        -- in MySQL, the engine is set to InnoDB. InnoDB has been the default
-        -- for a while, but people might be running old versions of MySQL.
-        -- SQLite has no database engine, so it is not explicitly set.
         local ENGINE_INNODB = is_mysql and "ENGINE=InnoDB" or ""
 
-        -- Table that holds all position data (spawns etc.)
-        -- Queue these queries because other queries depend on the existence of the darkrp_position table
         -- Race conditions could occur if the queries are executed simultaneously
         MySQLite.queueQuery([[
             CREATE TABLE IF NOT EXISTS darkrp_position(
@@ -44,8 +34,7 @@ function DarkRP.initDatabase()
             ) ]] .. ENGINE_INNODB .. [[;
         ]])
 
-        -- This table is kept for compatibility with older addons and websites
-        -- See https://github.com/FPtje/DarkRP/issues/819
+        -- compatibility, See https://github.com/FPtje/DarkRP/issues/819
         MySQLite.queueQuery([[
             CREATE TABLE IF NOT EXISTS playerinformation(
                 uid BIGINT NOT NULL,
@@ -144,10 +133,7 @@ function DarkRP.initDatabase()
     end)
 end
 
---[[---------------------------------------------------------------------------
-Database migration
-backwards compatibility with older versions of DarkRP
----------------------------------------------------------------------------]]
+--Database migration, backwards compatibility with older versions of DarkRP
 function updateDBSchema(callback)
     if DarkRP.DBVersion < 20211228 then
         MySQLite.begin()
