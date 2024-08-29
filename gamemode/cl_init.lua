@@ -16,7 +16,7 @@ include("modules/chat/sh_chatcommands.lua")
 include("modules/chat/cl_chat.lua")
 
 include("modules/workarounds/sh_workarounds.lua")
-include("modules/playerscale/cl_playerscale.lua")
+include("modules/sh_playerscale.lua")
 include("modules/money/sh_money.lua")
 include("modules/language/sh_language.lua")
 include("modules/language/sh_english.lua")
