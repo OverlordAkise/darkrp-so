@@ -116,4 +116,8 @@ if CLIENT then
     surface.CreateFont("TabLarge", {size = 17,weight = 700,antialias = true,shadow = false,font = "Trebuchet MS"})
 end
 
+--chat voice commands
+function DarkRP.getChatSound() return nil end
+function DarkRP.setChatSound() end
+
 print("[luctus_so] Loaded backwards compatibility")
