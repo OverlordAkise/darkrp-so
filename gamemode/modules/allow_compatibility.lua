@@ -120,4 +120,9 @@ end
 function DarkRP.getChatSound() return nil end
 function DarkRP.setChatSound() end
 
+--chat commands, barely used so removed
+function DarkRP.addChatCommandsLanguage() end
+function DarkRP.getChatCommandDescription(name) return "No description for "..name end
+function DarkRP.chatCommandAlias(command) ErrorNoHaltWithStack("chatCommandAliases are not supported!") end
+
 print("[luctus_so] Loaded backwards compatibility")

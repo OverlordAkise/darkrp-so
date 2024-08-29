@@ -1,12 +1,15 @@
-local function registerCommandDefinition(cmd, callback)
+local function registerCommandDefinition(cmd, callback, delay)
     local chatcommands = DarkRP.getChatCommands()
 
     chatcommands[cmd] = chatcommands[cmd] or {}
     chatcommands[cmd].callback = callback
-    chatcommands[cmd].command = chatcommands[cmd].command or cmd
+    chatcommands[cmd].command = cmd
+    chatcommands[cmd].delay = delay
+    --TODO: This could create problems:
+    chatcommands[cmd].tableArgs = true
 end
 
-function DarkRP.defineChatCommand(cmd, callback)
+function DarkRP.defineChatCommand(cmd, callback, delay)
     cmd = string.lower(cmd)
     local detour = function(ply, arg, ...)
         local canChatCommand = gamemode.Call("canChatCommand", ply, cmd, arg, ...)
@@ -21,7 +24,7 @@ function DarkRP.defineChatCommand(cmd, callback)
         return unpack(ret)
     end
 
-    registerCommandDefinition(cmd, detour)
+    registerCommandDefinition(cmd, detour, delay)
 end
 
 function DarkRP.definePrivilegedChatCommand(cmd, priv, callback, extraInfoTbl)

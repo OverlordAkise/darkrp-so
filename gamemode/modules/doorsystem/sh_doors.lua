@@ -219,10 +219,3 @@ DarkRP.registerDoorVar("teamOwn", writeNumBoolTbl, readNumBoolTbl)
 DarkRP.registerDoorVar("allowedToOwn", writeNumBoolTbl, readNumBoolTbl)
 DarkRP.registerDoorVar("extraOwners", writeNumBoolTbl, readNumBoolTbl)
 DarkRP.registerDoorVar("title", net.WriteString, net.ReadString)
-
-DarkRP.declareChatCommand{
-    command = "forceunownall",
-    description = "Force a player to unown all the doors and vehicles they have.",
-    delay = 0.5,
-    tableArgs = true
-}
