@@ -32,25 +32,11 @@ function GM:CanChangeRPName(ply, RPname)
     if len < 3 then return false,  DarkRP.getPhrase("too_short") end
 end
 
-function GM:playerWalletChanged(ply, amount)
-
-end
-
-function GM:playerGetSalary(ply, amount)
-
-end
-
-function GM:DarkRPVarChanged(ply, var, oldvar, newvalue)
-
-end
-
-function GM:playerBoughtVehicle(ply, ent, cost)
-
-end
-
-function GM:playerBoughtDoor(ply, ent, cost)
-
-end
+function GM:playerWalletChanged(ply, amount) end
+function GM:playerGetSalary(ply, amount) end
+function GM:DarkRPVarChanged(ply, var, oldvar, newvalue) end
+function GM:playerBoughtVehicle(ply, ent, cost) end
+function GM:playerBoughtDoor(ply, ent, cost) end
 
 function GM:canDropWeapon(ply, weapon)
     if not IsValid(weapon) then return false end
@@ -239,32 +225,22 @@ function GM:ShowSpare1(ply)
         return jobTable.ShowSpare1(ply)
     end
 end
-
 function GM:ShowSpare2(ply)
     local jobTable = ply:getJobTable()
     if jobTable.ShowSpare2 then
         return jobTable.ShowSpare2(ply)
     end
 end
-
-function GM:ShowTeam(ply)
-end
-
-function GM:ShowHelp(ply)
-end
+function GM:ShowTeam(ply) end
+function GM:ShowHelp(ply) end
 
 function GM:OnNPCKilled(victim, ent, weapon)
-    -- If something killed the npc
     if not ent then return end
-
     if ent:IsVehicle() and ent:GetDriver():IsPlayer() then ent = ent:GetDriver() end
-
-    -- If it wasn't a player directly, find out who owns the prop that did the killing
     if not ent:IsPlayer() then
         ent = Player(tonumber(ent.SID) or 0)
     end
 
-    -- If we know by now who killed the NPC, pay them.
     if IsValid(ent) and hook.Call("canEarnNPCKillPay", GAMEMODE, ent, victim) then
         local amount = hook.Call("calculateNPCKillPay", GAMEMODE, ent, victim)
         ent:addMoney(amount)
@@ -605,15 +581,10 @@ local function initPlayer(ply)
 
     ply:updateJob(team.GetName(GAMEMODE.DefaultTeam))
     ply:setSelfDarkRPVar("salary", DarkRP.retrieveSalary(ply))
-    ply.LastJob = nil -- so players don't have to wait to get a job after joining
-
+    ply.LastJob = nil
     ply.Ownedz = {}
-
     ply:SetTeam(GAMEMODE.DefaultTeam)
     ply.DarkRPInitialised = true
-
-    -- Whether or not a player is being prevented from joining
-    -- a specific team for a certain length of time
     if GAMEMODE.Config.restrictallteams then
         for i = 1, #RPExtraTeams do
             ply:teamBan(i, 0)
@@ -647,7 +618,6 @@ end
 
 function GM:PlayerInitialSpawn(ply)
     self.Sandbox.PlayerInitialSpawn(self, ply)
-    -- Initialize DrpCanHear for player (used for voice radius check)
     DrpCanHear[ply] = {}
 
     local sid = ply:SteamID()
@@ -663,6 +633,15 @@ function GM:PlayerInitialSpawn(ply)
         if group then
             ply:SetUserGroup(group)
         end
+    end)
+    
+    local timerid = ply:SteamID64() .. "jobtimer"
+    timer.Create(timerid, GAMEMODE.Config.paydelay, 0, function()
+        if not IsValid(ply) then
+            timer.Remove(timerid)
+            return
+        end
+        ply:payDay()
     end)
 
     restoreReconnectedEnts(ply)
@@ -752,23 +731,12 @@ end
 
 function GM:PlayerSpawn(ply)
     if not ply.DarkRPInitialised then
-        DarkRP.errorNoHalt(
-            string.format("DarkRP was unable to introduce player \"%s\" to the game. Expect further errors and shit generally being fucked!",
-                IsValid(ply) and ply:Nick() or "unknown"),
-            1,
-            {
-                "This error most likely does not stand on its own, and previous serverside errors have a very good chance of telling you the cause.",
-                "Note that errors from another addon could cause this. Specifically when they're thrown during 'PlayerInitialSpawn'.",
-                "This error can also be caused by some other addon returning a value in 'PlayerInitialSpawn', though that is less likely.",
-                "Errors in your DarkRP configuration (jobs, shipments, etc.) could also cause this. Earlier errors should tell you when this is the case."
-            }
-        )
+        DarkRP.errorNoHalt(string.format("DarkRP was unable to introduce player \"%s\" to the game.", IsValid(ply) and ply:Nick() or "unknown"), 1)
     end
 
     ply:CrosshairEnable()
     ply:UnSpectate()
-
-    -- Kill any colormod
+    ply:Extinguish()
     if ply.blackScreen then
         ply.blackScreen = false
         SendUserMessage("blackScreen", ply, false)
@@ -778,10 +746,7 @@ function GM:PlayerSpawn(ply)
         enableBabyGod(ply)
     end
     ply.IsSleeping = false
-
-    ply:Extinguish()
-
-    for i = 0, 2 do
+    for i=0,2 do
         local vm = ply:GetViewModel(i)
 
         if IsValid(vm) then
@@ -942,9 +907,6 @@ function GM:InitPostEntity()
     game.ConsoleCommand("physgun_DampingFactor 0.9\n")
     game.ConsoleCommand("sv_sticktoground 0\n")
     game.ConsoleCommand("sv_airaccelerate 1000\n")
-    -- sv_alltalk must be 0
-    -- Note, everyone will STILL hear everyone UNLESS GM.Config.voiceradius is set to true
-    -- This will fix the GM.Config.voiceradius not working
     game.ConsoleCommand("sv_alltalk 0\n")
 
     if GAMEMODE.Config.unlockdoorsonstart then
@@ -961,21 +923,9 @@ timer.Simple(0.1, function()
 end)
 
 function GM:loadCustomDarkRPItems()
-    -- Error when the default team isn't set
     if not GAMEMODE.DefaultTeam or not RPExtraTeams[GAMEMODE.DefaultTeam] then
-        -- Re-set to first available team to hopefully prevent further errors.
-        -- Because this error is more important than any that follow because of it.
         GAMEMODE.DefaultTeam = next(RPExtraTeams)
-
-        local hints = {
-            "This may happen when you disable the default citizen job. Make sure you update GAMEMODE.DefaultTeam to the new default team.",
-            "GAMEMODE.DefaultTeam may be set to a job that does not exist anymore. Did you remove the job you had set to default?",
-            "The error being in jobs.lua is a guess. This is usually right, but the problem might lie somewhere else."
-        }
-
-        -- Gotta be totally clear here
-        local stack = "\tjobs.lua, settings.lua, disabled_defaults.lua or any of your other custom files."
-        DarkRP.error("GAMEMODE.DefaultTeam is not set to an existing job.", 1, hints, "lua/darkrp_customthings/jobs.lua", -1, stack)
+        DarkRP.error("GAMEMODE.DefaultTeam is not set to an existing job.", 1)
     end
 end
 

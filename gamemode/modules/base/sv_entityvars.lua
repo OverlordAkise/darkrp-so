@@ -3,21 +3,11 @@ local meta = FindMetaTable("Player")
 local DarkRPVars = {}
 local privateDarkRPVars = {}
 
---[[---------------------------------------------------------------------------
-Pooled networking strings
----------------------------------------------------------------------------]]
 util.AddNetworkString("DarkRP_InitializeVars")
 util.AddNetworkString("DarkRP_PlayerVar")
 util.AddNetworkString("DarkRP_PlayerVarRemoval")
 util.AddNetworkString("DarkRP_DarkRPVarDisconnect")
 
---[[---------------------------------------------------------------------------
-Player vars
----------------------------------------------------------------------------]]
-
---[[---------------------------------------------------------------------------
-Remove a player's DarkRPVar
----------------------------------------------------------------------------]]
 function meta:removeDarkRPVar(var, target)
     local vars = DarkRPVars[self]
     hook.Call("DarkRPVarChanged", nil, self, var, vars and vars[var], nil)
@@ -32,9 +22,6 @@ function meta:removeDarkRPVar(var, target)
     net.Send(target)
 end
 
---[[---------------------------------------------------------------------------
-Set a player's DarkRPVar
----------------------------------------------------------------------------]]
 function meta:setDarkRPVar(var, value, target)
     target = target or player.GetAll()
 
@@ -52,9 +39,7 @@ function meta:setDarkRPVar(var, value, target)
     net.Send(target)
 end
 
---[[---------------------------------------------------------------------------
-Set a private DarkRPVar
----------------------------------------------------------------------------]]
+--Set a private DarkRPVar
 function meta:setSelfDarkRPVar(var, value)
     privateDarkRPVars[self] = privateDarkRPVars[self] or {}
     privateDarkRPVars[self][var] = true
@@ -62,9 +47,6 @@ function meta:setSelfDarkRPVar(var, value)
     self:setDarkRPVar(var, value, self)
 end
 
---[[---------------------------------------------------------------------------
-Get a DarkRPVar
----------------------------------------------------------------------------]]
 function meta:getDarkRPVar(var)
     local vars = DarkRPVars[self]
 
@@ -72,21 +54,13 @@ function meta:getDarkRPVar(var)
     return vars[var]
 end
 
---[[---------------------------------------------------------------------------
-Backwards compatibility: Set ply.DarkRPVars attribute
----------------------------------------------------------------------------]]
+--Backwards compatibility: Set ply.DarkRPVars attribute
 function meta:setDarkRPVarsAttribute()
     DarkRPVars[self] = DarkRPVars[self] or {}
-    -- With a reference to the table, ply.DarkRPVars should always remain
-    -- up-to-date. One needs only be careful that DarkRPVars[ply] is never
-    -- replaced by a different table.
     self.DarkRPVars = DarkRPVars[self]
 end
 
 
---[[---------------------------------------------------------------------------
-Send the DarkRPVars to a client
----------------------------------------------------------------------------]]
 function meta:sendDarkRPVars()
     if self:EntIndex() == 0 then return end
 
@@ -117,9 +91,8 @@ concommand.Add("_sendDarkRPvars", function(ply)
     ply:sendDarkRPVars()
 end)
 
---[[---------------------------------------------------------------------------
-Admin DarkRPVar commands
----------------------------------------------------------------------------]]
+
+
 local function setRPName(ply, args)
     if not args[2] or string.len(args[2]) < 2 or string.len(args[2]) > 30 then
         DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("invalid_x", DarkRP.getPhrase("arguments"), "<2/>30"))
@@ -204,9 +177,7 @@ DarkRP.defineChatCommand("rpname", RPName)
 DarkRP.defineChatCommand("name", RPName)
 DarkRP.defineChatCommand("nick", RPName)
 
---[[---------------------------------------------------------------------------
-Setting the RP name
----------------------------------------------------------------------------]]
+
 function meta:setRPName(name, firstRun)
     -- Make sure nobody on this server already has this RP name
     local lowername = string.lower(tostring(name))
@@ -232,9 +203,7 @@ function meta:setRPName(name, firstRun)
     end)
 end
 
---[[---------------------------------------------------------------------------
-Maximum entity values
----------------------------------------------------------------------------]]
+
 local maxEntities = {}
 function meta:addCustomEntity(entTable)
     maxEntities[self] = maxEntities[self] or {}

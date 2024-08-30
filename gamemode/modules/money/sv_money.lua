@@ -21,7 +21,7 @@ end
 
 function meta:payDay()
     DarkRP.retrieveSalary(self, function(amount)
-        amount = math.floor(amount or GAMEMODE.Config.normalsalary)
+        amount = math.floor(amount)
         local suppress, message, hookAmount = hook.Call("playerGetSalary", GAMEMODE, self, amount)
         amount = hookAmount or amount
 

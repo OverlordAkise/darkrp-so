@@ -234,7 +234,7 @@ function DarkRP.createJob(Name, colorOrTable, model, Description, Weapons, comma
 
     CustomTeam.salary = math.floor(CustomTeam.salary)
 
-    CustomTeam.customCheck           = CustomTeam.customCheck           and CustomTeam.customCheck
+    CustomTeam.customCheck           = CustomTeam.customCheck           and CustomTeam.customCheck or function() end
     CustomTeam.CustomCheckFailMsg = isfunction(CustomTeam.CustomCheckFailMsg) and CustomTeam.CustomCheckFailMsg or CustomTeam.CustomCheckFailMsg
     CustomTeam.CanPlayerSuicide      = CustomTeam.CanPlayerSuicide      and CustomTeam.CanPlayerSuicide
     CustomTeam.PlayerCanPickupWeapon = CustomTeam.PlayerCanPickupWeapon and CustomTeam.PlayerCanPickupWeapon
