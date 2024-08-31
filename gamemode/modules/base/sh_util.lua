@@ -61,57 +61,6 @@ function DarkRP.findPlayer(info)
     return nil
 end
 
---[[---------------------------------------------------------------------------
-Find multiple players based on a string criterium
-Taken from FAdmin
----------------------------------------------------------------------------]]
-function DarkRP.findPlayers(info)
-    if not info then return nil end
-    local pls = player.GetAll()
-    local found = {}
-    local players
-
-    if string.lower(info) == "*" or string.lower(info) == "<all>" then return pls end
-
-    local InfoPlayers = {}
-    for A in string.gmatch(info .. ";", "([a-zA-Z0-9:_.]*)[;(,%s)%c]") do
-        if A ~= "" then
-            table.insert(InfoPlayers, A)
-        end
-    end
-
-    for _, PlayerInfo in ipairs(InfoPlayers) do
-        -- Playerinfo is always to be treated as UserID when it's a number
-        -- otherwise people with numbers in their names could get confused with UserID's of other players
-        if tonumber(PlayerInfo) then
-            if IsValid(Player(PlayerInfo)) and not found[Player(PlayerInfo)] then
-                found[Player(PlayerInfo)] = true
-                players = players or {}
-                table.insert(players, Player(PlayerInfo))
-            end
-            continue
-        end
-
-        for _, v in ipairs(pls) do
-            -- Prevend duplicates
-            if found[v] then continue end
-
-            -- Find by Steam ID
-            if (PlayerInfo == v:SteamID() or v:SteamID() == "UNKNOWN") or
-            -- Find by Partial Nick
-            string.find(string.lower(v:Nick()), string.lower(tostring(PlayerInfo)), 1, true) ~= nil or
-            -- Find by steam name
-            (v.SteamName and string.find(string.lower(v:SteamName()), string.lower(tostring(PlayerInfo)), 1, true) ~= nil) then
-                found[v] = true
-                players = players or {}
-                table.insert(players, v)
-            end
-        end
-    end
-
-    return players
-end
-
 function meta:getEyeSightHitEntity(searchDistance, hitDistance, filter)
     searchDistance = searchDistance or 100
     hitDistance = (hitDistance or 15) * (hitDistance or 15)
@@ -164,43 +113,17 @@ function meta:getEyeSightHitEntity(searchDistance, hitDistance, filter)
     return nil
 end
 
---[[---------------------------------------------------------------------------
-Print the currently available vehicles
----------------------------------------------------------------------------]]
-local function GetAvailableVehicles(ply)
-    if SERVER and IsValid(ply) and not ply:IsAdmin() then return end
-    local print = SERVER and ServerLog or Msg
-
-    print(DarkRP.getPhrase("rp_getvehicles") .. "\n")
-    for k in pairs(DarkRP.getAvailableVehicles()) do
-        print("\"" .. k .. "\"" .. "\n")
-    end
-end
-if SERVER then
-    concommand.Add("rp_getvehicles_sv", GetAvailableVehicles)
-else
-    concommand.Add("rp_getvehicles", GetAvailableVehicles)
-end
-
---[[---------------------------------------------------------------------------
-Whether a player has a DarkRP privilege
----------------------------------------------------------------------------]]
 function meta:hasDarkRPPrivilege(priv)
     return self:IsAdmin()
 end
 
---[[---------------------------------------------------------------------------
-Convenience function to return the players sorted by name
----------------------------------------------------------------------------]]
 function DarkRP.nickSortedPlayers()
     local plys = player.GetAll()
     table.sort(plys, function(a,b) return a:Nick() < b:Nick() end)
     return plys
 end
 
---[[---------------------------------------------------------------------------
-Convert a string to a table of arguments
----------------------------------------------------------------------------]]
+--Convert a string to a table of arguments
 local bitlshift, stringgmatch, stringsub, tableinsert = bit.lshift, string.gmatch, string.sub, table.insert
 function DarkRP.explodeArg(arg)
     local args = {}
@@ -232,77 +155,16 @@ function DarkRP.explodeArg(arg)
     return args
 end
 
---[[---------------------------------------------------------------------------
-Initialize Physics, throw an error on failure
----------------------------------------------------------------------------]]
-function DarkRP.ValidatedPhysicsInit(ent, solidType, hint)
+function DarkRP.ValidatedPhysicsInit(ent, solidType)
     solidType = solidType or SOLID_VPHYSICS
-
     if ent:PhysicsInit(solidType) then return true end
-
-    local class = ent:GetClass()
-
-    if solidType == SOLID_BSP then
-        DarkRP.errorNoHalt(string.format("%s has no physics and will be motionless", class), 2, {
-            "Is this a brush model? SOLID_BSP physics cannot initialize on entities that don't have brush models",
-            "The physics limit may have been hit",
-            hint
-        })
-
-        return false
-    end
-
-    if solidType == SOLID_VPHYSICS then
-        local mdl = ent:GetModel()
-
-        if not mdl or mdl == "" then
-            DarkRP.errorNoHalt(string.format("Cannot init physics on entity \"%s\" because it has no model", class), 2, {hint})
-            return false
-        end
-
-        mdl = string.lower(mdl)
-
-        if util.IsValidProp(mdl) then
-            -- Has physics, we must have hit the limit
-            DarkRP.errorNoHalt(string.format("physics limit hit - %s will be motionless", class), 2, {hint})
-
-            return false
-        end
-
-        if not file.Exists(mdl, "GAME") then
-            DarkRP.errorNoHalt(string.format("%s has missing model \"%s\" and will be invisible and motionless", class, mdl), 2, {
-                "Is the model path correct?",
-                "Is the model from an addon that is not installed?",
-                "Is the model from a game that isn't (properly) mounted? E.g. Counter Strike: Source",
-                hint
-            })
-
-            return false
-        end
-
-        DarkRP.errorNoHalt(string.format("%s has model \"%s\" with no physics and will be motionless", class, mdl), 2, {
-            "Does this model have an associated physics model (modelname.phy)?",
-            "Is this model supposed to have physics? Many models, like effects and view models aren't made to have physics",
-            hint
-        })
-
-        return false
-    end
-
-    DarkRP.errorNoHalt(string.format("Unable to initilize physics on entity \"%s\"", class, {hint}), 2)
-
     return false
 end
 
---[[---------------------------------------------------------------------------
-Like tonumber, but makes sure it's an integer
----------------------------------------------------------------------------]]
 function DarkRP.toInt(value)
     value = tonumber(value)
     return value and math.floor(value)
 end
-
--- Moved the isMedic shared thing here
 
 function meta:isMedic()
     return self:getJobTable().medic

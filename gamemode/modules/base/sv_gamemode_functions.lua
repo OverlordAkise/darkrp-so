@@ -577,11 +577,6 @@ local function initPlayer(ply)
     ply.Ownedz = {}
     ply:SetTeam(GAMEMODE.DefaultTeam)
     ply.DarkRPInitialised = true
-    if GAMEMODE.Config.restrictallteams then
-        for i = 1, #RPExtraTeams do
-            ply:teamBan(i, 0)
-        end
-    end
 end
 
 local function restoreReconnectedEnts(ply)

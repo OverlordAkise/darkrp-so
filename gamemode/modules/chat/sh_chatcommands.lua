@@ -20,6 +20,3 @@ function DarkRP.getSortedChatCommands()
     table.SortByMember(tbl, "command", true)
     return tbl
 end
-
--- chat commands that have been defined, but not declared
-DarkRP.getIncompleteChatCommands = function() return {} end

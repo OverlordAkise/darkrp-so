@@ -34,10 +34,7 @@ local function warnRegistration(name)
     if warningsShown[name] then return end
     warningsShown[name] = true
 
-    DarkRP.errorNoHalt(string.format([[Warning! DarkRPVar '%s' wasn't registered!
-        Please contact the author of the DarkRP Addon to fix this.
-        Until this is fixed you don't need to worry about anything. Everything will keep working.
-        It's just that registering DarkRPVars would make DarkRP faster.]], name), 4)
+    DarkRP.errorNoHalt(string.format("Warning! DarkRPVar '%s' wasn't registered!", name), 4)
 end
 
 function DarkRP.writeNetDarkRPVar(name, value)
@@ -91,15 +88,11 @@ DarkRP.registerDarkRPVar("salary",        fp{fn.Flip(net.WriteInt), 32}, fp{net.
 DarkRP.registerDarkRPVar("rpname",        net.WriteString, net.ReadString)
 DarkRP.registerDarkRPVar("job",           net.WriteString, net.ReadString)
 
---[[---------------------------------------------------------------------------
-RP name override
----------------------------------------------------------------------------]]
+--RP name override
 local pmeta = FindMetaTable("Player")
 pmeta.SteamName = pmeta.SteamName or pmeta.Name
 function pmeta:Name()
-    if not self:IsValid() then DarkRP.error("Attempt to call Name/Nick/GetName on a non-existing player!", SERVER and 1 or 2) end
-    return GAMEMODE.Config.allowrpnames and self:getDarkRPVar("rpname")
-        or self:SteamName()
+    return self:getDarkRPVar("rpname")
 end
 pmeta.GetName = pmeta.Name
 pmeta.Nick = pmeta.Name

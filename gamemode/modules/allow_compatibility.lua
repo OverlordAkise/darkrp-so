@@ -1,5 +1,5 @@
 local plymeta = FindMetaTable("Player")
-
+local entMeta = FindMetaTable("Entity")
 
 
 -- Hitman
@@ -34,7 +34,7 @@ DarkRP.registerDarkRPVar("hitTarget", net.WriteEntity, net.ReadEntity)
 DarkRP.registerDarkRPVar("hitPrice", fn.Curry(fn.Flip(net.WriteInt), 2)(32), fn.Partial(net.ReadInt, 32))
 DarkRP.registerDarkRPVar("lastHitTime", fn.Curry(fn.Flip(net.WriteInt), 2)(32), fn.Partial(net.ReadInt, 32))
 
-
+function DarkRP.findPlayers() ErrorNoHaltWithStack("undefined function findPlayers") end
 
 --Police
 --sh
@@ -124,5 +124,10 @@ function DarkRP.setChatSound() end
 function DarkRP.addChatCommandsLanguage() end
 function DarkRP.getChatCommandDescription(name) return "No description for "..name end
 function DarkRP.chatCommandAlias(command) ErrorNoHaltWithStack("chatCommandAliases are not supported!") end
+function DarkRP.getMissingPhrases() end
+function DarkRP.getIncompleteChatCommands() return {} end
+
+--No addon ever used this
+function entMeta:isMoneyBag() return false end
 
 print("[luctus_so] Loaded backwards compatibility")
