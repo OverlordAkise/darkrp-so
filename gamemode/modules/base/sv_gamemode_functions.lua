@@ -3,9 +3,6 @@ local entMeta = FindMetaTable("Entity")
 -- Maintains entities that are to be removed after disconnect
 local queuedForRemoval = {}
 
---[[---------------------------------------------------------------------------
-DarkRP hooks
----------------------------------------------------------------------------]]
 function GM:Initialize()
     self.Sandbox.Initialize(self)
 end
@@ -76,9 +73,6 @@ function GM:calculateNPCKillPay(ply, npc)
     return GAMEMODE.Config.npckillpay
 end
 
---[[---------------------------------------------------------
- Gamemode functions
- ---------------------------------------------------------]]
 
 function GM:PlayerSpawnProp(ply, model)
     --if not allowed by job
@@ -379,12 +373,11 @@ timer.Create("DarkRPCanHearPlayersVoice", DarkRP.voiceCheckTimeDelay, 0, functio
 end)
 
 hook.Add("PlayerDisconnect", "DarkRPCanHear", function(ply)
-    DrpCanHear[ply] = nil -- Clear to avoid memory leaks
+    DrpCanHear[ply] = nil
 end)
 
 function GM:PlayerCanHearPlayersVoice(listener, talker)
     if not deadv and not talker:Alive() then return false end
-
     return DrpCanHear[listener][talker] == true, true
 end
 
@@ -578,7 +571,6 @@ function GM:PlayerSetModel(ply)
 end
 
 local function initPlayer(ply)
-
     ply:updateJob(team.GetName(GAMEMODE.DefaultTeam))
     ply:setSelfDarkRPVar("salary", DarkRP.retrieveSalary(ply))
     ply.LastJob = nil

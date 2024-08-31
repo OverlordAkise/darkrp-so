@@ -2,8 +2,7 @@ function GM:SetupMove(ply, mv, cmd)
     return self.Sandbox.SetupMove(self, ply, mv, cmd)
 end
 
-function GM:StartCommand(ply, usrcmd)
-end
+function GM:StartCommand(ply, usrcmd)end
 
 function GM:OnPlayerChangedTeam(ply, oldTeam, newTeam)
     if RPExtraTeams[oldTeam] and RPExtraTeams[oldTeam].OnPlayerLeftTeam then

@@ -37,9 +37,7 @@ DarkRP.defineChatCommand("afk", function(ply)
         return ""
     end
 
-    local canAFK = hook.Run("canGoAFK", ply, not ply:getDarkRPVar("AFK"))
-
-    if canAFK == false then return "" end
+    if hook.Run("canGoAFK", ply, not ply:getDarkRPVar("AFK")) == false then return "" end
 
     if not ply:getDarkRPVar("AFK") then
         DarkRP.notify(ply,1,5,"[AFK] Please stand still for 5s to be moved AFK!")
@@ -61,36 +59,30 @@ DarkRP.defineChatCommand("afk", function(ply)
     return ""
 end)
 
-local function StartAFKOnPlayer(ply)
+hook.Add("PlayerInitialSpawn", "StartAFKOnPlayer", function(ply)
     ply.AFK_Timer = CurTime() + GAMEMODE.Config.afkdemotetime
-end
-hook.Add("PlayerInitialSpawn", "StartAFKOnPlayer", StartAFKOnPlayer)
+end)
 
-local function AFKTimer(ply, key)
+hook.Add("KeyPress", "DarkRPKeyReleasedCheck", function(ply, key)
     ply.AFK_Timer = CurTime() + GAMEMODE.Config.afkdemotetime
-end
-hook.Add("KeyPress", "DarkRPKeyReleasedCheck", AFKTimer)
+end)
 
-local function KillAFKTimer()
+timer.Create("DarkRPKeyPressedCheck", 1, 0, function()
     for _, ply in ipairs(player.GetAll()) do
         if ply.AFK_Timer and CurTime() > ply.AFK_Timer and not ply:getDarkRPVar("AFK") and not ply:IsBot() then
             SetAFK(ply)
             ply.AFK_Timer = math.huge
         end
     end
-end
-timer.Create("DarkRPKeyPressedCheck", 1, 0, function()
-    KillAFKTimer()
 end)
 
-local function BlockAFKTeamChange(ply, t, force)
+hook.Add("playerCanChangeTeam", "AFKCanChangeTeam", function(ply, t, force)
     if ply:getDarkRPVar("AFK") and (not force or t ~= GAMEMODE.DefaultTeam) then
         local TEAM = RPExtraTeams[t]
         if TEAM then DarkRP.notify(ply, 1, 4, DarkRP.getPhrase("unable", GAMEMODE.Config.chatCommandPrefix .. TEAM.command, "AFK")) end
         return false
     end
-end
-hook.Add("playerCanChangeTeam", "AFKCanChangeTeam", BlockAFKTeamChange)
+end)
 
 -- Freeze AFK player's salary
 hook.Add("playerGetSalary", "AFKGetSalary", function(ply, amount)
@@ -102,7 +94,6 @@ end)
 -- For when a player's team is changed by force
 hook.Add("OnPlayerChangedTeam", "AFKCanChangeTeam", function(ply)
     if not ply:getDarkRPVar("AFK") then return end
-
     ply.OldSalary = ply:getDarkRPVar("salary")
     ply.OldJob = nil
     ply:setSelfDarkRPVar("salary", 0)

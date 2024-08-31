@@ -1,34 +1,10 @@
---[[-----------------------------------------------------------------------
-English (example) language file
----------------------------------------------------------------------------
-
-This is the english language file. The things on the left side of the equals sign are the things you should leave alone
-The parts between the quotes are the parts you should translate. You can also copy this file and create a new language.
-
-= Warning =
-Sometimes when DarkRP is updated, new phrases are added.
-If you don't translate these phrases to your language, it will use the English sentence.
-To fix this, join your server, open your console and enter darkp_getphrases yourlanguage
-For English the command would be:
-    darkrp_getphrases "en"
-because "en" is the language code for English.
-
-You can copy the missing phrases to this file and translate them.
-
-= Note =
-Make sure the language code is right at the bottom of this file
-
-= Using a language =
-Make sure the convar gmod_language is set to your language code. You can do that in a server CFG file.
----------------------------------------------------------------------------]]
-
+--English (example) language file
 local my_language = {
     -- Admin things
     need_admin = "You need admin privileges in order to be able to %s",
     need_sadmin = "You need super admin privileges in order to be able to %s",
     no_privilege = "You don't have the right privileges to perform this action",
     invalid_x = "Invalid %s! %s",
-
     -- Money things:
     price = "Price: %s%d",
     priceTag = "Price: %s",
@@ -41,23 +17,17 @@ local my_language = {
     Donate = "Donate",
     you_donated = "You have donated %s to %s!",
     has_donated = "%s has donated %s!",
-
     -- backwards compatibility
     deducted_x = "Deducted %s%d",
     need_x = "Need %s%d",
-
     deducted_money = "Deducted %s",
     need_money = "Need %s",
-
     payday_message = "Payday! You received %s!",
     payday_unemployed = "You received no salary because you are unemployed!",
     payday_missed = "Pay day missed! (You're Arrested)",
-
     found_cash = "You have picked up %s%d!", -- backwards compatibility
     found_money = "You have picked up %s!",
-
     owner_poor = "The %s owner is too poor to subsidize this sale!",
-
     -- Players
     health = "Health: %s",
     job = "Job: %s",
@@ -69,14 +39,12 @@ local my_language = {
     rpname_changed = "%s changed their RPName to: %s",
     disconnected_player = "Disconnected player",
     player = "player",
-
     -- Teams
     need_to_be_before = "You need to be %s first in order to be able to become %s",
     team_limit_reached = "Can not become %s as the limit is reached",
     wants_to_be = "%s\nwants to be\n%s",
     has_not_been_made_team = "%s has not been made %s!",
     job_has_become = "%s has been made a %s!",
-
     -- Keys, vehicles and doors
     keys_allowed_to_coown = "You are allowed to co-own this\n(Press Reload with keys or press F2 to co-own)\n",
     keys_other_allowed = "Allowed to co-own:",
@@ -107,49 +75,38 @@ local my_language = {
     door_group_set = "Door group set successfully.",
     sold_x_doors_for_y = "You have sold %d doors for %s%d!", -- backwards compatibility
     sold_x_doors = "You have sold %d doors for %s!",
-
     -- Entities
     gun = "gun",
     microwave = "Microwave",
     food = "food",
     Food = "Food",
-
     contents = "Contents: ",
     amount = "Amount: ",
-
     picking_lock = "Picking lock",
-
     cannot_pocket_x = "You cannot put this in your pocket!",
     object_too_heavy = "This object is too heavy.",
     pocket_full = "Your pocket is full!",
     pocket_no_items = "Your pocket contains no items.",
     drop_item = "Drop item",
-
     bonus_destroying_entity = "destroying this illegal entity.",
-
     switched_burst = "Switched to burst-fire mode.",
     switched_fully_auto = "Switched to fully automatic fire mode.",
     switched_semi_auto = "Switched to semi-automatic fire mode.",
-
     seconds = "seconds",
-
     persons_weapons = "%s's illegal weapons:",
     returned_persons_weapons = "Returned %s's confiscated weapons.",
     no_weapons_confiscated = "%s had no weapons confiscated!",
     no_illegal_weapons = "%s had no illegal weapons.",
     confiscated_these_weapons = "Confiscated these weapons:",
     checking_weapons = "Confiscating weapons",
-
     shipment_antispam_wait = "Please wait before spawning another shipment.",
     createshipment = "Create a shipment",
     splitshipment = "Split this shipment",
     shipment_cannot_split = "Cannot split this shipment.",
-
     -- Talking
     hear_noone = "No-one can hear you %s!",
     hear_everyone = "Everyone can hear you!",
     hear_certain_persons = "Players who can hear you %s: ",
-
     whisper = "whisper",
     yell = "yell",
     broadcast = "[Broadcast!]",
@@ -158,17 +115,13 @@ local my_language = {
     group = "(group)",
     ooc = "OOC",
     radio_x = "Radio %d",
-
     talk = "talk",
     speak = "speak",
-
     speak_in_ooc = "speak in OOC",
     perform_your_action = "perform your action",
     talk_to_your_group = "talk to your group",
-
     channel_set_to_x = "Channel set to %s!",
     channel = "channel",
-
     -- Notifies
     disabled = "%s has been disabled! %s",
     gm_spawnvehicle = "The spawning of vehicles",
@@ -188,15 +141,12 @@ local my_language = {
     you_bought = "You have bought %s for %s.",
     you_got_yourself = "You got yourself a %s.",
     you_received_x = "You have received %s for %s.",
-
     created_spawnpos = "You have added a spawn position for %s.",
     updated_spawnpos = "You have removed all spawn positions for %s and added a new one here.",
     remove_spawnpos = "You have removed all spawn positions for %s.",
     do_not_own_ent = "You do not own this entity!",
     cannot_drop_weapon = "Can't drop this weapon!",
-
     cooks_only = "Cooks only.",
-
     -- Misc
     unknown = "Unknown",
     arguments = "arguments",
@@ -224,36 +174,25 @@ local my_language = {
     illegal_characters = "Illegal characters.",
     too_long = "Too long.",
     too_short = "Too short.",
-
     credits_for = "CREDITS FOR %s\n",
     credits_see_console = "DarkRP credits printed to console.",
-
     rp_getvehicles = "Available vehicles for custom vehicles:",
-
     data_not_loaded_one = "Your data has not been loaded yet. Please wait.",
     data_not_loaded_two = "If this persists, try rejoining or contacting an admin.",
-
     cant_spawn_weapons = "You cannot spawn weapons.",
     drive_disabled = "Drive disabled for now.",
     property_disabled = "Property disabled for now.",
-
     not_allowed_to_purchase = "You are not allowed to purchase this item.",
-
     x_teambanned_y_for_z = "%s has banned %s from being a %s for %s minutes.",
     x_teamunbanned_y = "%s has unbanned %s from being a %s.",
-
     you_set_x_money = "You set %s's money to %s.",
     x_set_your_money = "%s set your money to %s.",
     you_set_x_name = "You set %s's name to %s",
     x_set_your_name = "%s set your name to %s",
-
     someone_stole_steam_name = "Someone is already using your Steam name as their RP name so we gave you a '1' after your name.", -- Uh oh
     already_taken = "Already taken.",
-
     x_made_you_a_y = "%s has made you a %s!",
-
     cmd_cant_be_run_server_console = "This command cannot be run from the server console.",
-
     -- Animations
     custom_animation = "Custom animation!",
     bow = "Bow",
@@ -265,16 +204,13 @@ local my_language = {
     thumbs_up = "Thumbs up",
     wave = "Wave",
     dance = "Dance",
-
     -- Hungermod
     starving = "Starving!",
-
     -- AFK
     unable_afk_spam_prevention = "Please wait before going AFK again.",
     afk_cmd_to_exit = "Type /afk to resume",
     player_now_afk = "%s is now AFK.",
     player_no_longer_afk = "%s is no longer AFK.",
-
     -- VGUI and some more doors/vehicles
     time = "Time: %d",
     yes = "Yes",
@@ -284,14 +220,12 @@ local my_language = {
     add = "Add",
     remove = "Remove",
     none = "None",
-
     x_options = "%s options",
     sell_x = "Sell %s",
     set_x_title = "Set %s title",
     set_x_title_long = "Set the title of the %s you are looking at.",
     jobs = "Jobs",
     buy_x = "Buy %s",
-
     -- F4menu
     ammo = "ammo",
     weapon_ = "weapon",
@@ -304,7 +238,6 @@ local my_language = {
     F4entities = "Miscellaneous",
     F4ammo = "Ammo",
     F4vehicles = "Vehicles",
-
     -- Tab 1
     give_money = "Give money to the player you're looking at",
     drop_money = "Drop money",
@@ -312,23 +245,13 @@ local my_language = {
     go_to_sleep = "Go to sleep/wake up",
     drop_weapon = "Drop current weapon",
     buy_health = "Buy health(%s)",
-
     noone_available = "No one available",
-
     set_custom_job = "Set a custom job (press enter to activate)",
-
     -- Second tab
     job_name = "Name: ",
     job_description = "Description: ",
     job_weapons = "Weapons: ",
-
     -- Entities tab
     buy_a = "Buy %s: %s",
 }
-
--- The language code is usually (but not always) a two-letter code. The default language is "en".
--- Other examples are "nl" (Dutch), "de" (German)
--- If you want to know what your language code is, open GMod, select a language at the bottom right
--- then enter gmod_language in console. It will show you the code.
--- Make sure language code is a valid entry for the convar gmod_language.
 DarkRP.addLanguage("en", my_language)
