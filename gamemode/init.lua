@@ -86,7 +86,6 @@ include("modules/chat/sh_chatcommands.lua")
 include("modules/chat/sv_chat.lua")--reversed sv_chat and sv_chatcommand or error
 include("modules/chat/sv_chatcommands.lua")
 
-include("modules/chatsounds.lua")
 include("modules/cssmount.lua")
 include("modules/passengermodcompat.lua")
 include("modules/workarounds/sh_workarounds.lua")

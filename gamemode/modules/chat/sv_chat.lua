@@ -295,7 +295,7 @@ local function ReplaceChatHooks()
 end
 hook.Add("InitPostEntity", "RemoveChatHooks", ReplaceChatHooks)
 
-local function ConCommand(ply, _, args)
+concommand.Add("darkrp",function(ply, _, args)
     if not args[1] then return end
     local cmd = string.lower(args[1])
     local tbl = DarkRP.getChatCommand(cmd)
@@ -319,5 +319,4 @@ local function ConCommand(ply, _, args)
     end
 
     tbl.callback(ply, arg)
-end
-concommand.Add("darkrp", ConCommand)
+end)

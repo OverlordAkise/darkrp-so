@@ -9,7 +9,7 @@ Changes:
 --]]
 
 local function canChangeTeam(self,prevTeam,targetTeam,force)
-    if force return true end
+    if force then return true end
     if targetTeam == GAMEMODE.DefaultTeam then return true end
     if targetTeam == prevTeam then return false end
     
