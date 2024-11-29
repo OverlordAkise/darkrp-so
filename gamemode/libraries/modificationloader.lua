@@ -8,7 +8,6 @@ DarkRP.disabledDefaults["modules"] = {
     ["afk"]              = false,
     ["chatsounds"]       = false,
     ["events"]           = false,
-    ["fpp"]              = false,
     ["hud"]              = false,
     ["hungermod"]        = true,
     ["playerscale"]      = false,

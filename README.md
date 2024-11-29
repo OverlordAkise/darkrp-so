@@ -12,6 +12,8 @@ Compatibility is provided via the "allow_compatibility.lua" file. This means not
 
 # Major changes
 
+Fspectate and FPP have been removed, if you need them please get them from the workshop or github again.
+
 Do NOT install this if you need any of the following that have been removed:
 
  - Removed the darkrp hud, scoreboard, f4menu, etc. (nearly all UIs)
@@ -19,6 +21,14 @@ Do NOT install this if you need any of the following that have been removed:
  - Removed the disjointset, simplerr and tablecheck libraries (recoded these parts)
  - Removed mayor's lockdown command
  - Removed wanted/warrants, jails, jailpositions arrest-baton
- - FPP has been minified, if you need your users to spawn props this could be a problem
  - Rewritten umsg to net messages
 
+Features Removed:
+
+ - NeedsToChangeFrom job logic,  RemoveEntitiesOnJobChange logic
+
+
+# FAQ
+
+Q: Why did you change specific functions or removed them?  
+A: I have helped many many servers and still have 1.6mil (!) lua files laying around. I search through these files and check if any addon or script uses a functionality, and if i don't find any then i will remove the functionality.

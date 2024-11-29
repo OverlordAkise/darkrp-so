@@ -79,6 +79,10 @@ end
 
 function DarkRP.readNetDarkRPVarRemoval()
     local id = net.ReadUInt(DARKRP_ID_BITS)
+    -- print("DarkRP.readNetDarkRPVarRemoval id:",id)
+    -- print("DarkRPVarById:",DarkRPVarById[id])
+    -- print("Full Table:")
+    -- PrintTable(DarkRPVarById)
     return id == 255 and net.ReadString() or DarkRPVarById[id].name
 end
 

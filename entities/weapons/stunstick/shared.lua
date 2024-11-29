@@ -154,22 +154,20 @@ function SWEP:DoAttack(dmg)
         Owner:EmitSound(self.FleshHit[math.random(#self.FleshHit)])
     else
         Owner:EmitSound(self.Hit[math.random(#self.Hit)])
-        if FPP and FPP.plyCanTouchEnt(Owner, ent, "EntityDamage") then
-            if ent.SeizeReward and not ent.beenSeized and not ent.burningup and Owner:isCP() and ent.Getowning_ent and Owner ~= ent:Getowning_ent() then
-                local amount = isfunction(ent.SeizeReward) and ent:SeizeReward(Owner, dmg) or ent.SeizeReward
+        if ent.SeizeReward and not ent.beenSeized and not ent.burningup and Owner:isCP() and ent.Getowning_ent and Owner ~= ent:Getowning_ent() then
+            local amount = isfunction(ent.SeizeReward) and ent:SeizeReward(Owner, dmg) or ent.SeizeReward
 
-                Owner:addMoney(amount)
-                DarkRP.notify(Owner, 1, 4, DarkRP.getPhrase("you_received_x", DarkRP.formatMoney(amount), DarkRP.getPhrase("bonus_destroying_entity")))
-                ent.beenSeized = true
-            end
-            local health = math.max(ent:Health(), ent:GetMaxHealth())
-            health = health == 0 and 1000 or health
-
-            local dmgToTake = GAMEMODE.Config.stunstickdamage <= 1 and GAMEMODE.Config.stunstickdamage * health or GAMEMODE.Config.stunstickdamage
-            -- Ceil because health is an integer value
-            dmgToTake = math.max(0, math.ceil(dmgToTake - dmg))
-            ent:TakeDamage(dmgToTake, Owner, self) -- for illegal entities
+            Owner:addMoney(amount)
+            DarkRP.notify(Owner, 1, 4, DarkRP.getPhrase("you_received_x", DarkRP.formatMoney(amount), DarkRP.getPhrase("bonus_destroying_entity")))
+            ent.beenSeized = true
         end
+        local health = math.max(ent:Health(), ent:GetMaxHealth())
+        health = health == 0 and 1000 or health
+
+        local dmgToTake = GAMEMODE.Config.stunstickdamage <= 1 and GAMEMODE.Config.stunstickdamage * health or GAMEMODE.Config.stunstickdamage
+        -- Ceil because health is an integer value
+        dmgToTake = math.max(0, math.ceil(dmgToTake - dmg))
+        ent:TakeDamage(dmgToTake, Owner, self) -- for illegal entities
     end
 end
 

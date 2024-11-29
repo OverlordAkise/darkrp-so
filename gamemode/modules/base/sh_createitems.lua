@@ -426,10 +426,6 @@ function DarkRP.createEntity(name, entity, model, price, max, command, classes, 
     tblEnt.getMax      = tblEnt.getMax      and tblEnt.getMax
     tblEnt.spawn       = tblEnt.spawn       and tblEnt.spawn
 
-    -- if SERVER and FPP then
-    --  FPP.AddDefaultBlocked(blockTypes, tblEnt.ent)
-    -- end
-
     table.insert(DarkRPEntities, tblEnt)
     DarkRP.addToCategory(tblEnt, "entities", tblEnt.category)
     timer.Simple(0, function() addEntityCommands(tblEnt) end)
